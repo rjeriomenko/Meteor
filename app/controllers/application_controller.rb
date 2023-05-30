@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::API
     include ActionController::RequestForgeryProtection
 
-    protect_from_forgery with: :exception
+    # protect_from_forgery with: :exception
 
     before_action :snake_case_params
     before_action :attach_authenticity_token
@@ -31,7 +31,7 @@ class ApplicationController < ActionController::API
     end
 
     def require_logged_out
-        if logged_in
+        if logged_in?
             render json: { errors: ["Must be logged out"] }, status: 403
         end
     end
