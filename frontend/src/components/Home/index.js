@@ -1,13 +1,14 @@
 import './Home.css'
+import HomeSplash from '../HomeSplash/index';
+import HomeTrending from '../HomeTrending/index';
+
 
 const Home = props => {
 
     return (
         <>
-            <h2>Hello from Home</h2>
-            <ul>
-                <li>Lorem ipsum</li>
-            </ul>
+            <HomeSplash />
+            <HomeTrending />
         </>
 
     );
