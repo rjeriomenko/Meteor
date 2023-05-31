@@ -1,1 +1,24 @@
-/* TODO Add site wide styles */
+@import 'normalize.css';
+
+* {
+    font-family:
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+}
+
+/* Remove more defaults*/
+ul {
+    list-style-type: none;
+}
+
+body {
+    margin: 0;
+}
+
+/* Global default variables */
+
+:root {
+    --bg-color: #FFC017;
+    --text-color: rgba(41, 41, 41, 1);
+}

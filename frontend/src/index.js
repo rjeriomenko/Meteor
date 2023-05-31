@@ -6,7 +6,7 @@ import './index.css';
 import App from './App';
 import configureStore from './store';
 import { restoreSession, csrfFetch } from './store/csrf';
-import { fetchUser, createUser, updateUser, deleteUser, loginUser, logoutUser } from './store/usersReducer'
+import { fetchUser, createUser, updateUser, deleteUser, loginUser, logoutUser } from './store/usersReducer';
 
 const initializeApp = () => {
 
@@ -47,4 +47,4 @@ const initializeApp = () => {
   );
 };
 
-restoreSession().then(initializeApp)
+restoreSession().then(initializeApp);

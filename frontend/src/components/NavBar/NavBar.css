@@ -1,0 +1,70 @@
+@import '../../index.css';
+
+header {
+    display: flex;
+    height: 75px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    border-bottom: 1px solid var(--text-color);
+    background-color: var(--bg-color);
+}
+
+.header-content {
+    margin: 0 64px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.logo-text {
+    font-family: 'Noe Display', sans-serif;
+    font-size: 36px;
+    font-weight: 500;
+    padding-top: 5px;
+    display: inline-block;
+    margin-left: 2px;
+}
+
+.logo-image {
+    height: 36px;
+    width: 36px;
+    display: inline-block;
+}
+
+.logo-content {
+    cursor: pointer;
+}
+
+.nav-links {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    cursor: pointer;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    width: 35%;
+    color: var(--text-color);
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.get-started {
+    color: white;
+    background-color: rgba(25, 25, 25, 1);
+    padding: 8px 16px;
+    border-radius: 99em;
+    font-weight: 300;
+}
+
+/* transition: background-color 300ms linear, color 300ms linear;
+    transition-duration: 300ms, 300ms;
+    transition-timing-function: linear, linear;
+    transition-delay: 0s, 0s;
+    transition-property: background-color, color;
+} */
