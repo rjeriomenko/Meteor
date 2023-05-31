@@ -1,4 +1,5 @@
-function App() {
+const App = props => {
+
   return (
     <h1>Hello from App</h1>
   );

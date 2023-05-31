@@ -3,13 +3,13 @@ class User < ApplicationRecord
 
     validates :email, :username, :full_name, :session_token, presence: true
     validates :email, :username, :session_token, uniqueness: true
-    validates :username, 
+    validates :username,
         length: { in: 3..30 },
         format: { without: URI::MailTo::EMAIL_REGEXP, message: "Username should not be an email" }
-    validates :email, 
+    validates :email,
         length: { in: 3..255 }, 
         format: { with: URI::MailTo::EMAIL_REGEXP }
-    validates :full_name, 
+    validates :full_name,
         length: { in: 3..255 }
     validates :password,
         length: { in: 6..255 },
@@ -17,7 +17,7 @@ class User < ApplicationRecord
     validates :tagline,
         length: { in: 1..255 }, 
         allow_nil: true
-    validates :profile_bio, 
+    validates :profile_bio,
         length: { in: 1..255 }, 
         allow_nil: true
 
