@@ -7,7 +7,7 @@ const Home = props => {
 
     return (
         <>
-            <HomeSplash />
+            <HomeSplash/>
             <HomeTrending />
         </>
 

@@ -3,7 +3,7 @@ import './HomeTrending.css'
 const HomeTrending = props => {
 
     return (
-        <div class="home-trending">
+        <div className="home-trending">
             <h2>Hello from HomeTrending</h2>
             <ul>
                 <li>Lorem ipsum</li>

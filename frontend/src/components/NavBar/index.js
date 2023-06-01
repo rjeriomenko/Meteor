@@ -1,25 +1,39 @@
-import './NavBar.css'
-import logo from '../../logo.png'
-import { Link } from 'react-router-dom'
+import './NavBar.css';
+import logo from '../../logo.png';
+import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
 const NavBar = props => {
+    const [scrollStatus, setScrollStatus] = useState("not-scrolled")
+
+    const handleScroll = e => {
+        const scrollPosition = window.scrollY;
+        
+        if(scrollPosition > 360) {
+            setScrollStatus("scrolled")
+        } else {
+            setScrollStatus("not-scrolled")
+        }
+    }
+
+    window.addEventListener('scroll', () => handleScroll())
 
     return (
-        <header>
-            <div class='header-content'>
-                <div class= 'logo-content'>
+        <header className='nav-bar' id={scrollStatus}>
+            <div className='header-content'>
+                <div className= 'logo-content'>
                     <Link to='/'>
-                        <img src={logo} alt='Website Logo' class='logo-image'/>
-                        <div class='logo-text'>
+                        <img src={logo} alt='Website Logo' className='logo-image'/>
+                        <div className='logo-text'>
                             Meteor
                         </div>
                     </Link>
                 </div>
-                <div class='nav-links'>
+                <div className='nav-links'>
                     <Link to='#/'>Our Story</Link>
                     <Link to='#/'>Write</Link>
                     <Link to='#/'>Sign In</Link>
-                    <Link to='#/' class="get-started">Get Started</Link>
+                    <Link to='#/' className='get-started' id={scrollStatus}>Get Started</Link>
                 </div>
             </div>
         </header>
