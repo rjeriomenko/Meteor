@@ -1,19 +1,19 @@
 @import 'normalize.css';
 
-* {
-    font-family:
-        BlinkMacSystemFont,
-        "Segoe UI",
-        sans-serif;
-}
 
-/* Remove more defaults*/
+/* Remove more default attributes*/
 ul {
     list-style-type: none;
 }
 
+
 body {
     margin: 0;
+}
+
+/* Global default attributes */
+* {
+    font-family: BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 /* Global default variables */

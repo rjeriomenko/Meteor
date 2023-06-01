@@ -23,7 +23,7 @@ export const removeUser = userId => ({
 
 //Thunk Action Creators
 export const fetchUser = userId => async(dispatch) => {
-    const req = await csrfFetch(`api/users/${userId}`);
+    const req = await csrfFetch(`/api/users/${userId}`);
     const data = await req.json();
     let user = data.user;
 
@@ -32,19 +32,21 @@ export const fetchUser = userId => async(dispatch) => {
 
 export const createUser = user => async(dispatch) => {
     console.log(user)
-    const req = await csrfFetch(`api/users`, {
+    const req = await csrfFetch(`/api/users`, {
         method: 'POST',
         body: JSON.stringify(user)
     });
     const data = await req.json();
     const responseUser = data.user;
 
+    sessionStorage.setItem('currentUser', JSON.stringify(responseUser));
+
     dispatch(receiveUser(responseUser));
 }
 
 export const updateUser = user => async(dispatch) => {
     console.log(user)
-    const req = await csrfFetch(`api/users/${user.id}`, {
+    const req = await csrfFetch(`/api/users/${user.id}`, {
         method: 'PATCH',
         body: JSON.stringify(user)
     });
@@ -55,7 +57,7 @@ export const updateUser = user => async(dispatch) => {
 }
 
 export const deleteUser = userId => async (dispatch) => {
-    const req = await csrfFetch(`api/users/${userId}`, {
+    const req = await csrfFetch(`/api/users/${userId}`, {
         method: 'DELETE',
     });
 
@@ -63,7 +65,7 @@ export const deleteUser = userId => async (dispatch) => {
 }
 
 export const loginUser = user => async (dispatch) => {
-    const req = await csrfFetch(`api/session`, {
+    const req = await csrfFetch(`/api/session`, {
         method: 'POST',
         body: JSON.stringify(user)
     });
@@ -76,7 +78,7 @@ export const loginUser = user => async (dispatch) => {
 }
 
 export const logoutUser = userId => async (dispatch) => {
-    const req = await csrfFetch(`api/session`, {
+    const req = await csrfFetch(`/api/session`, {
         method: 'DELETE'
     });
 

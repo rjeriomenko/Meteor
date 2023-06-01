@@ -16,13 +16,6 @@
     background-color: white;
 }
 
-/* transition: background-color 300ms linear, color 300ms linear;
-    transition-duration: 300ms, 300ms;
-    transition-timing-function: linear, linear;
-    transition-delay: 0s, 0s;
-    transition-property: background-color, color;
-} */
-
 .header-content {
     margin: 0 64px;
     display: flex;

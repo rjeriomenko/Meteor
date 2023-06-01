@@ -1,0 +1,11 @@
+@import '../../index.css';
+
+.SignUpForm {
+    position: absolute;
+    height: 455px;
+    width: 100%;
+    background-color: var(--bg-color);
+    margin-top: 76px;
+    border-bottom: 1px solid var(--text-color);
+    z-index: 2
+}

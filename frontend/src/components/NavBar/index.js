@@ -30,10 +30,10 @@ const NavBar = props => {
                     </Link>
                 </div>
                 <div className='nav-links'>
-                    <Link to='#/'>Our Story</Link>
-                    <Link to='#/'>Write</Link>
-                    <Link to='#/'>Sign In</Link>
-                    <Link to='#/' className='get-started' id={scrollStatus}>Get Started</Link>
+                    <Link to='/#/'>Our Story</Link>
+                    <Link to='/#/'>Write</Link>
+                    <Link to='/form/login'>Sign In</Link>
+                    <Link to='/form/sign-up' className='get-started' id={scrollStatus}>Get Started</Link>
                 </div>
             </div>
         </header>
