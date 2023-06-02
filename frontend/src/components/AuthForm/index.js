@@ -47,6 +47,21 @@ const AuthForm = ({ formType, setShowForm, setFormType }) => {
         document.body.style.overflow = '';
     }
 
+    const handleDemoLogin = () => {
+        const demoUser = {
+            email: 'demo@man.com',
+            password: 'brimstone',
+        }
+        
+        dispatch(loginUser(demoUser));
+
+        setShowForm(false);
+
+        history.push('/publish');
+
+        document.body.style.overflow = '';
+    }
+
     const onEmailChange = e => {
         setEmail(e.target.value)
     }
@@ -100,44 +115,44 @@ const AuthForm = ({ formType, setShowForm, setFormType }) => {
             case ('sign-up'):
                 return (
                     <>
-                        <label className='form'>Your email
-                            <input type='text' onChange={onEmailChange} value={email} className='text-input' />
+                        <label className='auth-label'>Your email
+                            <input type='text' onChange={onEmailChange} value={email} className='auth-text-input' />
                         </label>
 
-                        <label className='form'>Your password
-                            <input type='text' onChange={onPasswordChange} value={password} className='text-input' />
+                        <label className='auth-label'>Your password
+                            <input type='text' onChange={onPasswordChange} value={password} className='auth-text-input' />
                         </label>
 
-                        <label className='form'>Your full name
-                            <input type='text' onChange={onFullNameChange} value={fullName} className='text-input' />
+                        <label className='auth-label'>Your full name
+                            <input type='text' onChange={onFullNameChange} value={fullName} className='auth-text-input' />
                         </label>
                     </>
                 )
             case ('sign-in'):
                 return (
                     <>
-                        <label className='form'>Your email
-                            <input type='text' onChange={onEmailChange} value={email} className='text-input' />
+                        <label className='auth-label'>Your email
+                            <input type='text' onChange={onEmailChange} value={email} className='auth-text-input' />
                         </label>
 
-                        <label className='form'>Your password
-                            <input type='text' onChange={onPasswordChange} value={password} className='text-input' />
+                        <label className='auth-label'>Your password
+                            <input type='text' onChange={onPasswordChange} value={password} className='auth-text-input' />
                         </label>
                     </>
                 )
             default:
                 return (
                     <>
-                        <label className='form'>Your email
-                            <input type='text' onChange={onEmailChange} value={email} className='text-input' />
+                        <label className='auth-label'>Your email
+                            <input type='text' onChange={onEmailChange} value={email} className='auth-text-input' />
                         </label>
 
-                        <label className='form'>Your password
-                            <input type='text' onChange={onPasswordChange} value={password} className='text-input' />
+                        <label className='auth-label'>Your password
+                            <input type='text' onChange={onPasswordChange} value={password} className='auth-text-input' />
                         </label>
 
-                        <label className='form'>Your full name
-                            <input type='text' onChange={onFullNameChange} value={fullName} className='text-input' />
+                        <label className='auth-label'>Your full name
+                            <input type='text' onChange={onFullNameChange} value={fullName} className='auth-text-input' />
                         </label>
                     </>
                 )
@@ -146,16 +161,18 @@ const AuthForm = ({ formType, setShowForm, setFormType }) => {
 
     return (
         <div className='modal-background' onClick={handleCloseForm}>
-            <div className='auth-form'>
-                <div className='auth-container'>
+            <div className='auth-container'>
+                <div className='auth-spacing'>
                     <div className='auth-content'>
-                        <h2 className= 'form-header'>{formHeader()}</h2>
+                        <h2 className='form-header'>{formHeader()}</h2>
                         
-                        <h4 className= 'form-instructions'>{formInstructions()}</h4>
+                        <h4 className='form-instructions'>{formInstructions()}</h4>
 
-                        <form onSubmit={handleSubmit}>
+                        <form className='auth-form' onSubmit={handleSubmit}>
                             {formInput()}
-                            <input type='submit' value='Continue' className='continue'/>
+                            <input type='submit' value='Continue' className='auth-submit'/>
+                            <button onClick={handleDemoLogin} className='auth-submit demo-login'>Demo Login
+                            </button>
                         </form>
                     </div>
                 </div>
