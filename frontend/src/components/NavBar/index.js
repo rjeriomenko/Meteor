@@ -3,17 +3,27 @@ import logo from '../../logo.png';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 
-const NavBar = props => {
+const NavBar = ({ setShowForm, setFormType }) => {
     const [scrollStatus, setScrollStatus] = useState("not-scrolled")
 
     const handleScroll = e => {
         const scrollPosition = window.scrollY;
         
-        if(scrollPosition > 360) {
+        if(scrollPosition > 370) {
             setScrollStatus("scrolled")
         } else {
             setScrollStatus("not-scrolled")
         }
+    }
+
+    const handleSignUp = () => {
+        setShowForm(true);
+        setFormType("sign-up");
+    }
+
+    const handleSignIn = () => {
+        setShowForm(true);
+        setFormType("sign-in");
     }
 
     window.addEventListener('scroll', () => handleScroll())
@@ -32,8 +42,8 @@ const NavBar = props => {
                 <div className='nav-links'>
                     <Link to='/#/'>Our Story</Link>
                     <Link to='/#/'>Write</Link>
-                    <Link to='/form/login'>Sign In</Link>
-                    <Link to='/form/sign-up' className='get-started' id={scrollStatus}>Get Started</Link>
+                    <div onClick={handleSignIn}>Sign In</div>
+                    <div className='get-started' onClick={handleSignUp} id={scrollStatus}>Get Started</div>
                 </div>
             </div>
         </header>

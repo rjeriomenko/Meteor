@@ -1,10 +1,10 @@
 @import '../../index.css';
 
 .nav-bar {
+    position: fixed;
     display: flex;
     height: 75px;
     width: 100%;
-    position: fixed;
     top: 0;
     border-bottom: 1px solid var(--text-color);
     background-color: var(--bg-color);
@@ -53,6 +53,7 @@
     font-family: "Helvetica Neue", Arial, sans-serif;
     width: 39%;
     color: var(--text-color);
+    white-space: nowrap;
 }
 
 a {
@@ -70,5 +71,5 @@ a {
 }
 
 .get-started#scrolled {
-    background-color: rgb(26, 137, 23);
+    background-color: rgb(27, 147, 23);
 }

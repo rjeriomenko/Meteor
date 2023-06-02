@@ -2,8 +2,15 @@
 
 .home-trending {
     position: absolute;
-    height: 100%;
+    height: 455px;
     width: 100%;
     background-color: white;
-    margin-top: 532px;
+}
+
+.home-trending {
+        height: 1000px;
+}
+
+button {
+    margin-bottom: 15px;
 }

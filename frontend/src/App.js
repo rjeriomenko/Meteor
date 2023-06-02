@@ -1,18 +1,36 @@
 import { Switch, Route } from 'react-router-dom';
+import AuthForm from './components/AuthForm/index';
 import Home from './components/Home/index';
 import NavBar from './components/NavBar/index';
-import LoginForm from './components/LoginForm/index'
-import SignUpForm from './components/SignUpForm/index'
+import { useState } from 'react';
 
 const App = props => {
 
+  const [showForm, setShowForm] = useState(false);
+  const [formType, setFormType] = useState('sign-up');
+
+  const handleForm = () => {
+    const body = document.body
+
+    if (showForm) {
+      body.style.overflow = 'hidden';
+
+      return (
+        <AuthForm formType={formType} setShowForm={setShowForm} setFormType={setFormType} />
+      );
+    } else {
+      body.style.overflow = 'visible';
+    };
+  };
+
   return (
     <>
-      <NavBar />
+      {handleForm()}
+
+      <NavBar setShowForm={setShowForm} setFormType={setFormType} />
 
       <Switch>
-        <Route exact path='/' component={Home} />
-        <Route path='/form/sign-up' component={SignUpForm} />
+        <Route path='/' component={Home} />
       </Switch>
     </>
 

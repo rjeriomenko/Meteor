@@ -6,9 +6,9 @@ ul {
     list-style-type: none;
 }
 
-
-body {
+body, h1, h2, h3, h4, ul, button {
     margin: 0;
+    padding: 0;
 }
 
 /* Global default attributes */
@@ -19,6 +19,6 @@ body {
 /* Global default variables */
 
 :root {
-    --bg-color: #FFC017;
-    --text-color: rgba(41, 41, 41, 1);
+    --bg-color: #fbbc0d;
+    --text-color: rgba(38, 38, 38, 0.85);
 }
