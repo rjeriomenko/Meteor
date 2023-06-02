@@ -1,21 +1,22 @@
 import './AuthForm.css';
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { createUser, loginUser } from '../../store/usersReducer';
 
 const AuthForm = ({ formType, setShowForm, setFormType }) => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    const history = useHistory();
 
     console.log('sessionStorage:')
     console.log(sessionStorage.currentUser)
     
-    const [email, setEmail] = useState()
-    const [password, setPassword] = useState()
-    const [fullName, setFullName] = useState()
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [fullName, setFullName] = useState('');
 
     const handleSubmit = e => {
-        e.preventDefault()
+        e.preventDefault();
 
         let dispatchFunction;
 
@@ -37,7 +38,13 @@ const AuthForm = ({ formType, setShowForm, setFormType }) => {
             fullName: fullName
         }
 
-        dispatch(dispatchFunction(dispatchUser))
+        dispatch(dispatchFunction(dispatchUser));
+        
+        setShowForm(false);
+
+        history.push('/publish');
+        
+        document.body.style.overflow = '';
     }
 
     const onEmailChange = e => {
@@ -84,7 +91,7 @@ const AuthForm = ({ formType, setShowForm, setFormType }) => {
             case ('sign-in'):
                 return 'Enter the email address and password associated with your account to login.';
             default:
-                return 'Enter the email address and associated with your account,';
+                return 'Enter your email address, password, and full name to create an account.';
         };
     };
 

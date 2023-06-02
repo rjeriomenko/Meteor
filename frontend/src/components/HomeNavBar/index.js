@@ -1,9 +1,9 @@
-import './NavBar.css';
+import './HomeNavBar.css';
 import logo from '../../logo.png';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 
-const NavBar = ({ setShowForm, setFormType }) => {
+const HomeNavBar = ({ setShowForm, setFormType }) => {
     const [scrollStatus, setScrollStatus] = useState("not-scrolled")
 
     const handleScroll = e => {
@@ -29,7 +29,7 @@ const NavBar = ({ setShowForm, setFormType }) => {
     window.addEventListener('scroll', () => handleScroll())
 
     return (
-        <header className='nav-bar' id={scrollStatus}>
+        <header className='home-nav-bar' id={scrollStatus}>
             <div className='header-content'>
                 <div className= 'logo-content'>
                     <Link to='/'>
@@ -39,16 +39,15 @@ const NavBar = ({ setShowForm, setFormType }) => {
                         </div>
                     </Link>
                 </div>
-                <div className='nav-links'>
+                <div className='home-nav-links'>
                     <Link to='/#/'>Our Story</Link>
-                    <Link to='/#/'>Write</Link>
+                    <Link to='/publish/'>Write</Link>
                     <div onClick={handleSignIn}>Sign In</div>
                     <div className='get-started' onClick={handleSignUp} id={scrollStatus}>Get Started</div>
                 </div>
             </div>
         </header>
-
     );
 }
 
-export default NavBar;
+export default HomeNavBar;

@@ -6,7 +6,7 @@ ul {
     list-style-type: none;
 }
 
-body, h1, h2, h3, h4, ul, button {
+body, p, h1, h2, h3, h4, ul, button {
     margin: 0;
     padding: 0;
 }

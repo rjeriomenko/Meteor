@@ -1,6 +1,6 @@
 @import '../../index.css';
 
-.nav-bar {
+.home-nav-bar {
     position: fixed;
     display: flex;
     height: 75px;
@@ -12,7 +12,7 @@
     transition: background-color 300ms linear, color 300ms linear;
 }
 
-.nav-bar#scrolled {
+.home-nav-bar#scrolled {
     background-color: white;
 }
 
@@ -44,7 +44,7 @@
     cursor: pointer;
 }
 
-.nav-links {
+.home-nav-links {
     display: flex;
     justify-content: space-around;
     align-items: center;
