@@ -6,12 +6,11 @@
     height: 70px;
     width: 100%;
     top: 0;
-    border-bottom: 1px dashed var(--text-color);
     z-index: 1;
 }
 
 .site-header-content {
-    margin: 0 64px;
+    margin: 0 20px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -34,7 +33,7 @@
     font-weight: 400;
     display: inline-block;
     margin-left: 18px;
-    color: gray;
+    color: rgb(135, 135, 135)
 }
 
 .site-navbar-logo-image {
@@ -51,7 +50,7 @@
     font-size: 14px;
     cursor: pointer;
     font-family: "Helvetica Neue", Arial, sans-serif;
-    width: 39%;
+    width: 25%;
     color: var(--text-color);
     white-space: nowrap;
 }
@@ -63,7 +62,7 @@
     color: inherit;
 }
 
-.publish {
+.publish-button {
     color: white;
     background-color: rgb(27, 136, 23);
     padding: 7px 10px;

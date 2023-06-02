@@ -1,9 +1,8 @@
 import './SiteNavBar.css';
 import logo from '../../logo.png';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
 
-const SiteNavBar = props => {
+const SiteNavBar = ({ page }) => {
     const currentUser = JSON.parse(sessionStorage.currentUser);  //CHANGE THIS TO USE USEEFFECT or PUT CURRENT USER IN PAGE LOADER
 
     const handlePublish = () => {
@@ -11,11 +10,35 @@ const SiteNavBar = props => {
     }
 
     const formatNavBarRight = () => {
+        let partialBar;
+
+        switch (page) {
+            case 'publish':
+                partialBar = (
+                    <>
+                        <div className='publish-button' onClick={handlePublish}>Publish</div>
+                        <Link to='/#/'>...</Link>
+                    </>
+                )
+                break;
+            case 'feed':
+                partialBar = (
+                    null
+                )
+                break;
+            default:
+                partialBar = (
+                    <>
+                        <div className='publish' onClick={handlePublish}>Publish</div>
+                        <Link to='/#/'>...</Link>
+                    </>
+                )
+                break;
+        }
+
         return (
             <>
-                <div className='publish' onClick={handlePublish}>Publish</div>
-                <Link to='/#/'>...</Link>
-                <Link to='/publish/'>BELL</Link>
+                {partialBar}
                 <div>PROFILE PIC</div>
             </>
         )

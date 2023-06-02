@@ -5,22 +5,12 @@ const Publish = props => {
 
     return (
         <>
-            <SiteNavBar />
+            <SiteNavBar page='publish' />
 
-            <div className="Publish">
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <p>HI FROM PUBLISH</p>
-                <>
-                    <div contentEditable={true}>TEST
-                        <strong>WITHIN P</strong>
-                    </div>
-                    <textarea />
-                </>
+            <div className="publish">
+                <div contentEditable={true} className='publish-content'>
+                    <div>Start Typing Here</div>
+                </div>
             </div>
         </>
     );

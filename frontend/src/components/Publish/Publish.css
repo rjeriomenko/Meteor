@@ -1,2 +1,17 @@
+@import '../../index.css';
+
 .publish {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.publish-content {
+    z-index: 0;
+    outline: none;
+    margin-top: 93px;
+    width: 700px;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 18px;
+    color: black;
 }
