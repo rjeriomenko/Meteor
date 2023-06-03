@@ -13,7 +13,7 @@ body, p, h1, h2, h3, h4, ul, button {
 
 /* Global default attributes */
 * {
-    font-family: BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-family: "Segoe UI", sans-serif;
 }
 
 /* Global default variables */

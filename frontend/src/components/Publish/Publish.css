@@ -7,11 +7,14 @@
 }
 
 .publish-content {
+    line-height: 1.8;
+    letter-spacing: 0.9px;
     z-index: 0;
     outline: none;
     margin-top: 93px;
     width: 700px;
     font-family: Georgia, "Times New Roman", serif;
-    font-size: 18px;
-    color: black;
+    font-size: 19px;
+    color: rgb(42, 42, 42);
+    font-weight: 100;
 }
