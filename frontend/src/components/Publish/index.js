@@ -12,32 +12,61 @@ const Publish = props => {
         return node;
     }
 
+    const newInputDiv = () => {
+        const newDiv = document.createElement('div');
+        newDiv.classList.add('input-div');
+        newDiv.classList.add('focused');
+
+        return newDiv;
+    }
+
     const getEventConstants = () => {
+        const content = document.body.querySelector('.publish-content');
         const selection = window.getSelection();
         const selectedNode = selection.anchorNode;
+        const selectedOffset = selection.anchorOffset;
         const parentDivElement = getDivParent(selectedNode);
         const parentDivClassList = parentDivElement.classList;
 
         return {
+            content: content,
             selection: selection,
             selectedNode: selectedNode,
+            selectedOffset: selectedOffset,
             parentDivElement: parentDivElement,
             parentDivClassList: parentDivClassList
         };
     }
 
-    const resetRange = node => {
+    const newRange = () => {
+        let firstInputDiv = document.body.querySelector('[class="input-div"]') ||
+        document.body.querySelector('[class="input-div unmodified"]') ||
+        document.body.querySelector('[class="input-div unmodified focused"]') ||
+        document.body.querySelector('.input-div');
         const selection = window.getSelection();
         const range = document.createRange();
-        range.setStart(node, 0);
+
+        range.setStart(firstInputDiv, 0);
         range.collapse(true);
         selection.removeAllRanges();
         selection.addRange(range);
     }
 
+    const resetRange = node => {
+        const { content, selection } =
+            getEventConstants();
+
+        if (selection.anchorOffset !== 0 || content.children.length <= 1) {
+            const range = document.createRange();
+            range.setStart(node, 0);
+            range.collapse(true);
+            selection.removeAllRanges();
+            selection.addRange(range);
+        }
+    }
+
     const handleDeleteLastLine = (event) => {
-        const content = document.body.querySelector('.publish-content');
-        const { selectedNode, parentDivClassList } =
+        const { content, selectedNode, parentDivClassList } =
             getEventConstants();
 
         if (selectedNode.textContent === '' &&
@@ -46,9 +75,7 @@ const Publish = props => {
             content.children.length <= 1
         ) {
             event.preventDefault();
-            const newDiv = document.createElement('div');
-            newDiv.classList.add('input-div');
-            newDiv.classList.add('focused');
+            const newDiv = newInputDiv();
             content.appendChild(newDiv);
             content.removeChild(content.firstChild);
     
@@ -87,25 +114,82 @@ const Publish = props => {
         };
     }
 
-    const addEventListeners = () => {
-        const content = document.body.querySelector('.publish-content');
+    const handleTooltipSelection = () => {
+        // const { parentDivElement, parentDivClassList } =
+        //     getEventConstants();
 
+        const selectedText = window.getSelection().toString().trim();
+        console.log(selectedText);
+        
+    };
+
+    const handlePreventUnderline = event => {
+        if ((event.metaKey || event.ctrlKey) && event.key === 'u') {
+            event.preventDefault();
+        }
+    };
+
+    const handlePaste = event => {
+        const { selectedOffset, selectedNode, content } =
+            getEventConstants();
+
+        const selectedTextContent = selectedNode.textContent || '';
+        const pasteData = event.clipboardData;
+        const pasteText = pasteData.getData('text/plain');
+        const splitArray = pasteText.split('\n');
+        const filteredArray = splitArray.filter(line => line.length > 0);
+
+        if (filteredArray.length === 1) {
+            selectedNode.textContent = selectedTextContent.slice(0, selectedOffset) +
+                filteredArray.shift() + selectedTextContent.slice(selectedOffset);
+        } else {
+            selectedNode.textContent = selectedTextContent.slice(0, selectedOffset) + filteredArray.shift();
+
+            while (filteredArray.length > 1) {
+                const newDiv = newInputDiv();
+                newDiv.textContent = filteredArray.shift();
+                console.log(newDiv)
+                content.appendChild(newDiv);
+            }
+
+            const newDiv = newInputDiv();
+            newDiv.textContent = filteredArray.shift() + selectedTextContent.slice(selectedOffset);
+            content.appendChild(newDiv);
+        }
+    }
+
+    const addEventListeners = () => {
+        const { content } = getEventConstants();
+        
         document.addEventListener('selectionchange', e => {
             handleFocusChange();
+            handleTooltipSelection();
         });
 
         content.addEventListener('keydown', e => {
             deleteDefaultText(e.key);
             handleFocusChange();
             handleDeleteLastLine(e);
+            handlePreventUnderline(e);
+
         });
 
         content.addEventListener('keyup', e => {
             handleFocusChange();
+
         });
+
+        document.addEventListener('paste', e => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            handlePaste(e);
+        })
+
     }
 
     useEffect(() => {
+        newRange();
         addEventListeners();
     }, []);
 
