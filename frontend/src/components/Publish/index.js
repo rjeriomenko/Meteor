@@ -12,71 +12,101 @@ const Publish = props => {
         return node;
     }
 
-    const handleDefaultTextAndFocusAndDeleteLastLine = () => {
+    const getEventConstants = () => {
+        const selection = window.getSelection();
+        const selectedNode = selection.anchorNode;
+        const parentDivElement = getDivParent(selectedNode);
+        const parentDivClassList = parentDivElement.classList;
+
+        return {
+            selection: selection,
+            selectedNode: selectedNode,
+            parentDivElement: parentDivElement,
+            parentDivClassList: parentDivClassList
+        };
+    }
+
+    const resetRange = node => {
+        const selection = window.getSelection();
+        const range = document.createRange();
+        range.setStart(node, 0);
+        range.collapse(true);
+        selection.removeAllRanges();
+        selection.addRange(range);
+    }
+
+    const handleDeleteLastLine = (event) => {
+        const content = document.body.querySelector('.publish-content');
+        const { selectedNode, parentDivClassList } =
+            getEventConstants();
+
+        if (selectedNode.textContent === '' &&
+            event.key === 'Backspace' &&
+            parentDivClassList.contains('input-div') &&
+            content.children.length <= 1
+        ) {
+            event.preventDefault();
+            const newDiv = document.createElement('div');
+            newDiv.classList.add('input-div');
+            newDiv.classList.add('focused');
+            content.appendChild(newDiv);
+            content.removeChild(content.firstChild);
+    
+            resetRange(newDiv)
+        };
+    }
+
+    const deleteDefaultText = (key) => {
+        const { selectedNode, parentDivClassList } =
+            getEventConstants();
+
+        if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(key) &&
+            parentDivClassList.contains('unmodified')) {
+            {
+                selectedNode.textContent = '';
+                parentDivClassList.remove('unmodified');
+            };
+        };
+    }
+
+    const handleFocusChange = () => {
+        const { parentDivElement, parentDivClassList } =
+            getEventConstants();
+        let previousFocused = document.body.querySelector('.focused');
+    
+        if (parentDivElement.classList.contains('input-div')) {
+            while (previousFocused) {
+                previousFocused.classList.remove('focused');
+                previousFocused = document.body.querySelector('.focused')
+            }
+            parentDivClassList.add('focused');
+        }
+    
+        if (parentDivClassList.contains('unmodified')) {
+            resetRange(parentDivElement);
+        };
+    }
+
+    const addEventListeners = () => {
         const content = document.body.querySelector('.publish-content');
 
         document.addEventListener('selectionchange', e => {
-            const selection = window.getSelection();
-            const selectedNode = selection.anchorNode;
-            const parentDivElement = getDivParent(selectedNode);
-            const parentDivClassList = parentDivElement.classList;
-            const previousFocused = document.body.querySelector('.focused');
-
-            if (parentDivElement.classList.contains('input-div')) {
-                if (previousFocused) {
-                    previousFocused.classList.remove('focused');
-                }
-
-                parentDivClassList.add('focused');
-            }
-
-            if (parentDivClassList.contains('unmodified')) {
-                const range = document.createRange();
-                range.setStart(parentDivElement, 0);
-                range.collapse(true);
-                selection.removeAllRanges();
-                selection.addRange(range);
-            };
+            handleFocusChange();
         });
 
-
         content.addEventListener('keydown', e => {
-            const selection = window.getSelection();
-            const selectedNode = selection.anchorNode;
-            const parentDivElement = getDivParent(selectedNode);
-            const parentDivClassList = parentDivElement.classList;
+            deleteDefaultText(e.key);
+            handleFocusChange();
+            handleDeleteLastLine(e);
+        });
 
-            if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key) &&
-                parentDivClassList.contains('unmodified')) {
-                {
-                    selectedNode.textContent = '';
-                    parentDivClassList.remove('unmodified');
-                };
-            };
-
-            if (selectedNode.textContent === '' &&
-                e.key === 'Backspace' &&
-                parentDivClassList.contains('input-div') &&
-                content.children.length <= 1
-            ) {
-                e.preventDefault();
-                const newDiv = document.createElement('div');
-                newDiv.classList.add('input-div');
-                newDiv.classList.add('focused');
-                content.appendChild(newDiv);
-                content.removeChild(content.firstChild);
-
-                const range = document.createRange();
-                range.setStart(newDiv, 0);
-                range.collapse(true);
-                selection.removeAllRanges();
-                selection.addRange(range);
-            };
+        content.addEventListener('keyup', e => {
+            handleFocusChange();
         });
     }
 
     useEffect(() => {
-        handleDefaultTextAndFocusAndDeleteLastLine();
+        addEventListeners();
     }, []);
 
     return (
