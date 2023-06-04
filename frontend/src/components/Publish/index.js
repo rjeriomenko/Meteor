@@ -144,17 +144,18 @@ const Publish = props => {
                 filteredArray.shift() + selectedTextContent.slice(selectedOffset);
         } else {
             selectedNode.textContent = selectedTextContent.slice(0, selectedOffset) + filteredArray.shift();
+            let previousNode = selectedNode;
 
             while (filteredArray.length > 1) {
                 const newDiv = newInputDiv();
                 newDiv.textContent = filteredArray.shift();
-                console.log(newDiv)
-                content.appendChild(newDiv);
+                previousNode.insertAdjacentElement('afterend', newDiv);
+                previousNode = newDiv;
             }
 
             const newDiv = newInputDiv();
             newDiv.textContent = filteredArray.shift() + selectedTextContent.slice(selectedOffset);
-            content.appendChild(newDiv);
+            previousNode.insertAdjacentElement('afterend', newDiv);
         }
     }
 
