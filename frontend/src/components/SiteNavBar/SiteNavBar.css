@@ -7,6 +7,7 @@
     width: 100%;
     top: 0;
     z-index: 1;
+    background: rgba(255, 255, 255, 0.9)
 }
 
 .site-header-content {
@@ -47,7 +48,7 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-    font-size: 14px;
+    font-size: 13px;
     cursor: pointer;
     font-family: "Helvetica Neue", Arial, sans-serif;
     width: 25%;
@@ -65,7 +66,7 @@
 .publish-button {
     color: white;
     background-color: rgb(27, 136, 23);
-    padding: 7px 10px;
+    padding: 5px 10px;
     border-radius: 99em;
     font-weight: 300;
     transition: background-color 300ms linear, color 300ms linear;

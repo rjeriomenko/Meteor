@@ -11,10 +11,46 @@
     letter-spacing: 0.9px;
     z-index: 0;
     outline: none;
-    margin-top: 93px;
+    margin-top: 77px;
     width: 700px;
-    font-family: Georgia, "Times New Roman", serif;
+    font-family: Georgia, "Times New Roman", sans-serif;
+    font-weight: 400;
     font-size: 19px;
-    color: rgb(42, 42, 42);
-    font-weight: 100;
+    color: rgb(56, 56, 56);
+}
+
+.input-div {
+    font: inherit;
+    /* border: 1px solid red; */
+    min-height: 19px;
+    margin-bottom: 28px;
+    padding-left: 15px;
+}
+
+.publish-title-text {
+    min-height: 50px;
+    line-height: 1.15;
+    font-size: 38px;
+    margin-bottom: 12px;
+    padding: 16px 0 0 15px;
+}
+
+i { 
+    font: inherit;
+    font-style: italic;
+}
+
+b {
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: 700;
+}
+
+.unmodified {
+    color: rgb(198, 198, 198);
+}
+
+.focused {
+    /* border-left: 1px solid rgb(224, 224, 224); */
+    box-shadow: -1px 0 0 rgb(224, 224, 224);
 }
