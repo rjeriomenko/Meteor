@@ -21,8 +21,7 @@
 
 .input-div {
     font: inherit;
-    /* border: 1px solid red; */
-    min-height: 19px;
+    min-height: 34.19px;
     margin-bottom: 28px;
     padding-left: 15px;
 }
@@ -51,6 +50,5 @@ b {
 }
 
 .focused {
-    /* border-left: 1px solid rgb(224, 224, 224); */
     box-shadow: -1px 0 0 rgb(224, 224, 224);
 }
