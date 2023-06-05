@@ -1,6 +1,6 @@
 import './Publish.css';
 import SiteNavBar from '../SiteNavBar/index';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 const Publish = props => {
 
@@ -124,7 +124,7 @@ const Publish = props => {
                 parentDivClassList.remove('unmodified');
             };
         };
-    }
+    };
 
     const handleFocusChange = () => {
         const { parentDivElement, parentDivClassList } =
@@ -274,7 +274,7 @@ const Publish = props => {
                     filteredArray.shift() + endNodeTextContent.slice(endOffset);
                 removeNodesBetween(getDivParent(startNode), getDivParent(endNode));
                 getDivParent(endNode).remove();
-            } else { //THIS IS WHERE I NEED TO THIMK AND ALSO WHERE I AM.
+            } else {
                 startNode.textContent = startNodeTextContent.slice(0, startOffset) + filteredArray.shift();
                 let previousNode = parentDivElement;
 
@@ -305,6 +305,11 @@ const Publish = props => {
         }
     }
 
+    const handleSave = () => {
+        setContentChanged((previousState) => previousState + 1);
+        setSavedVisibility('hidden');
+    }
+
     const addEventListeners = () => {
         const { content } = getEventConstants();
         
@@ -333,6 +338,14 @@ const Publish = props => {
 
     }
 
+    const [contentChanged, setContentChanged] = useState(0);
+    const [savedVisibility, setSavedVisibility] = useState('hidden');
+
+    useEffect(() => {
+        console.log(document.body.querySelector('.publish-content').innerHTML);
+        setSavedVisibility('visible');
+    }, [contentChanged]);
+
     useEffect(() => {
         newRange();
         addEventListeners();
@@ -340,10 +353,10 @@ const Publish = props => {
 
     return (
         <>
-            <SiteNavBar page='publish' />
+            <SiteNavBar page='publish' savedVisibility={savedVisibility}/>
 
             <div className='publish'>
-                <div contentEditable={true} className='publish-content'>
+                <div contentEditable={true} onInput={handleSave} className='publish-content'>
                     <div className= 'input-div publish-title-text unmodified'>Title</div>
                     <div className= 'input-div unmodified'>Tell your story...</div>
                 </div>

@@ -2,7 +2,7 @@ import './AuthForm.css';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { createUser, loginUser } from '../../store/usersReducer';
+import { createUser, loginUser, loginUserAndRedirect } from '../../store/usersReducer';
 
 const AuthForm = ({ formType, setShowForm, setFormType }) => {
     const dispatch = useDispatch();
@@ -47,17 +47,17 @@ const AuthForm = ({ formType, setShowForm, setFormType }) => {
         document.body.style.overflow = '';
     }
 
-    const handleDemoLogin = () => {
+    const handleDemoLogin = e => {
+        e.preventDefault();
+        
         const demoUser = {
             email: 'demo@man.com',
             password: 'brimstone',
         }
         
-        dispatch(loginUser(demoUser));
+        dispatch(loginUserAndRedirect(demoUser, '/publish', history));
 
         setShowForm(false);
-
-        history.push('/publish');
 
         document.body.style.overflow = '';
     }

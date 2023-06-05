@@ -2,8 +2,8 @@ import './SiteNavBar.css';
 import logo from '../../logo.png';
 import { Link } from 'react-router-dom';
 
-const SiteNavBar = ({ page }) => {
-    const currentUser = JSON.parse(sessionStorage.currentUser);  //CHANGE THIS TO USE USEEFFECT or PUT CURRENT USER IN PAGE LOADER
+const SiteNavBar = ({ page, savedVisibility }) => {
+    const currentUser = JSON.parse(sessionStorage.currentUser);  //CHANGE THIS TO PUT CURRENT USER IN PAGE LOADER
 
     const handlePublish = () => {
 
@@ -54,7 +54,7 @@ const SiteNavBar = ({ page }) => {
                     <div className='title-text'>
                         Draft in {currentUser.fullName}
                     </div>
-                    <div className='saved-text'>
+                    <div className='saved-text' style={{visibility: savedVisibility}}>
                         Saved
                     </div>
                 </div>

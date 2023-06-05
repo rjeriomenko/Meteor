@@ -3,8 +3,6 @@ import Home from './components/Home/index';
 import Publish from './components/Publish/index';
 
 const App = props => {
-  
-
   return (
     <Switch>
       <Route path='/publish' component={Publish} />

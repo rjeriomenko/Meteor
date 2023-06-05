@@ -1,4 +1,6 @@
 import { csrfFetch } from "./csrf";
+import { useHistory } from 'react-router-dom';
+
 
 //Action Types
 export const RECEIVE_USER = 'users/RECEIVE_USER';
@@ -85,6 +87,11 @@ export const logoutUser = userId => async (dispatch) => {
     sessionStorage.setItem('currentUser', null);
 
     dispatch(removeUser(userId));
+}
+
+export const loginUserAndRedirect = (user, url, history) => async (dispatch) => {
+    await dispatch(loginUser(user));
+    history.push(url);
 }
 
 //Selectors
