@@ -23,18 +23,48 @@ const Publish = props => {
     const getEventConstants = () => {
         const content = document.body.querySelector('.publish-content');
         const selection = window.getSelection();
-        const selectedNode = selection.anchorNode;
-        const selectedOffset = selection.anchorOffset;
-        const parentDivElement = getDivParent(selectedNode);
-        const parentDivClassList = parentDivElement.classList;
+        let selectedNode = null;
+        let selectedAnchorOffset = null;
+        let selectedFocusOffset = null;
+        let parentDivElement = null;
+        let parentDivClassList = null;
+        
+        if (selection.type!== 'None') {
+            selectedNode = selection.anchorNode;
+            selectedAnchorOffset = selection.anchorOffset;
+            selectedFocusOffset = selection.focusOffset;
+            parentDivElement = getDivParent(selectedNode);
+            parentDivClassList = parentDivElement.classList;
+        }
 
         return {
             content: content,
             selection: selection,
             selectedNode: selectedNode,
-            selectedOffset: selectedOffset,
+            selectedAnchorOffset: selectedAnchorOffset,
+            selectedFocusOffset: selectedFocusOffset,
             parentDivElement: parentDivElement,
             parentDivClassList: parentDivClassList
+        };
+    }
+
+    const getPasteConstants = event => {
+        const { selectedNode } = getEventConstants();
+
+        const selectedText = window.getSelection().toString().trim()
+        const selectedNodeTextContent = selectedNode.textContent || '';
+        const pasteData = event.clipboardData;
+        const pasteText = pasteData.getData('text/plain');
+        const splitArray = pasteText.split('\n');
+        const filteredArray = splitArray.filter(line => line.length);
+
+        return {
+            selectedText: selectedText,
+            selectedNodeTextContent: selectedNodeTextContent,
+            pasteData: pasteData,
+            pasteText: pasteText,
+            splitArray: splitArray,
+            filteredArray: filteredArray
         };
     }
 
@@ -79,7 +109,7 @@ const Publish = props => {
             content.appendChild(newDiv);
             content.removeChild(content.firstChild);
     
-            resetRange(newDiv)
+            resetRange(newDiv);
         };
     }
 
@@ -99,52 +129,50 @@ const Publish = props => {
     const handleFocusChange = () => {
         const { parentDivElement, parentDivClassList } =
             getEventConstants();
+
         let previousFocused = document.body.querySelector('.focused');
-    
-        if (parentDivElement.classList.contains('input-div')) {
-            while (previousFocused) {
-                previousFocused.classList.remove('focused');
-                previousFocused = document.body.querySelector('.focused')
-            }
-            parentDivClassList.add('focused');
+        while (previousFocused) {
+            previousFocused.classList.remove('focused');
+            previousFocused = document.body.querySelector('.focused');
         }
     
-        if (parentDivClassList.contains('unmodified')) {
-            resetRange(parentDivElement);
+        if (parentDivElement) {
+            if (parentDivElement.classList.contains('input-div')) {
+                parentDivClassList.add('focused');
+            }
+            if (parentDivClassList.contains('unmodified')) {
+                resetRange(parentDivElement);
+            };
         };
-    }
+    };
 
     const handleTooltipSelection = () => {
-        // const { parentDivElement, parentDivClassList } =
+        // const { parentDivElement, parentDivClassList } = ///THIS PART REALLY MAY NOT BE NECESSARY
         //     getEventConstants();
 
-        const selectedText = window.getSelection().toString().trim();
-        console.log(selectedText);
+        // const selectedText = window.getSelection().toString().trim();
+        // console.log(selectedText);
         
     };
 
     const handlePreventUnderline = event => {
         if ((event.metaKey || event.ctrlKey) && event.key === 'u') {
             event.preventDefault();
-        }
+        };
     };
 
-    const handlePaste = event => {
-        const { selectedOffset, selectedNode, content } =
-            getEventConstants();
+    const handleSinglePaste = event => {
+        const { selectedNode, selectedAnchorOffset, parentDivElement} = getEventConstants();
 
-        const selectedTextContent = selectedNode.textContent || '';
-        const pasteData = event.clipboardData;
-        const pasteText = pasteData.getData('text/plain');
-        const splitArray = pasteText.split('\n');
-        const filteredArray = splitArray.filter(line => line.length > 0);
+        const { selectedNodeTextContent, filteredArray } =
+            getPasteConstants(event);
 
         if (filteredArray.length === 1) {
-            selectedNode.textContent = selectedTextContent.slice(0, selectedOffset) +
-                filteredArray.shift() + selectedTextContent.slice(selectedOffset);
+            selectedNode.textContent = selectedNodeTextContent.slice(0, selectedAnchorOffset) +
+                filteredArray.shift() + selectedNodeTextContent.slice(selectedAnchorOffset);
         } else {
-            selectedNode.textContent = selectedTextContent.slice(0, selectedOffset) + filteredArray.shift();
-            let previousNode = selectedNode;
+            selectedNode.textContent = selectedNodeTextContent.slice(0, selectedAnchorOffset) + filteredArray.shift();
+            let previousNode = parentDivElement;
 
             while (filteredArray.length > 1) {
                 const newDiv = newInputDiv();
@@ -154,8 +182,126 @@ const Publish = props => {
             }
 
             const newDiv = newInputDiv();
-            newDiv.textContent = filteredArray.shift() + selectedTextContent.slice(selectedOffset);
+            newDiv.textContent = filteredArray.shift() + selectedNodeTextContent.slice(selectedAnchorOffset);
             previousNode.insertAdjacentElement('afterend', newDiv);
+        };
+    };
+
+    const removeNodesBetween = (node1, node2) => {
+        let startNode;
+        let endNode;
+        if (node1.compareDocumentPosition(node2) === Node.DOCUMENT_POSITION_PRECEDING) {
+            startNode = node2;
+            endNode = node1;
+        } else {
+            startNode = node1;
+            endNode = node2;
+        }
+
+        const { content } = getEventConstants();
+        const walker = document.createTreeWalker(
+            content, 
+            NodeFilter.SHOW_ALL,
+            null,
+            false
+        );
+
+        const nodesToDelete = [];
+        walker.currentNode = startNode.nextSibling;
+
+        while (walker.currentNode !== endNode) {
+            nodesToDelete.push(walker.currentNode);
+            walker.nextNode();
+        };
+
+        nodesToDelete.forEach(node => node.remove());
+    };
+
+    const handleSelectionPaste = event => {
+        const { selection, selectedNode, selectedAnchorOffset, selectedFocusOffset, parentDivElement } = getEventConstants();
+
+        const { selectedNodeTextContent, filteredArray } =
+            getPasteConstants(event);
+
+        const focusNode = selection.focusNode;
+
+        let startNode;
+        let endNode;
+        let startOffset;
+        let endOffset;
+
+        if (selectedNode.compareDocumentPosition(focusNode) === Node.DOCUMENT_POSITION_PRECEDING) {
+            startNode = focusNode;
+            startOffset = selectedFocusOffset;
+            endNode = selectedNode;
+            endOffset = selectedAnchorOffset;
+        } else {
+            startNode = selectedNode;
+            startOffset = selectedAnchorOffset;
+            endNode = focusNode;
+            endOffset = selectedFocusOffset;
+        }
+
+        const startNodeTextContent = startNode.textContent || '';
+        const endNodeTextContent = endNode.textContent || '';
+
+
+        if (startNode === endNode) {
+            startOffset = selectedAnchorOffset < selectedFocusOffset ? selectedAnchorOffset : selectedFocusOffset;
+            endOffset = selectedAnchorOffset > selectedFocusOffset ? selectedAnchorOffset : selectedFocusOffset;
+
+            if (filteredArray.length === 1) {
+                selectedNode.textContent = selectedNodeTextContent.slice(0, startOffset) +
+                    filteredArray.shift() + selectedNodeTextContent.slice(endOffset);
+            } else {
+                selectedNode.textContent = selectedNodeTextContent.slice(0, startOffset) + filteredArray.shift();
+                let previousNode = parentDivElement;
+    
+                while (filteredArray.length > 1) {
+                    const newDiv = newInputDiv();
+                    newDiv.textContent = filteredArray.shift();
+                    previousNode.insertAdjacentElement('afterend', newDiv);
+                    previousNode = newDiv;
+                };
+    
+                const newDiv = newInputDiv();
+                newDiv.textContent = filteredArray.shift() + selectedNodeTextContent.slice(endOffset);
+                previousNode.insertAdjacentElement('afterend', newDiv);
+            };
+        } else {
+            if (filteredArray.length === 1) {
+                startNode.textContent = startNodeTextContent.slice(0, startOffset) +
+                    filteredArray.shift() + endNodeTextContent.slice(endOffset);
+                removeNodesBetween(getDivParent(startNode), getDivParent(endNode));
+                getDivParent(endNode).remove();
+            } else { //THIS IS WHERE I NEED TO THIMK AND ALSO WHERE I AM.
+                startNode.textContent = startNodeTextContent.slice(0, startOffset) + filteredArray.shift();
+                let previousNode = parentDivElement;
+
+                while (filteredArray.length > 1) {
+                    const newDiv = newInputDiv();
+                    newDiv.textContent = filteredArray.shift();
+                    previousNode.insertAdjacentElement('afterend', newDiv);
+                    previousNode = newDiv;
+                }
+
+                const newDiv = newInputDiv();
+                newDiv.textContent = filteredArray.shift() + endNodeTextContent.slice(endOffset);
+                previousNode.insertAdjacentElement('afterend', newDiv);
+                removeNodesBetween(newDiv, getDivParent(endNode));
+                getDivParent(endNode).remove();
+            };
+        }
+
+    }
+
+    const handlePaste = event => {
+        const { selectedText } = getPasteConstants(event);
+
+        if (!selectedText.length) {
+            handleSinglePaste(event);
+        } else {
+            handleSelectionPaste(event);
         }
     }
 
@@ -172,12 +318,10 @@ const Publish = props => {
             handleFocusChange();
             handleDeleteLastLine(e);
             handlePreventUnderline(e);
-
         });
 
         content.addEventListener('keyup', e => {
             handleFocusChange();
-
         });
 
         document.addEventListener('paste', e => {
