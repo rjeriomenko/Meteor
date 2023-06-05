@@ -358,7 +358,7 @@ const Publish = props => {
             <div className='publish'>
                 <div contentEditable={true} onInput={handleSave} className='publish-content'>
                     <div className= 'input-div publish-title-text unmodified'>Title</div>
-                    <div className= 'input-div unmodified'>Tell your story...</div>
+                    <div className= 'input-div unmodified'>Weave a tale...</div>
                 </div>
             </div>
         </>
