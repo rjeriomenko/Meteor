@@ -21,7 +21,11 @@ const HomeTrending = props => {
     return (
         <>
             <div className="home-trending">
-                <h2>Hello from HomeTrending</h2>
+                <br/>
+                <h2>Trending on Medium</h2>
+                <br/>
+                <br/>
+                <br/>
                 <ul>
                     <li>Proof that login works:</li>
                 </ul>

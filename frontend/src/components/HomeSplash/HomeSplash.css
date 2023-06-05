@@ -5,8 +5,52 @@
     width: 100%;
     background-color: var(--bg-color);
     border-bottom: 1px solid var(--text-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
 }
 
-h2 {
-    margin-top: 0;
+.home-splash-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin: 80px 0;
+    height: fill;
+    min-width: 500px;
+}
+
+.home-greeting {
+    font-size: 95px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-weight: 300;
+}
+
+.home-sub-greeting {
+    width: 450px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    color: rgba(25, 25, 25, 1);
+    font-weight: 400;
+    margin-bottom: 20px;
+}
+
+.start-reading {
+    color: white;
+    background-color: rgba(25, 25, 25, 1);
+    padding: 10px 40px;
+    border-radius: 99em;
+    font-weight: 300;
+    font-size: 18px;
+    width: 120px;
+}
+
+.home-splash-right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.splash-gif {
+    height: 400px;
+    width: 400px;
 }
