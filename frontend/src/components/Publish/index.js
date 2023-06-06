@@ -1,9 +1,12 @@
 import './Publish.css';
+import { defaultInputDivs, defaultInputDivsStringified } from './utils';
 import SiteNavBar from '../SiteNavBar/index';
+import { createTale, updateTale, getTale, fetchTale } from '../../store/talesReducer';
 import { useState, useEffect } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 
 const Publish = props => {
-
     const getDivParent = node => {
         while (node.nodeName !== 'DIV') {
             node = node.parentElement;
@@ -336,30 +339,81 @@ const Publish = props => {
 
             handlePaste(e);
         })
-
     }
+
+    const renderContent = contentString => {
+        const { content } = getEventConstants();
+        content.innerHTML = contentString;
+    }
+
+    const getContentTitleFromContentString = contentToSave => {  //UPDATE THIS TO ACTUALLY GET THE TITLE
+        return 'Untitled tale'
+    }
+
+    const history = useHistory();
+    const dispatch = useDispatch();
+    const { taleId } = useParams();
+
+    const tale = useSelector(getTale(taleId));
+    const contentString = tale?.content;
+
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        if (!taleId) {
+            dispatch(createTale({
+                content: defaultInputDivsStringified()
+            }))
+            .then(() => {
+                const newTale = JSON.parse(sessionStorage.newestTale);
+                history.push(`/publish/${newTale.id}`);
+            })
+            .then(() => {
+                setLoading(false);
+            });
+        } else {
+            dispatch(fetchTale(taleId))
+            .then(() => {
+                setLoading(false);
+            });
+        }
+    }, [])
+
+    useEffect(() => {
+        if (!loading) {
+            renderContent(contentString);
+            newRange();
+            addEventListeners();
+        }
+    }, [loading])
 
     const [contentChanged, setContentChanged] = useState(0);
     const [savedVisibility, setSavedVisibility] = useState('hidden');
 
     useEffect(() => {
-        console.log(document.body.querySelector('.publish-content').innerHTML);
-        setSavedVisibility('visible');
+        if (!loading) {
+            const contentStringToSave = document.body.querySelector('.publish-content').innerHTML;
+
+            dispatch(updateTale({
+                id: taleId,
+                title: getContentTitleFromContentString(contentStringToSave),
+                content: contentStringToSave
+            }))
+            .then(() => {
+                setSavedVisibility('visible');
+            })
+        }
     }, [contentChanged]);
 
-    useEffect(() => {
-        newRange();
-        addEventListeners();
-    }, []);
-
-    return (
+    if (loading) {
+        return (
+        <h1>LOADING.......</h1>
+    )} else return (
         <>
             <SiteNavBar page='publish' savedVisibility={savedVisibility}/>
 
             <div className='publish'>
                 <div contentEditable={true} onInput={handleSave} className='publish-content'>
-                    <div className= 'input-div publish-title-text unmodified'>Title</div>
-                    <div className= 'input-div unmodified'>Weave a tale...</div>
                 </div>
             </div>
         </>

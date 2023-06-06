@@ -1,6 +1,5 @@
 class Tale < ApplicationRecord
 validates :title, :content, :author_id, presence: true
-validates :content, uniqueness: true
 validates :title,
   length: { in: 3..30 }
 

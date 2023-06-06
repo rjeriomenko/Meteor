@@ -1,6 +1,4 @@
 import { csrfFetch } from "./csrf";
-import { useHistory } from 'react-router-dom';
-
 
 //Action Types
 export const RECEIVE_USER = 'users/RECEIVE_USER';
@@ -33,7 +31,6 @@ export const fetchUser = userId => async(dispatch) => {
 }
 
 export const createUser = user => async(dispatch) => {
-    console.log(user)
     const req = await csrfFetch(`/api/users`, {
         method: 'POST',
         body: JSON.stringify(user)
@@ -47,7 +44,6 @@ export const createUser = user => async(dispatch) => {
 }
 
 export const updateUser = user => async(dispatch) => {
-    console.log(user)
     const req = await csrfFetch(`/api/users/${user.id}`, {
         method: 'PATCH',
         body: JSON.stringify(user)
