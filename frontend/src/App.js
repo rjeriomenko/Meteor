@@ -1,6 +1,6 @@
 import Home from './components/Home/index';
 import Publish from './components/Publish/index';
-import { Switch, Route} from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 
 const App = props => {
   return (

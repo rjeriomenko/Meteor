@@ -1,6 +1,7 @@
 import './Publish.css';
-import { defaultInputDivs, defaultInputDivsStringified } from './utils';
+import { defaultInputDivsStringified } from './utils';
 import SiteNavBar from '../SiteNavBar/index';
+import Loading from '../Loading/index';
 import { createTale, updateTale, getTale, fetchTale } from '../../store/talesReducer';
 import { useState, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
@@ -411,7 +412,7 @@ const Publish = props => {
 
     if (loading) {
         return (
-        <h1>LOADING.......</h1>
+        <Loading />
     )} else return (
         <>
             <SiteNavBar page='publish' savedVisibility={savedVisibility}/>
