@@ -189,6 +189,10 @@ const Publish = props => {
     };
 
     const removeNodesBetween = (node1, node2) => {
+        if (node1 === node2) {return};
+        if(node1.nodeType === 3) {return};
+        if(node2.nodeType === 3) {return};
+
         let startNode;
         let endNode;
         if (node1.compareDocumentPosition(node2) === Node.DOCUMENT_POSITION_PRECEDING) {
@@ -198,7 +202,7 @@ const Publish = props => {
             startNode = node1;
             endNode = node2;
         }
-
+        
         const { content } = getEventConstants();
         const walker = document.createTreeWalker(
             content, 
@@ -208,6 +212,7 @@ const Publish = props => {
         );
 
         const nodesToDelete = [];
+        if (!startNode.nextSibling) { return null }
         walker.currentNode = startNode.nextSibling;
 
         while (walker.currentNode !== endNode) {
@@ -242,12 +247,11 @@ const Publish = props => {
             endNode = focusNode;
             endOffset = selectedFocusOffset;
         }
-
         const startNodeTextContent = startNode.textContent || '';
         const endNodeTextContent = endNode.textContent || '';
 
 
-        if (startNode === endNode) {
+        if (getDivParent(startNode) === getDivParent(endNode)) {
             startOffset = selectedAnchorOffset < selectedFocusOffset ? selectedAnchorOffset : selectedFocusOffset;
             endOffset = selectedAnchorOffset > selectedFocusOffset ? selectedAnchorOffset : selectedFocusOffset;
 
@@ -273,8 +277,11 @@ const Publish = props => {
             if (filteredArray.length === 1) {
                 startNode.textContent = startNodeTextContent.slice(0, startOffset) +
                     filteredArray.shift() + endNodeTextContent.slice(endOffset);
+
                 removeNodesBetween(getDivParent(startNode), getDivParent(endNode));
+
                 getDivParent(endNode).remove();
+
             } else {
                 startNode.textContent = startNodeTextContent.slice(0, startOffset) + filteredArray.shift();
                 let previousNode = parentDivElement;
