@@ -1,0 +1,25 @@
+{
+  "name": "meteor",
+  "version": "1.0.0",
+  "description": "A medium clone.",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "build": "npm install --prefix frontend && npm run build --prefix frontend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rjeriomenko/Meteor.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rjeriomenko/Meteor/issues"
+  },
+  "homepage": "https://github.com/rjeriomenko/Meteor#readme",
+  "engines": {
+    "node": "v16.19.1"
+  }
+}
