@@ -311,9 +311,51 @@ const Publish = props => {
         setSavedVisibility('hidden');
     }
 
+    const resetTooltipPosition = tooltip => {
+        const { selection } = getEventConstants();
+        const range = selection.getRangeAt(0);
+        const boundingRect = range.getBoundingClientRect();
+
+        tooltip.style.top = `${boundingRect.top - 30}px`;
+        tooltip.style.left = `${(boundingRect.left + boundingRect.right) / 2 - 50}px`;
+    }
+
     const handleTooltips = () => {
         clearTooltips();
         generateTooltip();
+    }
+
+    const generateBolder = tooltip => {
+        const bolder = document.createElement('div');
+        bolder.className = 'bolder';
+        bolder.textContent = 'B';
+        bolder.addEventListener('mousedown', e => {
+            e.preventDefault();
+            document.execCommand('bold', false, null);
+            resetTooltipPosition(tooltip);
+        })
+
+        return bolder;
+    }
+
+    const generateItalicizer = tooltip => {
+        const italicizer = document.createElement('div');
+        italicizer.className = 'italicizer';
+        italicizer.textContent = 'i';
+        italicizer.addEventListener('mousedown', e => {
+            e.preventDefault();
+            document.execCommand('italic', false, null);
+            resetTooltipPosition(tooltip);
+        })
+
+        return italicizer;
+    }
+
+    const generateTooltipPieces = tooltip => {
+        const bolder = generateBolder(tooltip);
+        const italicizer = generateItalicizer(tooltip);
+
+        return[bolder, italicizer];
     }
 
     const generateTooltip = () => {
@@ -324,24 +366,48 @@ const Publish = props => {
             const { content } = getEventConstants();
             
             const boundingRect = range.getBoundingClientRect();
-    
-            const tooltip = document.createElement('div');
-            tooltip.contentEditable = false;
-            tooltip.className = 'tooltip';
-            tooltip.textContent = 'Tooltip';
-            tooltip.style.top = `${boundingRect.top - 30}px`;
-            tooltip.style.left = `${(boundingRect.left + boundingRect.right) / 2 - 50}px`;
-    
-            content.appendChild(tooltip);
+
+            let tooltip = document.body.querySelector('.tooltip');
+
+            if (!tooltip) {
+                tooltip = document.createElement('div');
+                tooltip.contentEditable = false;
+                tooltip.className = 'tooltip';
+                tooltip.style.top = `${boundingRect.top - 30}px`;
+                tooltip.style.left = `${(boundingRect.left + boundingRect.right) / 2 - 50}px`;
+                const tooltipPieces = generateTooltipPieces(tooltip);
+                tooltipPieces.forEach(piece => {
+                    tooltip.appendChild(piece);
+                })
+                document.body.appendChild(tooltip);
+            } else {
+                resetTooltipPosition(tooltip);
+            }
         }
     }
 
     const clearTooltips = () => {
-        const tooltips = document.body.querySelectorAll('.tooltip');
-        tooltips.forEach(tooltip => {
-            tooltip.remove();
-        });
-    }
+        const { selection } = getEventConstants();
+        const range = selection.getRangeAt(0);
+
+        if (range.startOffset === range.endOffset) {
+                const tooltips = document.body.querySelectorAll('.tooltip');
+                tooltips.forEach(tooltip => {
+                    tooltip.remove();
+                });
+        };
+    };
+
+    const clearTooltipsWithAnyOuterClick = event => {
+        const { content } = getEventConstants();
+
+        if (!content.contains(event.target) &&
+            event.target.className !== 'italicizer' &&
+            event.target.className !== 'bolder') {
+                const tooltip = document.body.querySelector('.tooltip');
+                tooltip?.remove();
+        };
+    };
 
     const addEventListeners = () => {
         const { content } = getEventConstants();
@@ -349,6 +415,10 @@ const Publish = props => {
         document.addEventListener('selectionchange', e => {
             handleFocusChange();
             handleSelectionWordCount();
+        });
+
+        document.addEventListener('click', e => {
+            clearTooltipsWithAnyOuterClick(e)
         });
 
         content.addEventListener('keydown', e => {
