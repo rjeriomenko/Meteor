@@ -307,6 +307,7 @@ const Publish = props => {
 
     const handleSave = () => {
         setContentChanged((previousState) => previousState + 1);
+        //PERSISTS ARTICLE INNERHTML TO DB
         setSavedVisibility('hidden');
     }
 
