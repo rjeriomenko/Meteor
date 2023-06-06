@@ -310,7 +310,6 @@ const Publish = props => {
 
     const handleSave = () => {
         setContentChanged((previousState) => previousState + 1);
-        //PERSISTS ARTICLE INNERHTML TO DB
         setSavedVisibility('hidden');
     }
 
@@ -359,6 +358,7 @@ const Publish = props => {
 
     const [loading, setLoading] = useState(true);
 
+    //Handles Page Loading
     useEffect(() => {
         if (!taleId) {
             dispatch(createTale({
@@ -379,6 +379,7 @@ const Publish = props => {
         }
     }, [])
 
+    //Handles preparing Tale text and event listeners
     useEffect(() => {
         if (!loading) {
             renderContent(contentString);
@@ -390,13 +391,16 @@ const Publish = props => {
     const [contentChanged, setContentChanged] = useState(0);
     const [savedVisibility, setSavedVisibility] = useState('hidden');
 
+    //Handles automatic Tale Saving
     useEffect(() => {
         if (!loading) {
             const contentStringToSave = document.body.querySelector('.publish-content').innerHTML;
+            // console.log(document.body.querySelector('.publish-title-text').innerText);
+            // const contentTitle = document.body.querySelector('.publish-title-text').innerText;
 
             dispatch(updateTale({
                 id: taleId,
-                title: getContentTitleFromContentString(contentStringToSave),
+                // title: contentTitle,
                 content: contentStringToSave
             }))
             .then(() => {
