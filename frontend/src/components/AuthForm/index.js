@@ -6,9 +6,6 @@ import { createUser, loginUser } from '../../store/usersReducer';
 
 const AuthForm = ({ formType, setShowForm, setFormType }) => {
     const dispatch = useDispatch()
-
-    console.log('sessionStorage:')
-    console.log(sessionStorage.currentUser)
     
     const [email, setEmail] = useState()
     const [password, setPassword] = useState()
