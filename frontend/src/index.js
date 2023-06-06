@@ -10,7 +10,7 @@ import { fetchUser, createUser, updateUser, deleteUser, loginUser, logoutUser } 
 
 const initializeApp = () => {
 
-  let initialState = { ui: { loading: false }};
+  let initialState = {};
   const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
 
   if (currentUser) {

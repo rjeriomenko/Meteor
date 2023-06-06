@@ -52,3 +52,19 @@ b {
 .focused {
     box-shadow: -1px 0 0 rgb(224, 224, 224);
 }
+
+.tooltip {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    position: absolute;
+    width: 100px;
+    height: 30px;
+    background-color: rgb(45, 45, 45);
+    text-align: center;
+    color: white;
+    font-family: Georgia, "Times New Roman", sans-serif;
+    line-height: 1.15;
+    letter-spacing: normal;
+    z-index: 3;
+}

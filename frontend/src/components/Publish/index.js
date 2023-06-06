@@ -150,12 +150,9 @@ const Publish = props => {
         };
     };
 
-    const handleTooltipSelection = () => {
-        // const { parentDivElement, parentDivClassList } = ///THIS PART REALLY MAY NOT BE NECESSARY
-        //     getEventConstants();
-
-        // const selectedText = window.getSelection().toString().trim();
-        // console.log(selectedText);
+    const handleSelectionWordCount = () => {
+        const selectedText = window.getSelection().toString().trim();
+        console.log(selectedText);
         
     };
 
@@ -314,12 +311,44 @@ const Publish = props => {
         setSavedVisibility('hidden');
     }
 
+    const handleTooltips = () => {
+        clearTooltips();
+        generateTooltip();
+    }
+
+    const generateTooltip = () => {
+        const { selection } = getEventConstants();
+
+        const range = selection.getRangeAt(0);
+        if (range.startOffset !== range.endOffset) {
+            const { content } = getEventConstants();
+            
+            const boundingRect = range.getBoundingClientRect();
+    
+            const tooltip = document.createElement('div');
+            tooltip.contentEditable = false;
+            tooltip.className = 'tooltip';
+            tooltip.textContent = 'Tooltip';
+            tooltip.style.top = `${boundingRect.top - 30}px`;
+            tooltip.style.left = `${(boundingRect.left + boundingRect.right) / 2 - 50}px`;
+    
+            content.appendChild(tooltip);
+        }
+    }
+
+    const clearTooltips = () => {
+        const tooltips = document.body.querySelectorAll('.tooltip');
+        tooltips.forEach(tooltip => {
+            tooltip.remove();
+        });
+    }
+
     const addEventListeners = () => {
         const { content } = getEventConstants();
         
         document.addEventListener('selectionchange', e => {
             handleFocusChange();
-            handleTooltipSelection();
+            handleSelectionWordCount();
         });
 
         content.addEventListener('keydown', e => {
@@ -396,12 +425,12 @@ const Publish = props => {
     useEffect(() => {
         if (!loading) {
             const contentStringToSave = document.body.querySelector('.publish-content').innerHTML;
-            // console.log(document.body.querySelector('.publish-title-text').innerText);
-            // const contentTitle = document.body.querySelector('.publish-title-text').innerText;
+            const contentTitleDiv = document.body.querySelector('.publish-title-text').innerText;
+            const contentTitle = contentTitleDiv.textContent || contentTitleDiv.innerText || 'untitled Tale'; // THIS ALWAYS DEFAULTS TO untitled Tale
 
             dispatch(updateTale({
                 id: taleId,
-                // title: contentTitle,
+                title: contentTitle,
                 content: contentStringToSave
             }))
             .then(() => {
@@ -418,7 +447,7 @@ const Publish = props => {
             <SiteNavBar page='publish' savedVisibility={savedVisibility}/>
 
             <div className='publish'>
-                <div contentEditable={true} onInput={handleSave} className='publish-content'>
+                <div contentEditable={true} onInput={handleSave} onSelect={handleTooltips} className='publish-content'>
                 </div>
             </div>
         </>

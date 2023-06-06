@@ -22,7 +22,7 @@ const HomeTrending = props => {
         <>
             <div className="home-trending">
                 <br/>
-                <h2>Trending on Medium</h2>
+                <h2>Trending on Meteor</h2>
                 <br/>
                 <br/>
                 <br/>
