@@ -89,10 +89,18 @@ const SiteNavBar = ({ page, savedVisibility }) => {
             partialLeftBar: partialLeftBar}
     }
 
+    const handleDifferentCSS = () => {
+        if (page === 'publish') {
+            return 'publish-nav-bar'
+        } else {
+            return 'site-nav-bar'
+        }
+    }
+
     const { partialLeftBar, partialRightBar } = formatNavBarPartials();
 
     return (
-        <header className='site-nav-bar'>
+        <header className={handleDifferentCSS()}>
             <div className='site-header-content'>
                 <div className= 'site-navbar-left'>
                     { partialLeftBar }

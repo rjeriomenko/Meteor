@@ -48,7 +48,10 @@ const Feed = props => {
 
 
     return (
-        <div>RecommendedTopics</div>
+        <div className='recommended-topics'>
+            <div>RecommendedTopics . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .</div>
+            <div>RecommendedTopics2 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .</div>
+        </div>
     )
     // if (loading) {
     //     return (

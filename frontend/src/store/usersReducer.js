@@ -30,6 +30,14 @@ export const fetchUser = userId => async(dispatch) => {
     if (user) { dispatch(receiveUser(user)) };
 }
 
+export const fetchUsers = () => async (dispatch) => {
+    const req = await csrfFetch(`/api/users`);
+    const data = await req.json();
+    let users = data;
+
+    if (users) { dispatch(receiveUsers(users)) };
+}
+
 export const createUser = user => async(dispatch) => {
     const req = await csrfFetch(`/api/users`, {
         method: 'POST',
@@ -96,13 +104,21 @@ export const getUser = userId => state => {
 }
 
 export const getUsers = state => {
-    const users = [];
+    if (state?.users) {
+        return state.users;
+    } else return null;
+}
 
-    for (const user in state.users) {
-        users.push(state.users[user]);
-    }
+export const getTales = state => {
+    if (state?.tales) {
+        const tales = [];
 
-    return users;
+        for (const tale in state.tales) {
+            tales.push(state.tales[tale]);
+        }
+
+        return tales;
+    } else return null;
 }
 
 //Reducer
@@ -115,8 +131,13 @@ const usersReducer = ( state = {}, action ) => {
                 ...newState, [action.user.id]: action.user
             };
         case RECEIVE_USERS:
+            const orderedUsers = action.users.reduce((acc, user) => {
+                acc[user.id] = user;
+                return acc;
+            }, {});
+
             return {
-                ...newState, ...action.users
+                ...newState, ...orderedUsers
             };
         case REMOVE_USER:
             delete newState[action.userId];

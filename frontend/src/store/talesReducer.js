@@ -79,13 +79,7 @@ export const getTale = taleId => state => {
 
 export const getTales = state => {
     if (state?.tales) {
-        const tales = [];
-    
-        for (const tale in state.tales) {
-            tales.push(state.tales[tale]);
-        }
-    
-        return tales;
+        return state.tales;
     } else return null;
 }
 

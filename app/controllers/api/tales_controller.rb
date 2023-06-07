@@ -19,8 +19,6 @@ class Api::TalesController < ApplicationController
     @tales = Tale.all
     render :index
   end
-
-
  
   def create
     @tale = Tale.new(tale_params)
