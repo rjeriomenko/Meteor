@@ -81,6 +81,4 @@ test:
 #
 production:
   <<: *default
-  database: Meteor_production
-  username: Meteor
-  password: <%= ENV["METEOR_DATABASE_PASSWORD"] %>
+  url: <%= ENV['DATABASE_URL'] %>

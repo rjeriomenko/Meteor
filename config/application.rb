@@ -22,6 +22,7 @@ module Meteor
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
+    config.railties_order = [:all, :main_app]
 
     # Configuration for the application, engines, and railties goes here.
     #
@@ -41,5 +42,6 @@ module Meteor
     key: '_meteor_session',
     same_site: :lax,
     secure: Rails.env.production?
+
   end
 end
