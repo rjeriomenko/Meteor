@@ -52,6 +52,7 @@ const SiteNavBar = ({ page, savedVisibility }) => {
                 )
                 break;
             case 'show':
+            case 'feed':
                 partialRightBar = (
                     <div>WRITE</div>
                 )
@@ -62,14 +63,6 @@ const SiteNavBar = ({ page, savedVisibility }) => {
                             </Link>
                         <input type='text' className='search-bar' defaultValue='Search Meteor' />
                     </>
-                )
-                break;
-            case 'feed':
-                partialRightBar = (
-                    null
-                )
-                partialLeftBar = (
-                    null
                 )
                 break;
             default:

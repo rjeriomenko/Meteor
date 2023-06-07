@@ -30,6 +30,16 @@ export const fetchTale = taleId => async (dispatch) => {
     if (tale) { dispatch(receiveTale(tale)) };
 }
 
+export const fetchPublishedTales = () => async (dispatch) => {
+    const req = await csrfFetch(`/api/tales`);
+    const data = await req.json();
+    let tales = data;
+    console.log(data) //THIS IS WHERE YOU PUT LOGIC TO FILTER OUT BY TALES THAT ARE PUBLISHED
+    console.log(tales)
+
+    if (tales) { dispatch(receiveTales(tales)) };
+}
+
 export const createTale = tale => async (dispatch) => {
     const req = await csrfFetch(`/api/tales`, {
         method: 'POST',
@@ -68,13 +78,15 @@ export const getTale = taleId => state => {
 }
 
 export const getTales = state => {
-    const tales = [];
-
-    for (const tale in state.tales) {
-        tales.push(state.tales[tale]);
-    }
-
-    return tales;
+    if (state?.tales) {
+        const tales = [];
+    
+        for (const tale in state.tales) {
+            tales.push(state.tales[tale]);
+        }
+    
+        return tales;
+    } else return null;
 }
 
 //Reducer
@@ -87,8 +99,13 @@ const talesReducer = (state = {}, action) => {
                 ...newState, [action.tale.id]: action.tale
             };
         case RECEIVE_TALES:
+            const orderedTales = action.tales.reduce((acc, tale) => {
+                acc[tale.id] = tale;
+                return acc;
+            }, {});
+
             return {
-                ...newState, ...action.tales
+                ...newState, ...orderedTales
             };
         case REMOVE_TALE:
             delete newState[action.taleId];

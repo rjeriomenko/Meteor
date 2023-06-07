@@ -40,7 +40,7 @@ const HomeNavBar = ({ setShowForm, setFormType }) => {
                     </Link>
                 </div>
                 <div className='home-nav-links'>
-                    <Link to='/#/'>Our Story</Link>
+                    <Link to='/feed/'>Our Story</Link>
                     <Link to='/publish/'>Write</Link>
                     <div onClick={handleSignIn}>Sign In</div>
                     <div className='get-started' onClick={handleSignUp} id={scrollStatus}>Get Started</div>
