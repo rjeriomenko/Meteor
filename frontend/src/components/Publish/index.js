@@ -189,9 +189,9 @@ const Publish = props => {
     };
 
     const removeNodesBetween = (node1, node2) => {
-        if (node1 === node2) {return};
-        if(node1.nodeType === 3) {return};
-        if(node2.nodeType === 3) {return};
+        if (node1 === node2 || 
+            node1.nodeType === 3 ||
+            node2.nodeType === 3) {return};
 
         let startNode;
         let endNode;
@@ -299,8 +299,7 @@ const Publish = props => {
                 removeNodesBetween(newDiv, getDivParent(endNode));
                 getDivParent(endNode).remove();
             };
-        }
-
+        };
     }
 
     const handlePaste = event => {
@@ -310,13 +309,13 @@ const Publish = props => {
             handleSinglePaste(event);
         } else {
             handleSelectionPaste(event);
-        }
-    }
+        };
+    };
 
     const handleSave = () => {
         setContentChanged((previousState) => previousState + 1);
         setSavedVisibility('hidden');
-    }
+    };
 
     const resetTooltipPosition = tooltip => {
         const { selection } = getEventConstants();
@@ -325,12 +324,12 @@ const Publish = props => {
 
         tooltip.style.top = `${boundingRect.top - 30}px`;
         tooltip.style.left = `${(boundingRect.left + boundingRect.right) / 2 - 50}px`;
-    }
+    };
 
     const handleTooltips = () => {
         clearTooltips();
         generateTooltip();
-    }
+    };
 
     const generateBolder = tooltip => {
         const bolder = document.createElement('div');
@@ -340,10 +339,10 @@ const Publish = props => {
             e.preventDefault();
             document.execCommand('bold', false, null);
             resetTooltipPosition(tooltip);
-        })
+        });
 
         return bolder;
-    }
+    };
 
     const generateItalicizer = tooltip => {
         const italicizer = document.createElement('div');
@@ -353,17 +352,17 @@ const Publish = props => {
             e.preventDefault();
             document.execCommand('italic', false, null);
             resetTooltipPosition(tooltip);
-        })
+        });
 
         return italicizer;
-    }
+    };
 
     const generateTooltipPieces = tooltip => {
         const bolder = generateBolder(tooltip);
         const italicizer = generateItalicizer(tooltip);
 
         return[bolder, italicizer];
-    }
+    };
 
     const generateTooltip = () => {
         const { selection } = getEventConstants();
@@ -389,9 +388,9 @@ const Publish = props => {
                 document.body.appendChild(tooltip);
             } else {
                 resetTooltipPosition(tooltip);
-            }
-        }
-    }
+            };
+        };
+    };
 
     const clearTooltips = () => {
         const { selection } = getEventConstants();
@@ -418,13 +417,14 @@ const Publish = props => {
 
     const addEventListeners = () => {
         const { content } = getEventConstants();
+        const sitePage = document.body.querySelector('.site-page')
         
         document.addEventListener('selectionchange', e => {
             handleFocusChange();
             handleSelectionWordCount();
         });
 
-        document.addEventListener('click', e => {
+        sitePage.addEventListener('click', e => {
             clearTooltipsWithAnyOuterClick(e)
         });
 
@@ -450,10 +450,6 @@ const Publish = props => {
     const renderContent = contentString => {
         const { content } = getEventConstants();
         content.innerHTML = contentString;
-    }
-
-    const getContentTitleFromContentString = contentToSave => {  //UPDATE THIS TO ACTUALLY GET THE TITLE
-        return 'Untitled tale'
     }
 
     const history = useHistory();
@@ -502,8 +498,17 @@ const Publish = props => {
     useEffect(() => {
         if (!loading) {
             const contentStringToSave = document.body.querySelector('.publish-content').innerHTML;
-            const contentTitleDiv = document.body.querySelector('.publish-title-text').innerText;
-            const contentTitle = contentTitleDiv.textContent || contentTitleDiv.innerText || 'untitled Tale'; // THIS ALWAYS DEFAULTS TO untitled Tale
+            const contentTitleDiv = document.body.querySelector('.publish-title-text');
+            let contentTitle;
+            if (contentTitleDiv) {
+                contentTitle = contentTitleDiv.textContent || contentTitleDiv.innerText;
+            }
+            if (!contentTitle || 
+                contentTitle === 'Title' || 
+                contentTitle === '\n' || 
+                contentTitle === '') {
+                    contentTitle = 'untitled Tale'
+                };
 
             dispatch(updateTale({
                 id: taleId,
@@ -520,14 +525,14 @@ const Publish = props => {
         return (
         <Loading />
     )} else return (
-        <>
+        <div className='site-page'>
             <SiteNavBar page='publish' savedVisibility={savedVisibility}/>
 
             <div className='publish'>
                 <div contentEditable={true} onInput={handleSave} onSelect={handleTooltips} className='publish-content'>
                 </div>
             </div>
-        </>
+        </div>
     );
 }
 
