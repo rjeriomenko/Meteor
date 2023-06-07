@@ -7,8 +7,6 @@ import { createUser, loginUser, loginUserAndRedirect } from '../../store/usersRe
 const AuthForm = ({ formType, setShowForm, setFormType }) => {
     const dispatch = useDispatch();
     const history = useHistory();
-    const dispatch = useDispatch()
-
     
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
