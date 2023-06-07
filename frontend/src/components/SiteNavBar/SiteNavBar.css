@@ -89,7 +89,8 @@
     font-weight: 400;
     display: inline-block;
     margin-left: 16px;
-    color: rgb(92, 92, 92);
+    color: rgb(129, 129, 129);
+    letter-spacing: 0.5px;
     background-color: rgb(250, 250, 250);
     padding: 12px 40px;
     border-radius: 99em;

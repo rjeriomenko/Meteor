@@ -52,7 +52,7 @@ const AuthForm = ({ formType, setShowForm, setFormType }) => {
             password: 'brimstone',
         }
         
-        dispatch(loginUserAndRedirect(demoUser, '/publish', history));
+        dispatch(loginUserAndRedirect(demoUser, '/feed/', history));
 
         setShowForm(false);
 

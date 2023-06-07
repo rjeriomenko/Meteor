@@ -39,7 +39,7 @@ const SiteNavBar = ({ page, savedVisibility }) => {
                 )
                 partialLeftBar = (
                     <>
-                        <Link to='/'>
+                        <Link to='/feed/'>
                             <img src={logo} alt='Website Logo' className='site-navbar-logo-image' />
                         </Link>
                         <div className='title-text'>
@@ -54,11 +54,11 @@ const SiteNavBar = ({ page, savedVisibility }) => {
             case 'show':
             case 'feed':
                 partialRightBar = (
-                    <div>WRITE</div>
+                    <Link to='/publish/'>(SYM) Write</Link>
                 )
                 partialLeftBar = (
                     <>
-                        <Link to='/'>
+                        <Link to='/feed/'>
                                 <img src={logo} alt='Website Logo' className='site-navbar-logo-image' />
                             </Link>
                         <input type='text' className='search-bar' defaultValue='Search Meteor' />
@@ -74,7 +74,7 @@ const SiteNavBar = ({ page, savedVisibility }) => {
                 )
                 partialLeftBar = (
                     <>
-                        <Link to='/'>
+                        <Link to='/feed/'>
                             <img src={logo} alt='Website Logo' className='site-navbar-logo-image' />
                         </Link>
                         <div className='title-text'>

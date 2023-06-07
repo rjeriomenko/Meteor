@@ -6,8 +6,8 @@ const Loading = props => {
     return (
         <div className='loading'>
             <div className= 'logo-content'>
-                <img src={logo} alt='Website Logo' className='logo-image'/>
-                <div className='logo-text'>
+                <img src={logo} alt='Website Logo' className='loading-logo-image'/>
+                <div className='loading-logo-text'>
                     Meteor
                 </div>
             </div>
