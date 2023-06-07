@@ -1,50 +1,79 @@
 @import '../../index.css';
 
-.site-page {
+.feed-block {
+    width: 100%;
+    border-bottom: solid 1px rgb(235, 235, 235);
+    /* height: 200px; */
+}
+
+.feed-block-author {
     display: flex;
-    flex-direction: column;
     align-items: center;
+    margin-top: 22px;
 }
 
-.show-content {
-    line-height: 1.8;
-    letter-spacing: 0.9px;
-    z-index: 0;
-    margin-top: 77px;
-    width: 700px;
-    font-family: Georgia, "Times New Roman", sans-serif;
+.feed-block-item {
+    display: block;
+    font-size: 14px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
     font-weight: 400;
-    font-size: 19px;
-    color: rgb(56, 56, 56);
+    overflow-wrap: break-word;
 }
 
-.input-div {
-    font: inherit;
-    min-height: 34.19px;
-    margin-bottom: 28px;
-    padding-left: 15px;
+.feed-block-content {
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-areas:
+        "feed-block-content-text feed-block-content-text feed-block-content-text feed-block-content-text feed-block-content-text feed-block-content-text feed-block-content-thumbnail";
 }
 
-.publish-title-text {
-    min-height: 50px;
-    line-height: 1.15;
-    font-size: 38px;
-    margin-bottom: 12px;
-    padding: 16px 0 0 15px;
+.feed-block-content-text {
+    grid-area: feed-block-content-text;
+    max-width: 400px;
 }
 
-i { 
-    font: inherit;
-    font-style: italic;
+.author-picture {
+    margin-right: 8px;
+    height: 24px;
+    width: 24px;
 }
 
-b {
-    font-family: inherit;
-    font-size: inherit;
-    font-weight: 700;
+.author-fullname {
+    color: rgb(0, 0, 0);
+    margin-right: 8px;
 }
 
+.feed-block-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: rgb(37, 37, 37);
+    margin-top: 16px;
+}
 
-.focused {
-    box-shadow: none;
+.feed-block-intro {
+    font-size: 16px;
+    color: var(--text-color);
+    font-family: Georgia, "Times New Roman", sans-serif;
+    margin-top: 16px;
+}
+
+.thumbnail {
+    grid-area: feed-block-content-thumbnail;
+    display: flex;
+    align-self: center;
+    height: 110px;
+    width: 110px;
+}
+
+.feed-block-constellation {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: rgb(37, 37, 37);
+    background-color: rgb(250, 250, 250);
+    padding: 6px 10px;
+    border-radius: 99em;
+    margin: 34px 0;
+    width: min-content;
 }

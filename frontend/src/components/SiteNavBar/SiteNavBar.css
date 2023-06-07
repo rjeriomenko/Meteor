@@ -11,7 +11,7 @@
 }
 
 .site-nav-bar {
-    position: static;
+    position: sticky;
     display: flex;
     height: 55px;
     width: 100%;
