@@ -1,0 +1,51 @@
+@import '../../index.css';
+
+.feed-page {
+    display: grid;
+    height: 100%;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-areas: 
+    "feed feed feed feed feed-aside feed-aside";
+}
+
+.feed-aside {
+    grid-area: feed-aside;
+    border-left: 1px solid rgb(235, 235, 235);
+    height: 100%;
+    padding: 40px 0 0 40px;
+    width: 60%;
+}
+
+.feed {
+    grid-area: feed;
+    height: 100%;
+    margin: 40px 60px 0 60px;
+    border-top: 1px solid rgb(235, 235, 235);
+}
+
+.show-content {
+    line-height: 1.8;
+    letter-spacing: 0.9px;
+    z-index: 0;
+    margin-top: 77px;
+    width: 700px;
+    font-family: Georgia, "Times New Roman", sans-serif;
+    font-weight: 400;
+    font-size: 19px;
+    color: rgb(56, 56, 56);
+}
+
+.input-div {
+    font: inherit;
+    min-height: 34.19px;
+    margin-bottom: 28px;
+    padding-left: 15px;
+}
+
+.publish-title-text {
+    min-height: 50px;
+    line-height: 1.15;
+    font-size: 38px;
+    margin-bottom: 12px;
+    padding: 16px 0 0 15px;
+}

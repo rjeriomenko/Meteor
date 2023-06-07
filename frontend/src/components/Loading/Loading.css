@@ -7,7 +7,7 @@
     justify-content: space-between;
 }
 
-.logo-text {
+.loading-logo-text {
     font-family: 'Noe Display', sans-serif;
     font-size: 36px;
     font-weight: 500;
@@ -16,7 +16,7 @@
     margin-left: 2px;
 }
 
-.logo-image {
+.loading-logo-image {
     height: 36px;
     width: 36px;
     display: inline-block;

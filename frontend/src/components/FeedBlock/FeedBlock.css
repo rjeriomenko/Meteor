@@ -1,0 +1,82 @@
+@import '../../index.css';
+
+.feed-block {
+    width: 100%;
+    border-bottom: solid 1px rgb(235, 235, 235);
+}
+
+.feed-block-author {
+    display: flex;
+    align-items: center;
+    margin-top: 22px;
+}
+
+.feed-block-item {
+    display: block;
+    font-size: 14px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-weight: 400;
+    overflow-wrap: break-word;
+}
+
+.feed-block-content {
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-areas:
+        "feed-block-content-text feed-block-content-text feed-block-content-text feed-block-content-text feed-block-content-text feed-block-content-text feed-block-content-thumbnail";
+}
+
+.feed-block-content-text {
+    grid-area: feed-block-content-text;
+    max-width: 400px;
+}
+
+.author-picture {
+    margin-right: 8px;
+    height: 24px;
+    width: 24px;
+}
+
+.author-fullname {
+    color: rgb(0, 0, 0);
+    margin-right: 8px;
+}
+
+.publish-date {
+    color: rgb(178, 178, 178);
+}
+
+.feed-block-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: rgb(37, 37, 37);
+    margin-top: 16px;
+}
+
+.feed-block-intro {
+    font-size: 16px;
+    color: var(--text-color);
+    font-family: Georgia, "Times New Roman", sans-serif;
+    margin-top: 16px;
+}
+
+.thumbnail {
+    grid-area: feed-block-content-thumbnail;
+    display: flex;
+    align-self: center;
+    height: 110px;
+    width: 110px;
+}
+
+.feed-block-constellation {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: rgb(37, 37, 37);
+    background-color: rgb(250, 250, 250);
+    padding: 6px 10px;
+    border-radius: 99em;
+    margin: 34px 0;
+    width: min-content;
+}

@@ -39,7 +39,7 @@ const SiteNavBar = ({ page, savedVisibility }) => {
                 )
                 partialLeftBar = (
                     <>
-                        <Link to='/'>
+                        <Link to='/feed/'>
                             <img src={logo} alt='Website Logo' className='site-navbar-logo-image' />
                         </Link>
                         <div className='title-text'>
@@ -52,24 +52,17 @@ const SiteNavBar = ({ page, savedVisibility }) => {
                 )
                 break;
             case 'show':
+            case 'feed':
                 partialRightBar = (
-                    <div>WRITE</div>
+                    <Link to='/publish/'>(SYM) Write</Link>
                 )
                 partialLeftBar = (
                     <>
-                        <Link to='/'>
+                        <Link to='/feed/'>
                                 <img src={logo} alt='Website Logo' className='site-navbar-logo-image' />
                             </Link>
                         <input type='text' className='search-bar' defaultValue='Search Meteor' />
                     </>
-                )
-                break;
-            case 'feed':
-                partialRightBar = (
-                    null
-                )
-                partialLeftBar = (
-                    null
                 )
                 break;
             default:
@@ -81,7 +74,7 @@ const SiteNavBar = ({ page, savedVisibility }) => {
                 )
                 partialLeftBar = (
                     <>
-                        <Link to='/'>
+                        <Link to='/feed/'>
                             <img src={logo} alt='Website Logo' className='site-navbar-logo-image' />
                         </Link>
                         <div className='title-text'>
@@ -96,10 +89,18 @@ const SiteNavBar = ({ page, savedVisibility }) => {
             partialLeftBar: partialLeftBar}
     }
 
+    const handleDifferentCSS = () => {
+        if (page === 'publish') {
+            return 'publish-nav-bar'
+        } else {
+            return 'site-nav-bar'
+        }
+    }
+
     const { partialLeftBar, partialRightBar } = formatNavBarPartials();
 
     return (
-        <header className='site-nav-bar'>
+        <header className={handleDifferentCSS()}>
             <div className='site-header-content'>
                 <div className= 'site-navbar-left'>
                     { partialLeftBar }

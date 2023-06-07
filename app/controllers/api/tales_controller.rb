@@ -14,6 +14,11 @@ class Api::TalesController < ApplicationController
       render json: { errors: ["Must be logged in as author"] }, status: :unauthorized
     end
   end
+
+  def index
+    @tales = Tale.all
+    render :index
+  end
  
   def create
     @tale = Tale.new(tale_params)
