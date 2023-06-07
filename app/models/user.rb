@@ -23,6 +23,11 @@ class User < ApplicationRecord
 
     before_validation :ensure_session_token, :ensure_username
 
+    has_many :tales,
+        foreign_key: :author_id,
+        class_name: :Tale,
+        dependent: :destroy
+
     def ensure_session_token
         self.session_token ||= generate_unique_session_token
     end

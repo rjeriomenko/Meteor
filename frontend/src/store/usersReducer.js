@@ -85,6 +85,11 @@ export const logoutUser = userId => async (dispatch) => {
     dispatch(removeUser(userId));
 }
 
+export const loginUserAndRedirect = (user, url, history) => async (dispatch) => {
+    await dispatch(loginUser(user));
+    history.push(url);
+}
+
 //Selectors
 export const getUser = userId => state => {
     return state.users ? state.users[userId] : null;

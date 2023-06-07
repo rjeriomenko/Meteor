@@ -6,14 +6,14 @@ ul {
     list-style-type: none;
 }
 
-body, h1, h2, h3, h4, ul, button {
+body, p, h1, h2, h3, h4, ul, button {
     margin: 0;
     padding: 0;
 }
 
 /* Global default attributes */
 * {
-    font-family: BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-family: "Segoe UI", sans-serif;
 }
 
 /* Global default variables */

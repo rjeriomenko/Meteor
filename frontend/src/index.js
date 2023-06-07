@@ -14,11 +14,9 @@ const initializeApp = () => {
   const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
 
   if (currentUser) {
-    initialState = {
-      users: {
-        [currentUser.id]: currentUser
-      }
-    };
+    initialState.users = {
+      [currentUser.id]: currentUser
+    }
   };
 
   const store = configureStore(initialState);

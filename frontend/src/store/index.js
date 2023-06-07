@@ -1,10 +1,12 @@
 import { createStore, combineReducers, applyMiddleware, compose} from 'redux';
 import thunk from 'redux-thunk';
 import usersReducer from './usersReducer';
+import talesReducer from './talesReducer';
 
-export const rootReducer = combineReducers(
-    {users: usersReducer}
-)
+export const rootReducer = combineReducers({
+    users: usersReducer,
+    tales: talesReducer
+})
 
 let enhancer;
 

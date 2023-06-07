@@ -1,18 +1,21 @@
 import './AuthForm.css';
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { createUser, loginUser } from '../../store/usersReducer';
+import { useHistory } from 'react-router-dom';
+import { createUser, loginUser, loginUserAndRedirect } from '../../store/usersReducer';
 
 const AuthForm = ({ formType, setShowForm, setFormType }) => {
+    const dispatch = useDispatch();
+    const history = useHistory();
     const dispatch = useDispatch()
+
     
-    const [email, setEmail] = useState()
-    const [password, setPassword] = useState()
-    const [fullName, setFullName] = useState()
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [fullName, setFullName] = useState('');
 
     const handleSubmit = e => {
-        e.preventDefault()
+        e.preventDefault();
 
         let dispatchFunction;
 
@@ -34,7 +37,28 @@ const AuthForm = ({ formType, setShowForm, setFormType }) => {
             fullName: fullName
         }
 
-        dispatch(dispatchFunction(dispatchUser))
+        dispatch(dispatchFunction(dispatchUser));
+        
+        setShowForm(false);
+
+        history.push('/publish');
+        
+        document.body.style.overflow = '';
+    }
+
+    const handleDemoLogin = e => {
+        e.preventDefault();
+        
+        const demoUser = {
+            email: 'demo@man.com',
+            password: 'brimstone',
+        }
+        
+        dispatch(loginUserAndRedirect(demoUser, '/publish', history));
+
+        setShowForm(false);
+
+        document.body.style.overflow = '';
     }
 
     const onEmailChange = e => {
@@ -81,7 +105,7 @@ const AuthForm = ({ formType, setShowForm, setFormType }) => {
             case ('sign-in'):
                 return 'Enter the email address and password associated with your account to login.';
             default:
-                return 'Enter the email address and associated with your account,';
+                return 'Enter your email address, password, and full name to create an account.';
         };
     };
 
@@ -90,44 +114,44 @@ const AuthForm = ({ formType, setShowForm, setFormType }) => {
             case ('sign-up'):
                 return (
                     <>
-                        <label className='form'>Your email
-                            <input type='text' onChange={onEmailChange} value={email} className='text-input' />
+                        <label className='auth-label'>Your email
+                            <input type='text' onChange={onEmailChange} value={email} className='auth-text-input' />
                         </label>
 
-                        <label className='form'>Your password
-                            <input type='text' onChange={onPasswordChange} value={password} className='text-input' />
+                        <label className='auth-label'>Your password
+                            <input type='text' onChange={onPasswordChange} value={password} className='auth-text-input' />
                         </label>
 
-                        <label className='form'>Your full name
-                            <input type='text' onChange={onFullNameChange} value={fullName} className='text-input' />
+                        <label className='auth-label'>Your full name
+                            <input type='text' onChange={onFullNameChange} value={fullName} className='auth-text-input' />
                         </label>
                     </>
                 )
             case ('sign-in'):
                 return (
                     <>
-                        <label className='form'>Your email
-                            <input type='text' onChange={onEmailChange} value={email} className='text-input' />
+                        <label className='auth-label'>Your email
+                            <input type='text' onChange={onEmailChange} value={email} className='auth-text-input' />
                         </label>
 
-                        <label className='form'>Your password
-                            <input type='text' onChange={onPasswordChange} value={password} className='text-input' />
+                        <label className='auth-label'>Your password
+                            <input type='text' onChange={onPasswordChange} value={password} className='auth-text-input' />
                         </label>
                     </>
                 )
             default:
                 return (
                     <>
-                        <label className='form'>Your email
-                            <input type='text' onChange={onEmailChange} value={email} className='text-input' />
+                        <label className='auth-label'>Your email
+                            <input type='text' onChange={onEmailChange} value={email} className='auth-text-input' />
                         </label>
 
-                        <label className='form'>Your password
-                            <input type='text' onChange={onPasswordChange} value={password} className='text-input' />
+                        <label className='auth-label'>Your password
+                            <input type='text' onChange={onPasswordChange} value={password} className='auth-text-input' />
                         </label>
 
-                        <label className='form'>Your full name
-                            <input type='text' onChange={onFullNameChange} value={fullName} className='text-input' />
+                        <label className='auth-label'>Your full name
+                            <input type='text' onChange={onFullNameChange} value={fullName} className='auth-text-input' />
                         </label>
                     </>
                 )
@@ -136,16 +160,18 @@ const AuthForm = ({ formType, setShowForm, setFormType }) => {
 
     return (
         <div className='modal-background' onClick={handleCloseForm}>
-            <div className='auth-form'>
-                <div className='auth-container'>
+            <div className='auth-container'>
+                <div className='auth-spacing'>
                     <div className='auth-content'>
-                        <h2 className= 'form-header'>{formHeader()}</h2>
+                        <h2 className='form-header'>{formHeader()}</h2>
                         
-                        <h4 className= 'form-instructions'>{formInstructions()}</h4>
+                        <h4 className='form-instructions'>{formInstructions()}</h4>
 
-                        <form onSubmit={handleSubmit}>
+                        <form className='auth-form' onSubmit={handleSubmit}>
                             {formInput()}
-                            <input type='submit' value='Continue' className='continue'/>
+                            <input type='submit' value='Continue' className='auth-submit'/>
+                            <button onClick={handleDemoLogin} className='auth-submit demo-login'>Demo Login
+                            </button>
                         </form>
                     </div>
                 </div>

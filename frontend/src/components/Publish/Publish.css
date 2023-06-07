@@ -1,0 +1,102 @@
+@import '../../index.css';
+
+.publish {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.publish-content {
+    line-height: 1.8;
+    letter-spacing: 0.9px;
+    z-index: 0;
+    outline: none;
+    margin-top: 77px;
+    width: 700px;
+    font-family: Georgia, "Times New Roman", sans-serif;
+    font-weight: 400;
+    font-size: 19px;
+    color: rgb(56, 56, 56);
+}
+
+.input-div {
+    font: inherit;
+    min-height: 34.19px;
+    margin-bottom: 28px;
+    padding-left: 15px;
+}
+
+.publish-title-text {
+    min-height: 50px;
+    line-height: 1.15;
+    font-size: 38px;
+    margin-bottom: 12px;
+    padding: 16px 0 0 15px;
+}
+
+i { 
+    font: inherit;
+    font-style: italic;
+}
+
+b {
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: 700;
+}
+
+.unmodified {
+    color: rgb(198, 198, 198);
+}
+
+.focused {
+    box-shadow: -1px 0 0 rgb(224, 224, 224);
+}
+
+.tooltip {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    position: absolute;
+    width: 100px;
+    height: 30px;
+    background-color: rgb(45, 45, 45);
+    text-align: center;
+    color: white;
+    font-family: Georgia, "Times New Roman", sans-serif;
+    line-height: 1.15;
+    letter-spacing: normal;
+    z-index: 3;
+    transition: all 0.1s linear;
+    animation: pop-up 0.1s forwards;
+}
+
+.bolder, .italicizer {
+    font: inherit;
+    cursor: pointer;
+}
+
+.italicizer {
+    font-style: italic;
+    border-left: 1px solid gray;
+    padding-left: 30px;
+}
+
+.bolder {
+    font-weight: 900;
+}
+
+@keyframes pop-up {
+    0% {
+        opacity: 0;
+    }
+
+    25% {
+        transform: scale(0.9);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

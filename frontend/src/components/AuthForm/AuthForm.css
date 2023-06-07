@@ -17,7 +17,7 @@
     animation: fade-out linear 0.15s forwards;
 }
 
-.auth-form {
+.auth-container {
     position: fixed;
     height: 88%;
     width: 678px;
@@ -28,7 +28,7 @@
     transform-origin: center bottom;
 }
 
-.auth-container {
+.auth-spacing {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -69,13 +69,13 @@ h4.form-instructions{
     color: var(--text-color);
 }
 
-label.form {
+.auth-label {
     font: inherit;
     font-size: 13px;
     color: var(--text-color);
 }
 
-.text-input {
+.auth-text-input {
     margin: 14px 0 12px 0;
     background-color: clear;
     border: none;
@@ -88,7 +88,8 @@ label.form {
     text-align: center;
 }
 
-.continue {
+.auth-submit {
+    display: block;
     margin-top: 40px;
     color: white;
     background-color: rgba(25, 25, 25, 1);
@@ -101,8 +102,15 @@ label.form {
     cursor: pointer;
 }
 
-form {
+.demo-login {
+    background-color: rgb(27, 136, 23);
+}
+
+.auth-form {
     margin-top: 62px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 @keyframes pop-up {

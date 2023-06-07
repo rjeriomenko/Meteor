@@ -1,39 +1,15 @@
-import { Switch, Route } from 'react-router-dom';
-import AuthForm from './components/AuthForm/index';
 import Home from './components/Home/index';
-import NavBar from './components/NavBar/index';
-import { useState } from 'react';
+import Publish from './components/Publish/index';
+import TaleShow from './components/TaleShow/index';
+import { Switch, Route } from 'react-router-dom';
 
 const App = props => {
-
-  const [showForm, setShowForm] = useState(false);
-  const [formType, setFormType] = useState('sign-up');
-
-  const handleForm = () => {
-    const body = document.body
-
-    if (showForm) {
-      body.style.overflow = 'hidden';
-
-      return (
-        <AuthForm formType={formType} setShowForm={setShowForm} setFormType={setFormType} />
-      );
-    } else {
-      body.style.overflow = 'visible';
-    };
-  };
-
   return (
-    <>
-      {handleForm()}
-
-      <NavBar setShowForm={setShowForm} setFormType={setFormType} />
-
-      <Switch>
-        <Route path='/' component={Home} />
-      </Switch>
-    </>
-
+    <Switch>
+      <Route path='/publish/:taleId?' component={Publish} />
+      <Route path='/tales/:taleId' component={TaleShow} />
+      <Route exact path='/' component={Home} />
+    </Switch>
   );
 }
 
