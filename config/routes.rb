@@ -5,9 +5,19 @@ Rails.application.routes.draw do
   # root "articles#index"
 
   namespace :api, defaults: { format: :json } do
-    resources :users, only: [:create, :show, :update, :destroy, :index]
     resource :session, only: [:show, :create, :destroy]
-    resources :tales, only: [:show, :create, :update, :destroy, :index]
+
+    resources :users, only: [:create, :show, :update, :destroy, :index] do
+      get 'starred_tales', to: 'tales#index_by_user', on: :member
+    end
+    
+    resources :tales, only: [:show, :create, :update, :destroy, :index] do
+      resources :stars, only: [:create, :index]
+      resources :comets, only: [:create, :index]
+    end
+
+    resources :comets, only: [:update, :destroy]
+
   end
   
   get '*path', to: "static_pages#frontend_index"

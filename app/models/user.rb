@@ -28,6 +28,26 @@ class User < ApplicationRecord
         class_name: :Tale,
         dependent: :destroy
 
+    has_many :stars,
+        foreign_key: :user_id,
+        class_name: :Star,
+        dependent: :destroy
+
+    has_many :starred_tales,
+        through: :stars,
+        source: :tale,
+        dependent: :destroy
+
+    has_many :comets,
+        foreign_key: :user_id,
+        class_name: :Comet,
+        dependent: :destroy
+
+    has_many :cometted_tales,
+        through: :comets,
+        source: :tale,
+        dependent: :destroy
+
     def ensure_session_token
         self.session_token ||= generate_unique_session_token
     end

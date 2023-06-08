@@ -10,9 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_06_132944) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_08_084447) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "comets", force: :cascade do |t|
+    t.string "content", null: false
+    t.integer "user_id", null: false
+    t.integer "tale_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tale_id", "user_id"], name: "index_comets_on_tale_id_and_user_id"
+    t.index ["user_id", "tale_id"], name: "index_comets_on_user_id_and_tale_id"
+  end
+
+  create_table "stars", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "tale_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tale_id", "user_id"], name: "index_stars_on_tale_id_and_user_id"
+    t.index ["user_id", "tale_id"], name: "index_stars_on_user_id_and_tale_id"
+  end
 
   create_table "tales", force: :cascade do |t|
     t.string "title", null: false
