@@ -38,7 +38,7 @@ export const createComet = (comet) => async (dispatch) => {
     const data = await req.json();
     const responseComet = data.comet;
 
-    dispatch(receiveTale(responseComet));
+    dispatch(receiveComet(responseComet));
 }
 
 export const updateComet = comet => async (dispatch) => {

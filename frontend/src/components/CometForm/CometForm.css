@@ -1,0 +1,149 @@
+@import '../../index.css';
+
+.modal-background {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.95);
+    z-index: 3;
+    animation: fade-in 0.3s forwards;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-background#closing {
+    animation: fade-out linear 0.15s forwards;
+}
+
+.auth-container {
+    position: fixed;
+    height: 88%;
+    width: 678px;
+    background-color: white;
+    animation: pop-up 0.3s forwards;
+    border-radius: 3px;
+    box-shadow: rgba(0, 0, 0, 0.13) 0 0 10px;
+    transform-origin: center bottom;
+}
+
+.auth-spacing {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 44px 56px;
+    height: fill;
+}
+
+.auth-content {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+}
+
+.auth-close {
+    position: absolute;
+    height: 29px;
+    width: 29px;
+    background-color: rgb(132, 96, 96);
+    right: 12px;
+    top: 12px;
+    cursor: pointer;
+}
+
+h2.form-header {
+    font-size: 28px;
+    font-family: 'GT Super Ds Trial', Georgia, 'Times New Roman', Times, serif;
+    font-weight: 400;
+    color: rgb(8, 8, 8);
+}
+
+h4.form-instructions{
+    margin-top: 30px;
+    font-size: 16px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-weight: 400;
+    width: 270px;
+    color: var(--text-color);
+}
+
+.auth-label {
+    font: inherit;
+    font-size: 13px;
+    color: var(--text-color);
+}
+
+.auth-text-input {
+    margin: 14px 0 12px 0;
+    background-color: clear;
+    border: none;
+    border-bottom: solid rgb(124, 124, 124) 1px;
+    display: block;
+    outline: none;
+    width: 270px;
+    color: var(--text-color);
+    padding: 0;
+    text-align: center;
+}
+
+.auth-submit {
+    display: block;
+    margin-top: 40px;
+    color: white;
+    background-color: rgba(25, 25, 25, 1);
+    padding: 10px 16px;
+    border-radius: 99em;
+    font-weight: 300;
+    border: none;
+    width: 226px;
+    height: 38px;
+    cursor: pointer;
+}
+
+.demo-login {
+    background-color: rgb(27, 136, 23);
+}
+
+.auth-form {
+    margin-top: 62px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+@keyframes pop-up {
+    0% {
+        opacity: 0;
+    }
+
+    25% {
+        transform: scale(0.9);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fade-out {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}

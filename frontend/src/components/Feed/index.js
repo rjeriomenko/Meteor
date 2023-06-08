@@ -46,7 +46,7 @@ const Feed = props => {
         return (
             <>
                 {talesArr.map(tale => (
-                    <FeedBlock key={tale.id} tale={tale} user={users[tale.authorId]} />
+                    <FeedBlock key={tale.id} tale={tale} author={users[tale.authorId]} />
                 ))}
             </>
         )
