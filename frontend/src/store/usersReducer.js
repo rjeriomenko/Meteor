@@ -4,6 +4,7 @@ import { csrfFetch } from "./csrf";
 export const RECEIVE_USER = 'users/RECEIVE_USER';
 export const RECEIVE_USERS = 'users/RECEIVE_USERS';
 export const REMOVE_USER = 'users/REMOVE_USER';
+export const RECEIVE_STARRED_TALES = 'users/RECEIVE_STARRED_TALES';
 
 //Action Creators
 export const receiveUser = user => ({
@@ -21,6 +22,12 @@ export const removeUser = userId => ({
     userId
 })
 
+export const receiveStarredTales = (userId, starredTales) => ({
+    type: RECEIVE_STARRED_TALES,
+    userId,
+    starredTales
+})
+
 //Thunk Action Creators
 export const fetchUser = userId => async(dispatch) => {
     const req = await csrfFetch(`/api/users/${userId}`);
@@ -36,6 +43,14 @@ export const fetchUsers = () => async (dispatch) => {
     let users = data;
 
     if (users) { dispatch(receiveUsers(users)) };
+}
+
+export const fetchStarredTales = userId => async (dispatch) => {
+    const req = await csrfFetch(`/api/users/${userId}/starred_tales`);
+    const data = await req.json();
+    let starredTales = data;
+
+    if (starredTales) { dispatch(receiveStarredTales(userId, starredTales)) };
 }
 
 export const createUser = user => async(dispatch) => {
@@ -109,15 +124,9 @@ export const getUsers = state => {
     } else return null;
 }
 
-export const getTales = state => {
-    if (state?.tales) {
-        const tales = [];
-
-        for (const tale in state.tales) {
-            tales.push(state.tales[tale]);
-        }
-
-        return tales;
+export const getStarredTales = userId => state => {
+    if (state?.users[userId]?.starredTales) {
+        return state.users[userId].starredTales;
     } else return null;
 }
 
@@ -144,6 +153,16 @@ const usersReducer = ( state = {}, action ) => {
             return newState;
         default:
             return state;
+        case RECEIVE_STARRED_TALES:
+            const starredTales = []
+
+            for (const starredTale in action.starredTales) {
+                starredTales.push(action.starredTales[starredTale])
+            }
+
+            return {
+                ...newState[action.userId].starredTales = starredTales
+            };
     };
 };
 

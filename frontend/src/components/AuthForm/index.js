@@ -1,4 +1,5 @@
 import './AuthForm.css';
+import close from '../../close.png'
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -174,8 +175,7 @@ const AuthForm = ({ formType, setShowForm, setFormType }) => {
                     </div>
                 </div>
 
-                <div className='auth-close'>
-                </div>
+                <img src={close} className='auth-close'></img>
             </div>
         </div>
     );

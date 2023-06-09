@@ -2,10 +2,14 @@ import { createStore, combineReducers, applyMiddleware, compose} from 'redux';
 import thunk from 'redux-thunk';
 import usersReducer from './usersReducer';
 import talesReducer from './talesReducer';
+import cometsReducer from './cometsReducer';
+import starsReducer from './starsReducer';
 
 export const rootReducer = combineReducers({
     users: usersReducer,
-    tales: talesReducer
+    tales: talesReducer,
+    comets: cometsReducer,
+    stars: starsReducer
 })
 
 let enhancer;

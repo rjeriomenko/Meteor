@@ -4,13 +4,13 @@ class User < ApplicationRecord
     validates :email, :username, :full_name, :session_token, presence: true
     validates :email, :username, :session_token, uniqueness: true
     validates :username,
-        length: { in: 3..30 },
+        length: { in: 1..30 },
         format: { without: URI::MailTo::EMAIL_REGEXP, message: "Username should not be an email" }
     validates :email,
         length: { in: 3..255 }, 
         format: { with: URI::MailTo::EMAIL_REGEXP }
     validates :full_name,
-        length: { in: 3..255 }
+        length: { in: 2..255 }
     validates :password,
         length: { in: 6..255 },
         allow_nil: true 
@@ -26,6 +26,26 @@ class User < ApplicationRecord
     has_many :tales,
         foreign_key: :author_id,
         class_name: :Tale,
+        dependent: :destroy
+
+    has_many :stars,
+        foreign_key: :user_id,
+        class_name: :Star,
+        dependent: :destroy
+
+    has_many :starred_tales,
+        through: :stars,
+        source: :tale,
+        dependent: :destroy
+
+    has_many :comets,
+        foreign_key: :user_id,
+        class_name: :Comet,
+        dependent: :destroy
+
+    has_many :cometted_tales,
+        through: :comets,
+        source: :tale,
         dependent: :destroy
 
     def ensure_session_token

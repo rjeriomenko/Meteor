@@ -6,6 +6,30 @@
     align-items: center;
 }
 
+.star-block, .comet-block {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    opacity: 0.5;
+    margin-right: 25px;
+}
+
+.star-block:hover, .comet-block:hover {
+    opacity: 1;
+}
+
+.clear-star {
+    width: 20px;
+    height: 20px;
+    margin-right: 7px;
+}
+
+.clear-comet {
+    width: 20px;
+    height: 20px;
+    margin-right: 7px;
+}
+
 .show-content {
     line-height: 1.8;
     letter-spacing: 0.9px;
@@ -18,6 +42,32 @@
     color: rgb(56, 56, 56);
 }
 
+.tale-show-author-picture {
+    width: 40px;
+    height: 40px;
+    margin-right: 20px;
+}
+
+.tale-show-author-block {
+    display: flex;
+    align-items: center;
+    margin-top: 22px;
+    margin-bottom: 22px;
+    padding-left: 15px;
+}
+
+.tale-show-click-bar {
+    margin-left: 15px;
+    border-top: 1px solid rgb(235, 235, 235);
+    border-bottom: 1px solid rgb(235, 235, 235);
+    line-height: 1.15;
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    padding: 13px 0;
+    font-size: 14px;
+}
+
 .input-div {
     font: inherit;
     min-height: 34.19px;
@@ -25,12 +75,15 @@
     padding-left: 15px;
 }
 
-.publish-title-text {
+.publish-title-text#show {
     min-height: 50px;
     line-height: 1.15;
-    font-size: 38px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 42px;
+    font-weight: 900;
     margin-bottom: 12px;
     padding: 16px 0 0 15px;
+    color: rgb(43, 43, 43);
 }
 
 i { 
@@ -43,7 +96,6 @@ b {
     font-size: inherit;
     font-weight: 700;
 }
-
 
 .focused {
     box-shadow: none;

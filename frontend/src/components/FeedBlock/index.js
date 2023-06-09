@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-const FeedBlock = ({ tale, user }) => {
+const FeedBlock = ({ tale, author }) => {
     const dispatch = useDispatch();
 
     const [currentUser, setCurrentUser] = useState(JSON.parse(sessionStorage.currentUser));
@@ -63,7 +63,7 @@ const FeedBlock = ({ tale, user }) => {
                 <div className='feed-block-content-text'>
                     <div className='feed-block-author'>
                         {getAuthorPicture()}
-                        <div className='feed-block-item author-fullname'>{user.fullName}</div>
+                        <div className='feed-block-item author-fullname'>{author.fullName}</div>
                         <Link to={`/tales/${tale.id}`} className='feed-block-item publish-date'>.PUBDATE</Link>
                     </div>
                     <Link to={`/tales/${tale.id}`}>

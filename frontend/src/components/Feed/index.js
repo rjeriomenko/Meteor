@@ -25,28 +25,20 @@ const Feed = props => {
     }
     //returns an object of all tales
     const tales = useSelector(getTales);
+
     //returns an object of all users
-    const users = useSelector(getUsers); 
+    const users = useSelector(getUsers);
+
     const talesArr = turnObjectIntoArr(tales);
 
     const [loading, setLoading] = useState(true);
     const [scrollToReload, setscrollToReload] = useState(300);
 
-    // const handleScrollUpdate = e => {
-    //     const scrollPosition = window.scrollY;
-
-    //     if (scrollPosition > 370) {
-    //         setScrollStatus("scrolled")
-    //     } else {
-    //         setScrollStatus("not-scrolled")
-    //     }
-    // }
-
     const renderFeedBlocks = () => {
         return (
             <>
                 {talesArr.map(tale => (
-                    <FeedBlock key={tale.id} tale={tale} user={users[tale.authorId]} />
+                    <FeedBlock key={tale.id} tale={tale} author={users[tale.authorId]} />
                 ))}
             </>
         )

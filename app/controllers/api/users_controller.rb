@@ -2,7 +2,16 @@ class Api::UsersController < ApplicationController
   wrap_parameters include: User.attribute_names + ['password', 'fullName', 'profileBio', 'siteSettings']
 
   before_action :require_logged_out, only: [:create]
-  before_action :require_logged_in, only: [:update]
+  before_action :require_logged_in, only: [:update, :destroy]
+  before_action :require_logged_in_as_same_user, only: [:update, :destroy]
+
+  def require_logged_in_as_author
+    user_id = params[:id]
+
+    if user_id != current_user.id
+      render json: { errors: ["Must be logged in as same user"] }, status: :unauthorized
+    end
+  end
 
   def index
     @users = User.all
