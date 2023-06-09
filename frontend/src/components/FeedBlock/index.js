@@ -23,7 +23,7 @@ const FeedBlock = ({ tale, author }) => {
         const tempElement = document.createElement('div');
         tempElement.innerHTML = tale.content;
         const introDiv = tempElement.querySelector('.input-div:not(.publish-title-text)');
-        const intro = introDiv.textContent.slice(0, 150) + '...';
+        const intro = introDiv.textContent.slice(0, 250) + '...';
 
         tempElement.remove()
 

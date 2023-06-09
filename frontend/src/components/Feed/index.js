@@ -51,6 +51,9 @@ const Feed = props => {
 
     const handleRecommendedTopics = () => {
         if (searched) {
+            const feedPage = document.body.querySelector('.feed-page');
+            feedPage.setAttribute('id', 'sidebar');
+
             return (
                 <div className='feed-aside'>
                     <RecommendedTopics filteredTales={filteredTales} users={users} />
@@ -82,9 +85,9 @@ const Feed = props => {
         <Loading />
     )} else return (
         <>
-            <SiteNavBar page='feed' searched={searched} setSearched={setSearched} />
+            <SiteNavBar page='feed' searched={searched} setSearched={setSearched} talesArr={talesArr} setFilteredTales={setFilteredTales}/>
 
-            <div className='feed-page'>
+            <div className='feed-page' id='no-sidebar'>
                 <div className='feed'>
                     {renderFeedBlocks()}
                 </div>

@@ -1,11 +1,19 @@
 @import '../../index.css';
 
-.feed-page {
+.feed-page#sidebar {
     display: grid;
     height: 100%;
     grid-template-columns: repeat(6, 1fr);
     grid-template-areas: 
     "feed feed feed feed feed-aside feed-aside";
+}
+
+.feed-page#no-sidebar {
+    display: grid;
+    height: 100%;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-areas: 
+    "feed feed feed feed feed feed";
 }
 
 .feed-aside {
