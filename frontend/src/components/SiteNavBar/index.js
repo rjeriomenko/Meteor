@@ -1,24 +1,24 @@
 import './SiteNavBar.css';
 import logo from '../../logo.png';
+import write from '../../write.png';
 import { Link } from 'react-router-dom';
 
-const SiteNavBar = ({ page, savedVisibility }) => {
+const SiteNavBar = ({ page, savedVisibility, handlePublish }) => {
     const currentUser = JSON.parse(sessionStorage.currentUser);
-
-    const handlePublish = () => {
-    }
 
     const formatProfileRightBar = () => {
         if (currentUser) { 
             return (
-                <div>PROFILE PIC</div>
+                <>
+                    <div className="site-navbar-profile-picture">{currentUser.fullName.slice(0, 1)}</div>
+                </>
             )
         } else {
             return (
                 <>
-                    <div>Sign up</div>
+                    {/* <div>Sign up</div>
                     <div>Sign In</div>
-                    <div>GET STARTED PIC</div>
+                    <div>GET STARTED PIC</div> */}
                 </>
             )
         }
@@ -34,7 +34,6 @@ const SiteNavBar = ({ page, savedVisibility }) => {
                 partialRightBar = (
                     <>
                         <div className='publish-button' onClick={handlePublish}>Publish</div>
-                        <Link to='/#/'>...</Link>
                     </>
                 )
                 partialLeftBar = (
@@ -43,7 +42,7 @@ const SiteNavBar = ({ page, savedVisibility }) => {
                             <img src={logo} alt='Website Logo' className='site-navbar-logo-image' />
                         </Link>
                         <div className='title-text'>
-                            Draft in {currentUser.fullName}
+                            Draft by {currentUser.fullName}
                         </div>
                         <div className='saved-text' style={{visibility: savedVisibility}}>
                             Saved
@@ -54,14 +53,17 @@ const SiteNavBar = ({ page, savedVisibility }) => {
             case 'show':
             case 'feed':
                 partialRightBar = (
-                    <Link to='/publish/'>(SYM) Write</Link>
+                    <Link to='/publish/' className='publish-link'>
+                        <img src={write} alt='Write' className='site-navbar-write' />
+                        Write
+                    </Link>
                 )
                 partialLeftBar = (
                     <>
-                        <Link to='/feed/'>
+                        <Link to='/'>
                                 <img src={logo} alt='Website Logo' className='site-navbar-logo-image' />
                             </Link>
-                        <input type='text' className='search-bar' defaultValue='Search Meteor' />
+                        <input type='text' className='search-bar' placeHolder='Search Meteor' />
                     </>
                 )
                 break;
@@ -74,7 +76,7 @@ const SiteNavBar = ({ page, savedVisibility }) => {
                 )
                 partialLeftBar = (
                     <>
-                        <Link to='/feed/'>
+                        <Link to='/'>
                             <img src={logo} alt='Website Logo' className='site-navbar-logo-image' />
                         </Link>
                         <div className='title-text'>

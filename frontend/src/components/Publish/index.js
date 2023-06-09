@@ -2,7 +2,7 @@ import './Publish.css';
 import { defaultInputDivsStringified } from './utils';
 import SiteNavBar from '../SiteNavBar/index';
 import Loading from '../Loading/index';
-import { createTale, updateTale, getTale, fetchTale } from '../../store/talesReducer';
+import { createTale, updateTale, updateAndPublishTale, getTale, fetchTale } from '../../store/talesReducer';
 import { useState, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -447,6 +447,36 @@ const Publish = props => {
         })
     }
 
+
+    const handlePublish = e => {
+        const contentStringToSave = document.body.querySelector('.publish-content').innerHTML;
+        const contentTitleDiv = document.body.querySelector('.publish-title-text');
+        let contentTitle;
+
+        if (contentTitleDiv) {
+            contentTitle = contentTitleDiv.textContent || contentTitleDiv.innerText;
+        }
+        if (!contentTitle ||
+            contentTitle === 'Title' ||
+            contentTitle === '\n' ||
+            contentTitle === '') {
+            contentTitle = 'untitled Tale'
+        };
+
+        dispatch(updateAndPublishTale({
+            id: taleId,
+            title: contentTitle,
+            content: contentStringToSave
+        }))
+
+        e.target.textContent = 'Published!'
+
+        setTimeout(() => {
+            e.target.textContent = 'Publish'
+        }, 2000)
+    }
+
+
     const renderContent = contentString => {
         const { content } = getEventConstants();
         content.innerHTML = contentString;
@@ -526,7 +556,7 @@ const Publish = props => {
         <Loading />
     )} else return (
         <div className='site-page'>
-            <SiteNavBar page='publish' savedVisibility={savedVisibility}/>
+            <SiteNavBar page='publish' handlePublish={handlePublish} savedVisibility={savedVisibility}/>
 
             <div className='publish'>
                 <div contentEditable={true} onInput={handleSave} onSelect={handleTooltips} className='publish-content'>

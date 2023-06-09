@@ -34,8 +34,8 @@ export const fetchPublishedTales = () => async (dispatch) => {
     const req = await csrfFetch(`/api/tales`);
     const data = await req.json();
     let tales = data;
-    console.log(data) //THIS IS WHERE YOU PUT LOGIC TO FILTER OUT BY TALES THAT ARE PUBLISHED
-    console.log(tales)
+
+    tales = tales.filter(tale => tale.publishTime);
 
     if (tales) { dispatch(receiveTales(tales)) };
 }
@@ -55,6 +55,17 @@ export const createTale = tale => async (dispatch) => {
 
 export const updateTale = tale => async (dispatch) => {
     const req = await csrfFetch(`/api/tales/${tale.id}`, {
+        method: 'PATCH',
+        body: JSON.stringify(tale)
+    });
+    const data = await req.json();
+    const responseTale = data.tale;
+
+    dispatch(receiveTale(responseTale));
+}
+
+export const updateAndPublishTale = tale => async (dispatch) => {
+    const req = await csrfFetch(`/api/tales/${tale.id}?update-publish-time=true`, {
         method: 'PATCH',
         body: JSON.stringify(tale)
     });

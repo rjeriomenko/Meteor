@@ -1,6 +1,7 @@
 import './FeedBlock.css';
 import Loading from '../Loading/index';
 import logo from '../../logo.png';
+import invertedLogo from '../../inverted-logo.png';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -14,7 +15,7 @@ const FeedBlock = ({ tale, author }) => {
 
     const getAuthorPicture = () => {
         return (
-            <img src={logo} alt='Default Author Picture' className='feed-block-item author-picture' />
+            <img src={invertedLogo} alt='Default Author Picture' className='feed-block-item author-picture' />
         )
     }
 
@@ -37,6 +38,23 @@ const FeedBlock = ({ tale, author }) => {
                 <img src={logo} alt='Default Thumbnail' className='thumbnail' />
             </Link>
         )
+    }
+
+    const getTimeDifference = () => {
+        const publishTime = new Date(tale.publishTime);
+        const currentTime = new Date();
+
+        const timeDifference = currentTime.getTime() - publishTime.getTime();
+        const hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60));
+        const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+
+        if (hoursDifference >= 24) {
+            return `${daysDifference} days ago`;
+        } else if (hoursDifference > 1) {
+            return `${hoursDifference} hours ago`;
+        } else {
+            return `Less than an hour ago`
+        }
     }
 
     //Handles Page Loading
@@ -64,7 +82,7 @@ const FeedBlock = ({ tale, author }) => {
                     <div className='feed-block-author'>
                         {getAuthorPicture()}
                         <div className='feed-block-item author-fullname'>{author.fullName}</div>
-                        <Link to={`/tales/${tale.id}`} className='feed-block-item publish-date'>.PUBDATE</Link>
+                        <Link to={`/tales/${tale.id}`} className='feed-block-item publish-date'>{getTimeDifference()}</Link>
                     </div>
                     <Link to={`/tales/${tale.id}`}>
                             <div className='feed-block-item feed-block-title'>

@@ -62,7 +62,6 @@
     font-size: 13px;
     cursor: pointer;
     font-family: "Helvetica Neue", Arial, sans-serif;
-    width: 25%;
     color: var(--text-color);
     white-space: nowrap;
 }
@@ -81,6 +80,8 @@
     border-radius: 99em;
     font-weight: 300;
     transition: background-color 300ms linear, color 300ms linear;
+    margin-bottom: 4px;
+    letter-spacing: 0.6px;
 }
 
 .search-bar {
@@ -96,4 +97,40 @@
     border-radius: 99em;
     border: none;
     outline: none;
+}
+
+.site-navbar-profile-picture {
+    background: rgb(255, 120, 0);
+    color: white;
+    height: 32px;
+    width: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 15px;
+    margin-bottom: 4px;
+    border-radius: 100%;
+    font-size: 18px;
+    line-height: 1;
+    cursor: default;
+}
+
+.site-navbar-write {
+    height: 20px;
+    width: 20px;
+    margin-right: 10px;
+    margin-bottom: 5px;
+}
+
+.publish-link {
+    opacity: 0.5;
+}
+
+.publish-link:hover {
+    opacity: 1;
+}
+
+.publish-link {
+    display: flex;
+    align-items: center;
 }

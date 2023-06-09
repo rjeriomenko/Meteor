@@ -1,6 +1,6 @@
 import './CometBlock.css';
 import Loading from '../Loading/index';
-import logo from '../../logo.png';
+import invertedLogo from '../../inverted-logo.png';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 const CometBlock = ({ comet, author }) => {
     const getAuthorPicture = () => {
         return (
-            <img src={logo} alt='Default Author Picture' className='feed-block-item author-picture' />
+            <img src={invertedLogo} alt='Default Author Picture' className='feed-block-item author-picture' />
         )
     }
 

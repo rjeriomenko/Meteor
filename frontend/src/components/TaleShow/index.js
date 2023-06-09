@@ -2,7 +2,7 @@ import './TaleShow.css';
 import SiteNavBar from '../SiteNavBar/index';
 import Loading from '../Loading/index';
 import CometForm from '../CometForm';
-import logo from '../../logo.png';
+import invertedLogo from '../../inverted-logo.png';
 import comet from '../../comet.png';
 import clearStar from '../../clear-star.png';
 import goldStar from '../../gold-star.png';
@@ -30,9 +30,26 @@ const TaleShow = props => {
     const [currentUser, setCurrentUser] = useState(JSON.parse(sessionStorage.currentUser));
     const [loading, setLoading] = useState(true);
 
+    const getTimeDifference = () => {
+        const publishTime = new Date(tale.publishTime);
+        const currentTime = new Date();
+
+        const timeDifference = currentTime.getTime() - publishTime.getTime();
+        const hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60));
+        const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+
+        if (hoursDifference >= 24) {
+            return `${daysDifference} days ago`;
+        } else if (hoursDifference > 1) {
+            return `${hoursDifference} hours ago`;
+        } else {
+            return `Less than an hour ago`
+        }
+    }
+
     const getAuthorPicture = () => {
         return (
-            <img src={logo} alt='Default Author Picture' className='tale-show-author-picture' />
+            <img src={invertedLogo} alt='Default Author Picture' className='tale-show-author-picture' />
         )
     }
 
@@ -107,7 +124,7 @@ const TaleShow = props => {
                         <div className='tale-show-author-block'>
                             {getAuthorPicture()}
                             <div className='feed-block-item author-fullname'>{author.fullName}</div>
-                            <div className='feed-block-item publish-date'>.PUBDATE</div>
+                            <div className='feed-block-item publish-date'>{getTimeDifference()}</div>
                         </div>
 
                         <div className='tale-show-click-bar'>

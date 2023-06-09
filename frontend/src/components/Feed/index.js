@@ -37,9 +37,13 @@ const Feed = props => {
     const renderFeedBlocks = () => {
         return (
             <>
-                {talesArr.map(tale => (
-                    <FeedBlock key={tale.id} tale={tale} author={users[tale.authorId]} />
-                ))}
+                {talesArr.map(tale => {
+                    if (tale.publishTime) {
+                        return (
+                            <FeedBlock key={tale.id} tale={tale} author={users[tale.authorId]} />
+                        )
+                    }
+                })}
             </>
         )
     };
