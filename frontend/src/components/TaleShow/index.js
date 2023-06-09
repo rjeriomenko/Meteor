@@ -3,13 +3,14 @@ import SiteNavBar from '../SiteNavBar/index';
 import Loading from '../Loading/index';
 import CometForm from '../CometForm';
 import logo from '../../logo.png';
+import comet from '../../comet.png';
 import clearStar from '../../clear-star.png';
 import goldStar from '../../gold-star.png';
 import { getUser } from '../../store/usersReducer';
 import { getTale, fetchTale } from '../../store/talesReducer';
 import { getStars, fetchStars, createStar } from '../../store/starsReducer';
 import { getComets, fetchComets } from '../../store/cometsReducer';
-import { fetchUser } from '../../store/usersReducer';
+import { fetchUsers, fetchUser } from '../../store/usersReducer';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -36,18 +37,11 @@ const TaleShow = props => {
     }
 
     const handleForm = () => {
-        console.log('kek')
-        const body = document.body;
-
         if (showForm) {
-            body.style.overflow = 'hidden';
-
             return (
-                <CometForm taleId={taleId} setShowForm={setShowForm} comets={comets} currentUser={currentUser} />
+                <CometForm taleId={taleId} setShowForm={setShowForm} comets={comets} cometsLength={cometsLength} currentUser={currentUser} />
             );
-        } else {
-            body.style.overflow = '';
-        };
+        }
     };
 
     const handleStarClick = () => {
@@ -122,7 +116,7 @@ const TaleShow = props => {
                                 <div>{stars}</div>
                             </div>
                             <div className='comet-block' onClick={() => {setShowForm(true)}}>
-                                <img src={clearStar} alt='Comet' className='clear-comet' />
+                                <img src={comet} alt='Comet' className='clear-comet' />
                                 <div>{cometsLength}</div>
                             </div>
                         </div>

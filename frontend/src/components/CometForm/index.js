@@ -1,14 +1,31 @@
 import './CometForm.css';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import CometBlock from '../CometBlock';
+import { getUsers, fetchUsers } from '../../store/usersReducer';
+import close from '../../close.png'
+import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { createComet } from '../../store/cometsReducer';
 import { useHistory } from 'react-router-dom';
 
-const CometForm = ({ taleId, setShowForm, comets, currentUser }) => {
+const CometForm = ({ taleId, setShowForm, comets, cometsLength, currentUser }) => {
+    const dispatch = useDispatch();
     console.log(comets)
     //SEE IF COMETS UPDATES (SEE IF OTHER PROBLEM CROPS UP)
+    
     const history = useHistory();
-    const dispatch = useDispatch();
+    const users = useSelector(getUsers);
+
+    const turnObjectIntoArr = object => {
+        const objectArr = [];
+
+        for (const obj in object) {
+            objectArr.push(object[obj]);
+        }
+
+        return objectArr;
+    }
+
+    const cometsArr = turnObjectIntoArr(comets);
     
     const [content, setContent] = useState('');
 
@@ -18,14 +35,12 @@ const CometForm = ({ taleId, setShowForm, comets, currentUser }) => {
         if (currentUser) {
             const comet = {
                 taleId: taleId,
-                content: "this is a comet"
+                content: content
             }
             dispatch(createComet(comet));
 
             //MAKE SUBMIT BUTTON FADE INTO DARKER GREEN
             //SETSHOWTEXTINPUT FALSE
-
-            document.body.style.overflow = '';
         } else {
             history.push('/')
         }
@@ -38,35 +53,48 @@ const CometForm = ({ taleId, setShowForm, comets, currentUser }) => {
     const handleCloseForm = e => {
         const className = e.target.className;
 
-        if (className === 'modal-background') {
-            const form = document.body.querySelector('.modal-background');
-            form.id = 'closing';
-            form.style.opacity = '1';
-            form.style.opacity = '0';
+        if (className === 'comet-modal-background' || className === 'comet-form-close') {
+            const form = document.body.querySelector('.comet-modal-background');
             setTimeout(() => {
                 setShowForm(false);
             }, 160);
         }
     }
 
+    const renderCometBlocks = () => {
+        return (
+            <>
+                {cometsArr.map(comet => (
+                    <CometBlock key={comet.id} comet={comet} author={users[comet.userId]} users={users} />
+                ))}
+            </>
+        )
+    };
+
+    useEffect(() => {
+        dispatch(fetchUsers);
+    }, [])
+
     return (
-        <div className='modal-background' onClick={handleCloseForm}>
-            <div className='auth-container'>
-                <div className='auth-spacing'>
-                    <div className='auth-content'>
-                        <h2 className='form-header'>FORM HEADER</h2>
-                        
-                        <h4 className='form-instructions'>FORM INSTRUCTIONS</h4>
+        <div className='comet-modal-background' onClick={handleCloseForm}>
+            <div className='comet-form-container'>
+                <div className='comet-form-spacing'>
+                    <div className='comet-form-content'>
+                        <form className='comet-form' onSubmit={handleCometClick}>
+                            <textarea onChange={onContentChange} value={content} className='comet-form-text-input' placeHolder='What are your thoughts?'>
+                            </textarea>
 
-                        <form className='auth-form' onSubmit={handleCometClick}>
-                            <label className='auth-label'>YOUR CONTENT
-                                <input type='text' onChange={onContentChange} value={content} className='auth-text-input' />
-                            </label>
-
-                            <input type='submit' value='Respond' className='auth-submit'/>
+                            <input type='submit' value='Respond' className='comet-form-submit' />
                         </form>
+
+                        <div className='comet-form-border'></div>
+                        <div className='comet-feed'>
+                            {renderCometBlocks()}
+                        </div>
                     </div>
                 </div>
+                <div className='comet-form-comet-count'>Responses ({cometsLength})</div>
+                <img src={close} className='comet-form-close'></img>
             </div>
         </div>
     );
