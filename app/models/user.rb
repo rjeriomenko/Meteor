@@ -2,7 +2,7 @@ class User < ApplicationRecord
     has_secure_password
 
     validates :email, :username, :full_name, :session_token, presence: true
-    validates :email, :username, :session_token, uniqueness: true
+    validates :email, :session_token, uniqueness: true
     validates :username,
         length: { in: 1..30 },
         format: { without: URI::MailTo::EMAIL_REGEXP, message: "Username should not be an email" }
