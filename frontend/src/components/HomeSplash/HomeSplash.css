@@ -1,7 +1,10 @@
 @import '../../index.css';
 
 .home-splash {
-    height: 455px;
+    /* height: 455px; */
+    /* min-height: 712px; */
+    position: absolute;
+    height: 100%;
     width: 100%;
     background-color: var(--bg-color);
     border-bottom: 1px solid var(--text-color);
@@ -15,7 +18,7 @@
     flex-direction: column;
     justify-content: space-around;
     margin: 80px 0;
-    height: fill;
+    height: 300px;
     min-width: 500px;
 }
 
@@ -54,4 +57,5 @@
 .splash-gif {
     height: 400px;
     width: 400px;
+    border-radius: 15%;
 }

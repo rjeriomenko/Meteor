@@ -28,7 +28,7 @@ const Home = props => {
             {handleForm()}
             <HomeNavBar setShowForm={setShowForm} setFormType={setFormType} />
             <HomeSplash setShowForm={setShowForm} setFormType={setFormType} />
-            <HomeTrending />
+            {/* <HomeTrending /> */}
         </div>
     );
 }
