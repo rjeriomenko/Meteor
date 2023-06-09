@@ -72,13 +72,13 @@ ApplicationRecord.transaction do
         publish_time: "2023-05-25T05:27:11-04:00"
     )
 
-    # puts "Creating Stars..."
-    # 200.times do
-    #     Star.create!(
-    #         user_id: rand(1..40),
-    #         tale_id: rand(1..7)
-    #     )
-    # end
+    puts "Creating Stars..."
+    200.times do
+        Star.create!(
+            user_id: rand(1..40),
+            tale_id: rand(1..7)
+        )
+    end
 
     puts "Done Seeding"
 end
