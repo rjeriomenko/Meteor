@@ -6,7 +6,7 @@ import FeedBlock from '../FeedBlock/index'
 import { getTales, fetchPublishedTales } from '../../store/talesReducer';
 import { getUsers, fetchUsers } from '../../store/usersReducer';
 import { useState, useEffect } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 const Feed = props => {
@@ -32,7 +32,8 @@ const Feed = props => {
     const talesArr = turnObjectIntoArr(tales);
 
     const [loading, setLoading] = useState(true);
-    const [scrollToReload, setscrollToReload] = useState(300);
+    const [searched, setSearched] = useState(false);
+    const [filteredTales, setFilteredTales] = useState(talesArr);
 
     const renderFeedBlocks = () => {
         return (
@@ -46,7 +47,17 @@ const Feed = props => {
                 })}
             </>
         )
-    };
+    };    
+
+    const handleRecommendedTopics = () => {
+        if (searched) {
+            return (
+                <div className='feed-aside'>
+                    <RecommendedTopics filteredTales={filteredTales} users={users} />
+                </div>
+            )
+        }
+    }
 
     //Handles Page Loading
     useEffect(() => {
@@ -71,15 +82,13 @@ const Feed = props => {
         <Loading />
     )} else return (
         <>
-            <SiteNavBar page='feed'/>
+            <SiteNavBar page='feed' searched={searched} setSearched={setSearched} />
 
             <div className='feed-page'>
                 <div className='feed'>
                     {renderFeedBlocks()}
                 </div>
-                <div className='feed-aside'>
-                    <RecommendedTopics />
-                </div>
+                {handleRecommendedTopics()}
             </div>
         </>
     );

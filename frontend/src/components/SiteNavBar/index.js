@@ -3,8 +3,15 @@ import logo from '../../logo.png';
 import write from '../../write.png';
 import { Link } from 'react-router-dom';
 
-const SiteNavBar = ({ page, savedVisibility, handlePublish }) => {
+const SiteNavBar = ({ page, savedVisibility, handlePublish, searched, setSearched }) => {
     const currentUser = JSON.parse(sessionStorage.currentUser);
+
+    const handleSearch = e => {
+        console.log(searched)
+        e.preventDefault();
+        setSearched(false);
+        setSearched(true);
+    }
 
     const formatProfileRightBar = () => {
         if (currentUser) { 
@@ -51,6 +58,23 @@ const SiteNavBar = ({ page, savedVisibility, handlePublish }) => {
                 )
                 break;
             case 'show':
+                partialRightBar = (
+                    <Link to='/publish/' className='publish-link'>
+                        <img src={write} alt='Write' className='site-navbar-write' />
+                        Write
+                    </Link>
+                )
+                partialLeftBar = (
+                    <>
+                        <Link to='/feed/'>
+                            <img src={logo} alt='Website Logo' className='site-navbar-logo-image' />
+                        </Link>
+                        <form onSubmit={handleSearch}>
+                            <input type='text' className='search-bar' placeholder='Search Meteor'/>
+                        </form>
+                    </>
+                )
+                break;
             case 'feed':
                 partialRightBar = (
                     <Link to='/publish/' className='publish-link'>
@@ -60,10 +84,12 @@ const SiteNavBar = ({ page, savedVisibility, handlePublish }) => {
                 )
                 partialLeftBar = (
                     <>
-                        <Link to='/'>
-                                <img src={logo} alt='Website Logo' className='site-navbar-logo-image' />
-                            </Link>
-                        <input type='text' className='search-bar' placeHolder='Search Meteor' />
+                        <Link to='/feed/'>
+                            <img src={logo} alt='Website Logo' className='site-navbar-logo-image' />
+                        </Link>
+                        <form onSubmit={handleSearch}>
+                            <input type='text' className='search-bar' placeholder='Search Meteor'/>
+                        </form>
                     </>
                 )
                 break;
@@ -71,7 +97,6 @@ const SiteNavBar = ({ page, savedVisibility, handlePublish }) => {
                 partialRightBar = (
                     <>
                         <div className='publish-button' onClick={handlePublish}>Publish</div>
-                        <Link to='/#/'>...</Link>
                     </>
                 )
                 partialLeftBar = (
@@ -80,7 +105,7 @@ const SiteNavBar = ({ page, savedVisibility, handlePublish }) => {
                             <img src={logo} alt='Website Logo' className='site-navbar-logo-image' />
                         </Link>
                         <div className='title-text'>
-                            Draft in {currentUser.fullName}
+                            Draft by {currentUser.fullName}
                         </div>
                     </>
                 )
