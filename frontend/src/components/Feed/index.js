@@ -45,7 +45,7 @@ const Feed = props => {
         }
     };
 
-    ////////////Need to update this to take out follows (and include some meteor staff)
+    ////////////Need to update this to take out follows (and include some meteor staff AND REMOVE OWN ARTICLES)
     const renderDiscoverFeedBlocks = () => {
         return (
             <>

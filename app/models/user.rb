@@ -48,6 +48,21 @@ class User < ApplicationRecord
         source: :tale,
         dependent: :destroy
 
+    has_many :follows,
+        foreign_key: :follower_id,
+        class_name: :Follow,
+        dependent: :destroy
+
+    has_many :followed_users,
+        through: :follows,
+        source: :followee,
+        dependent: :destroy
+
+    has_many :followed_users_tales,
+        through: :followed_users,
+        source: :tales,
+        dependent: :destroy
+
     def ensure_session_token
         self.session_token ||= generate_unique_session_token
     end
