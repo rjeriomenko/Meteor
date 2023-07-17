@@ -27,7 +27,7 @@
 .feed {
     grid-area: feed;
     height: 100%;
-    margin: 40px 60px 0 60px;
+    margin: 40px 60px 0 150px;
 }
 
 .feed-switcher {

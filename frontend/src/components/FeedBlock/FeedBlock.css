@@ -37,7 +37,7 @@
 
 .feed-block-content-text {
     grid-area: feed-block-content-text;
-    max-width: 400px;
+    max-width: 600px;
 }
 
 .author-picture {
@@ -71,10 +71,11 @@
 }
 
 .feed-block-intro {
-    font-size: 16px;
+    font-size: 18px;
     color: var(--text-color);
     font-family: Georgia, "Times New Roman", sans-serif;
     margin-top: 16px;
+    line-height: 1.25;
 }
 
 .thumbnail {
@@ -83,6 +84,7 @@
     align-self: center;
     height: 110px;
     width: 110px;
+    /* margin-left: 50px; */
 }
 
 .feed-block-constellation {
