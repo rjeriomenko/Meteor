@@ -6,11 +6,13 @@ import FeedBlock from '../FeedBlock/index'
 import { getTales, fetchPublishedTales } from '../../store/talesReducer';
 import { getUsers, fetchUsers } from '../../store/usersReducer';
 import { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 const Feed = props => {
     const dispatch = useDispatch();
+    const { typeOfFeed } = useParams();
+
 
     const [currentUser, setCurrentUser] = useState(JSON.parse(sessionStorage.currentUser));
 
@@ -36,6 +38,15 @@ const Feed = props => {
     const [filteredTales, setFilteredTales] = useState(talesArr);
 
     const renderFeedBlocks = () => {
+        if (!typeOfFeed) {
+            return renderDiscoverFeedBlocks();
+        } else {
+            return renderFollowFeedBlocks();
+        }
+    };
+
+    ////////////Need to update this to take out follows (and include some meteor staff)
+    const renderDiscoverFeedBlocks = () => {
         return (
             <>
                 {talesArr.map(tale => {
@@ -47,7 +58,12 @@ const Feed = props => {
                 })}
             </>
         )
-    };    
+    }
+
+    ////////////Need to update this to include ONLY follows (and meteor staff)
+    const renderFollowFeedBlocks = () => {
+        return renderDiscoverFeedBlocks()
+    }
 
     const handleRecommendedTopics = () => {
         if (searched) {
@@ -89,6 +105,10 @@ const Feed = props => {
 
             <div className='feed-page' id='no-sidebar'>
                 <div className='feed'>
+                    <div className='feed-switcher'>
+                        <Link to='/feed/' id='feed-switcher-discover' className={!typeOfFeed && 'feed-switcher-selected'}>For you</Link>
+                        <Link to='/feed/follows' id='feed-switcher-follow' className={typeOfFeed === 'follows' && 'feed-switcher-selected'}>Following</Link>
+                    </div>
                     {renderFeedBlocks()}
                 </div>
                 {handleRecommendedTopics()}

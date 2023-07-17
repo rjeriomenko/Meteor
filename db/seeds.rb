@@ -9,9 +9,11 @@
 ApplicationRecord.transaction do
     puts "Destroying tables..."
     User.destroy_all
+    #######NEED TO DESTROY ALL TABLES?: users, tales, stars, comets
 
     puts "Resetting primary keys..."
     ApplicationRecord.connection.reset_pk_sequence!('users')
+    #######NEED TO RESET ALL TABLES?: users, tales, stars, comets
 
     puts "Creating Users..."
     User.create!(
