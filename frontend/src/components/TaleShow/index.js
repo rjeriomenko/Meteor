@@ -10,7 +10,8 @@ import { getUser } from '../../store/usersReducer';
 import { getTale, fetchTale } from '../../store/talesReducer';
 import { getStars, fetchStars, createStar } from '../../store/starsReducer';
 import { getComets, fetchComets } from '../../store/cometsReducer';
-import { fetchUsers, fetchUser } from '../../store/usersReducer';
+import { fetchUser } from '../../store/usersReducer';
+import { getFollows, fetchFollows, createFollow, deleteFollow } from '../../store/followsReducer';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -29,6 +30,18 @@ const TaleShow = props => {
     const [showForm, setShowForm] = useState(false);
     const [currentUser, setCurrentUser] = useState(JSON.parse(sessionStorage.currentUser));
     const [loading, setLoading] = useState(true);
+
+    const follows = useSelector(getFollows)
+    let followedAuthor = false;
+    let followId;
+    if (currentUser && author) {
+        const followTuple = Object.entries(follows)
+            .filter(([tupleFollowId, follow]) => follow.followerId === currentUser.id && follow.followeeId === author.id)[0];
+        if (followTuple) {
+            followedAuthor = true;
+            followId = followTuple[0];
+        }
+    }
 
     const getTimeDifference = () => {
         const publishTime = new Date(tale.publishTime);
@@ -65,7 +78,24 @@ const TaleShow = props => {
         if (currentUser) {
             const star = document.body.querySelector('.clear-star');
             star.src=goldStar;
-            dispatch(createStar(taleId));
+            dispatch(createStar(taleId))
+                .then(() => {
+                    dispatch(fetchStars(taleId));
+                });;
+        }
+    }
+
+    const handleChartClick = () => {
+        if (!followedAuthor) {
+            dispatch(createFollow(author.id))
+                .then(() => {
+                    dispatch(fetchFollows());
+                });
+        } else if (currentUser) {
+            dispatch(deleteFollow(followId))
+                .then(() => {
+                    dispatch(fetchFollows());
+                });
         }
     }
 
@@ -94,6 +124,9 @@ const TaleShow = props => {
                 })
                 .then(() => {
                     dispatch(fetchComets(taleId));
+                })
+                .then(() => {
+                    if (currentUser) dispatch(fetchFollows());
                 })
                 .then(() => {
                     setLoading(false);
@@ -125,6 +158,9 @@ const TaleShow = props => {
                             {getAuthorPicture()}
                             <div className='feed-block-item author-fullname'>{author.fullName}</div>
                             <div className='feed-block-item publish-date'>{getTimeDifference()}</div>
+                            {currentUser?.id && author?.id !== currentUser?.id &&
+                                <div className='feed-block-item feed-block-follow' onClick={handleChartClick}>{followedAuthor ? "Unchart User" : "Chart User"}</div>
+                            }
                         </div>
 
                         <div className='tale-show-click-bar'>

@@ -4,13 +4,13 @@ import logo from '../../logo.png';
 import write from '../../write.png';
 import { Link } from 'react-router-dom';
 
-const SiteNavBar = ({ page, savedVisibility, handlePublish, searched, setSearched, setFilteredTales, talesArr }) => {
+const SiteNavBar = ({ page, savedVisibility, handlePublish, searched, setSearched, setFilteredTales, allTalesArr }) => {
     const currentUser = JSON.parse(sessionStorage.currentUser);
 
     const handleSearch = e => {
         e.preventDefault();
         const value = document.body.querySelector('.search-bar').value;
-        const fuse = new Fuse(talesArr, { keys: ['title'] });
+        const fuse = new Fuse(allTalesArr, { keys: ['title'] });
         const results = fuse.search(value).map((result) => result.item);
 
         setFilteredTales(results);

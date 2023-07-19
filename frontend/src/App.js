@@ -9,7 +9,7 @@ const App = props => {
     <Switch>
       <Route path='/publish/:taleId?' component={Publish} />
       <Route path='/tales/:taleId' component={TaleShow} />
-      <Route path='/feed/' component={Feed} />
+      <Route path='/feed/:typeOfFeed?' component={Feed} />
       <Route exact path='/' component={Home} />
     </Switch>
   );

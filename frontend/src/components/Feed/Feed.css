@@ -27,8 +27,23 @@
 .feed {
     grid-area: feed;
     height: 100%;
-    margin: 40px 60px 0 60px;
-    border-top: 1px solid rgb(235, 235, 235);
+    margin: 40px 60px 0 150px;
+}
+
+.feed-switcher {
+    border-bottom: 1px solid rgb(235, 235, 235);
+    color: rgb(135, 135, 135);
+    padding-bottom: 20px;
+}
+
+.feed-switcher a {
+    margin-right: 40px;
+    padding-bottom: 21px;
+}
+
+.feed-switcher a.feed-switcher-selected{
+    border-bottom: 1px solid black;
+    color: black;
 }
 
 .show-content {

@@ -3,14 +3,16 @@ import SiteNavBar from '../SiteNavBar/index';
 import Loading from '../Loading/index';
 import RecommendedTopics from '../RecommendedTopics/index'
 import FeedBlock from '../FeedBlock/index'
-import { getTales, fetchPublishedTales } from '../../store/talesReducer';
+import { getAllTales, getFollowTales, fetchPublishedTales, fetchFollowTales } from '../../store/talesReducer';
 import { getUsers, fetchUsers } from '../../store/usersReducer';
+import { fetchFollows } from '../../store/followsReducer';
 import { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 const Feed = props => {
     const dispatch = useDispatch();
+    const { typeOfFeed } = useParams();
 
     const [currentUser, setCurrentUser] = useState(JSON.parse(sessionStorage.currentUser));
 
@@ -24,22 +26,33 @@ const Feed = props => {
         return objectArr;
     }
     //returns an object of all tales
-    const tales = useSelector(getTales);
+    const allTales = useSelector(getAllTales);
+    const followTales = useSelector(getFollowTales);
 
     //returns an object of all users
     const users = useSelector(getUsers);
 
-    const talesArr = turnObjectIntoArr(tales);
+    const allTalesArr = turnObjectIntoArr(allTales);
+    const followTalesArr = turnObjectIntoArr(followTales);
 
     const [loading, setLoading] = useState(true);
     const [searched, setSearched] = useState(false);
-    const [filteredTales, setFilteredTales] = useState(talesArr);
+    const [filteredTales, setFilteredTales] = useState(allTalesArr);
 
     const renderFeedBlocks = () => {
+        if (!typeOfFeed) {
+            return renderDiscoverFeedBlocks();
+        } else {
+            return renderFollowFeedBlocks();
+        }
+    };
+
+    ////////////Need to update this to take out follows (and include some meteor staff AND REMOVE OWN ARTICLES????????)
+    const renderDiscoverFeedBlocks = () => {
         return (
             <>
-                {talesArr.map(tale => {
-                    if (tale.publishTime) {
+                {allTalesArr.map(tale => {
+                    if (tale.publishTime && !followTales[tale.id]) {
                         return (
                             <FeedBlock key={tale.id} tale={tale} author={users[tale.authorId]} />
                         )
@@ -47,7 +60,22 @@ const Feed = props => {
                 })}
             </>
         )
-    };    
+    }
+
+    ////////////Need to update this to include meteor staff
+    const renderFollowFeedBlocks = () => {
+        return (
+            <>
+                {followTalesArr.map(tale => {
+                    if (tale.publishTime) {
+                        return (
+                            <FeedBlock key={tale.id} tale={tale} author={users[tale.authorId]} typeOfFeed={typeOfFeed} />
+                        )
+                    }
+                })}
+            </>
+        )
+    }
 
     const handleRecommendedTopics = () => {
         if (searched) {
@@ -64,31 +92,46 @@ const Feed = props => {
 
     //Handles Page Loading
     useEffect(() => {
-        dispatch(fetchPublishedTales())
-            .then(() => {
-                return dispatch(fetchUsers());
-            })
-            .then(() => {
-                setLoading(false);
-            });
-    }, [])
+        setLoading(true);
 
-    //Handles preparing Tale text and event listeners
-    useEffect(() => {
-        if (!loading) {
-            // renderContent(contentString);
+        if (!typeOfFeed) {
+            dispatch(fetchPublishedTales())
+                .then(() => {
+                    dispatch(fetchFollowTales());
+                })
+                .then(() => {
+                    dispatch(fetchUsers());
+                })
+                .then(() => {
+                    setLoading(false);
+                });
+        } else {
+            dispatch(fetchFollowTales())
+                .then(() => {
+                    if (currentUser) dispatch(fetchFollows());
+                })
+                .then(() => {
+                    dispatch(fetchUsers());
+                })
+                .then(() => {
+                    setLoading(false);
+                });
         }
-    }, [loading])
+    }, [typeOfFeed])
 
     if (loading) {
         return (
         <Loading />
     )} else return (
         <>
-            <SiteNavBar page='feed' searched={searched} setSearched={setSearched} talesArr={talesArr} setFilteredTales={setFilteredTales}/>
+            <SiteNavBar page='feed' searched={searched} setSearched={setSearched} allTalesArr={allTalesArr} setFilteredTales={setFilteredTales}/>
 
             <div className='feed-page' id='no-sidebar'>
                 <div className='feed'>
+                    <div className='feed-switcher'>
+                        <Link to='/feed/' id='feed-switcher-discover' className={typeOfFeed ? undefined : 'feed-switcher-selected'}>For you</Link>
+                        <Link to='/feed/follows' id='feed-switcher-follow' className={typeOfFeed === 'follows' ? 'feed-switcher-selected' : undefined }>Charted</Link>
+                    </div>
                     {renderFeedBlocks()}
                 </div>
                 {handleRecommendedTopics()}

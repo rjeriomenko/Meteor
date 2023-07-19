@@ -2,7 +2,8 @@ import { csrfFetch } from "./csrf";
 
 //Action Types
 export const RECEIVE_TALE = 'tales/RECEIVE_TALE';
-export const RECEIVE_TALES = 'tales/RECEIVE_TALES';
+export const RECEIVE_ALL_TALES = 'tales/RECEIVE_ALL_TALES';
+export const RECEIVE_FOLLOW_TALES = 'tales/RECEIVE_FOLLOW_TALES';
 export const REMOVE_TALE = 'tales/REMOVE_TALE';
 
 //Action Creators
@@ -11,8 +12,13 @@ export const receiveTale = tale => ({
     tale
 })
 
-export const receiveTales = tales => ({
-    type: RECEIVE_TALES,
+export const receiveAllTales = tales => ({
+    type: RECEIVE_ALL_TALES,
+    tales
+})
+
+export const receiveFollowTales = tales => ({
+    type: RECEIVE_FOLLOW_TALES,
     tales
 })
 
@@ -37,7 +43,17 @@ export const fetchPublishedTales = () => async (dispatch) => {
 
     tales = tales.filter(tale => tale.publishTime);
 
-    if (tales) { dispatch(receiveTales(tales)) };
+    if (tales) { dispatch(receiveAllTales(tales)) };
+}
+
+export const fetchFollowTales = () => async (dispatch) => {
+    const req = await csrfFetch(`/api/followed_users_tales`);
+    const data = await req.json();
+    let tales = data;
+
+    tales = tales.filter(tale => tale.publishTime);
+
+    if (tales) { dispatch(receiveFollowTales(tales)) };
 }
 
 export const createTale = tale => async (dispatch) => {
@@ -85,35 +101,51 @@ export const deleteTale = taleId => async (dispatch) => {
 
 //Selectors
 export const getTale = taleId => state => {
-    return state.tales ? state.tales[taleId] : null;
+    return state.tales ? state.tales.all[taleId] : null;
 }
 
-export const getTales = state => {
+export const getAllTales = state => {
     if (state?.tales) {
-        return state.tales;
+        return state.tales.all;
+    } else return null;
+}
+
+export const getFollowTales = state => {
+    if (state?.tales) {
+        return state.tales.follow;
     } else return null;
 }
 
 //Reducer
-const talesReducer = (state = {}, action) => {
+const talesReducer = (state = { all: {}, follow: {} }, action) => {
     let newState = { ...state };
+    let orderedTales;
 
     switch (action.type) {
         case RECEIVE_TALE:
             return {
-                ...newState, [action.tale.id]: action.tale
+                ...newState, all: { ...newState.all, [action.tale.id]: action.tale }
             };
-        case RECEIVE_TALES:
-            const orderedTales = action.tales.reduce((acc, tale) => {
+        case RECEIVE_ALL_TALES:
+            orderedTales = action.tales.reduce((acc, tale) => {
                 acc[tale.id] = tale;
                 return acc;
             }, {});
 
             return {
-                ...newState, ...orderedTales
+                ...newState, all: orderedTales
+            };
+        case RECEIVE_FOLLOW_TALES:
+            orderedTales = action.tales.reduce((acc, tale) => {
+                acc[tale.id] = tale;
+                return acc;
+            }, {});
+
+            return {
+                ...newState, follow: orderedTales
             };
         case REMOVE_TALE:
-            delete newState[action.taleId];
+            delete newState.all[action.taleId];
             return newState;
         default:
             return state;

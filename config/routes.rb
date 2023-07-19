@@ -9,7 +9,11 @@ Rails.application.routes.draw do
 
     resources :users, only: [:create, :show, :update, :destroy, :index] do
       get 'starred_tales', to: 'tales#index_by_user', on: :member
+      resources :follows, only: [:create]
     end
+
+    resources :follows, only: [:destroy, :index]
+    get 'followed_users_tales', to: 'tales#index_by_follower'
     
     resources :tales, only: [:show, :create, :update, :destroy, :index] do
       resources :stars, only: [:create, :index]

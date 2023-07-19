@@ -3,7 +3,7 @@ require 'date'
 class Api::TalesController < ApplicationController
   wrap_parameters include: Tale.attribute_names + ['authorId']
 
-  before_action :require_logged_in, only: [:update, :create, :destroy, :index_by_user]
+  before_action :require_logged_in, only: [:update, :create, :destroy, :index_by_user, :index_by_follower]
   before_action :require_logged_in_as_author, only: [:update, :destroy]
 
   def require_logged_in_as_author
@@ -28,6 +28,15 @@ class Api::TalesController < ApplicationController
     else
       @tales = current_user.starred_tales
       render :index
+    end
+  end
+
+  def index_by_follower
+    @tales = current_user.followed_users_tales
+    if @tales
+      render :index
+    else
+      head :no_content
     end
   end
  

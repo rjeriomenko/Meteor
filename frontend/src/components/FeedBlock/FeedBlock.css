@@ -37,7 +37,7 @@
 
 .feed-block-content-text {
     grid-area: feed-block-content-text;
-    max-width: 400px;
+    max-width: 600px;
 }
 
 .author-picture {
@@ -71,10 +71,11 @@
 }
 
 .feed-block-intro {
-    font-size: 16px;
+    font-size: 18px;
     color: var(--text-color);
     font-family: Georgia, "Times New Roman", sans-serif;
     margin-top: 16px;
+    line-height: 1.25;
 }
 
 .thumbnail {
@@ -83,6 +84,7 @@
     align-self: center;
     height: 110px;
     width: 110px;
+    /* margin-left: 50px; */
 }
 
 .feed-block-constellation {
@@ -93,7 +95,16 @@
     background-color: rgb(250, 250, 250);
     padding: 6px 10px;
     border-radius: 99em;
-    margin: 4px 0;
+    margin: 20px 0;
     width: min-content;
-    visibility: hidden;
+}
+
+.feed-block-follow {
+    color: white;
+    margin-left: 10px;
+    padding: 5px 10px;
+    border-radius: 99em;
+    font-weight: 300;
+    background-color: rgb(27, 136, 23);
+    cursor: pointer;
 }
