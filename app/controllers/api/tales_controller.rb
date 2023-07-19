@@ -32,8 +32,11 @@ class Api::TalesController < ApplicationController
   end
 
   def index_by_follower
-      @tales = current_user.followed_users_tales
+    @tales = current_user.followed_users_tales
+    if @tales
       render :index
+    else
+      head :no_content
     end
   end
  

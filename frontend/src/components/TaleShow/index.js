@@ -125,6 +125,9 @@ const TaleShow = props => {
                             {getAuthorPicture()}
                             <div className='feed-block-item author-fullname'>{author.fullName}</div>
                             <div className='feed-block-item publish-date'>{getTimeDifference()}</div>
+                            {/* {currentUser?.id && author?.id !== currentUser?.id &&
+                                <div className='feed-block-item feed-block-follow'>Chart User</div>
+                            } */}
                         </div>
 
                         <div className='tale-show-click-bar'>

@@ -12,7 +12,7 @@ Rails.application.routes.draw do
       resources :follows, only: [:create]
     end
 
-    resources :follows, only: [:destroy]
+    resources :follows, only: [:destroy, :index]
     get 'followed_users_tales', to: 'tales#index_by_follower'
     
     resources :tales, only: [:show, :create, :update, :destroy, :index] do

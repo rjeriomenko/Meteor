@@ -98,3 +98,13 @@
     margin: 20px 0;
     width: min-content;
 }
+
+.feed-block-follow {
+    color: white;
+    margin-left: 10px;
+    padding: 5px 10px;
+    border-radius: 99em;
+    font-weight: 300;
+    background-color: rgb(27, 136, 23);
+    cursor: pointer;
+}

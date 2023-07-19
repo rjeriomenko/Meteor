@@ -1,5 +1,6 @@
 class Follow < ApplicationRecord
     validates :follower_id, :followee_id, presence: true
+    validates :followee, uniqueness: { scope: :follower, message: "Cannot follow same user twice." }
 
     belongs_to :follower,
         foreign_key: :follower_id,
