@@ -56,7 +56,7 @@ const starsReducer = (state = {}, action) => {
             }, {});
 
             return {
-                ...newState, ...orderedStars
+                ...orderedStars
             };
         default:
             return state;

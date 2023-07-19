@@ -19,7 +19,7 @@ const FeedBlock = ({ tale, author, typeOfFeed }) => {
     let followId;
     if (typeOfFeed && currentUser && author) {
         const followTuple = Object.entries(follows)
-            .filter(([followId, follow]) => follow.followerId === currentUser.id && follow.followeeId === author.id)[0];
+            .filter(([tupleFollowId, follow]) => follow.followerId === currentUser.id && follow.followeeId === author.id)[0];
         if (followTuple) followId = followTuple[0];
     }
 
@@ -80,13 +80,6 @@ const FeedBlock = ({ tale, author, typeOfFeed }) => {
                 });
         }
     }
-
-    //Handles preparing Tale text and event listeners
-    useEffect(() => {
-        if (!loading) {
-            // renderContent(contentString);
-        }
-    }, [loading])
 
     if (loading) {
         return (
