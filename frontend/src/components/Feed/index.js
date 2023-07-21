@@ -6,6 +6,7 @@ import FeedBlock from '../FeedBlock/index'
 import { getAllTales, getFollowTales, fetchPublishedTales, fetchFollowTales } from '../../store/talesReducer';
 import { getUsers, fetchUsers } from '../../store/usersReducer';
 import { fetchFollows } from '../../store/followsReducer';
+import { getConstellations, fetchConstellations } from '../../store/constellationsReducer';
 import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -32,8 +33,12 @@ const Feed = props => {
     //returns an object of all users
     const users = useSelector(getUsers);
 
+    //returns an object of all constellations
+    const constellations = useSelector(getConstellations);
+
     const allTalesArr = turnObjectIntoArr(allTales);
     const followTalesArr = turnObjectIntoArr(followTales);
+    const constellationsArr = turnObjectIntoArr(constellations);
 
     const [loading, setLoading] = useState(true);
     const [searched, setSearched] = useState(false);
@@ -54,7 +59,11 @@ const Feed = props => {
                 {allTalesArr.map(tale => {
                     if (tale.publishTime && !followTales[tale.id]) {
                         return (
-                            <FeedBlock key={tale.id} tale={tale} author={users[tale.authorId]} />
+                            <FeedBlock 
+                            key={tale.id} 
+                            tale={tale} 
+                            author={users[tale.authorId]} 
+                            constellation={constellationsArr.find(constellation => constellation.taleId === tale.id)} />
                         )
                     }
                 })}
@@ -69,7 +78,13 @@ const Feed = props => {
                 {followTalesArr.map(tale => {
                     if (tale.publishTime) {
                         return (
-                            <FeedBlock key={tale.id} tale={tale} author={users[tale.authorId]} typeOfFeed={typeOfFeed} />
+                            <FeedBlock 
+                            key={tale.id} 
+                            tale={tale} 
+                            author={users[tale.authorId]} 
+                            constellation={ constellationsArr.find(constellation => constellation.taleId === tale.id) }
+                            typeOfFeed={typeOfFeed} />
+
                         )
                     }
                 })}
@@ -103,6 +118,9 @@ const Feed = props => {
                     dispatch(fetchUsers());
                 })
                 .then(() => {
+                    dispatch(fetchConstellations());
+                })
+                .then(() => {
                     setLoading(false);
                 });
         } else {
@@ -112,6 +130,9 @@ const Feed = props => {
                 })
                 .then(() => {
                     dispatch(fetchUsers());
+                })
+                .then(() => {
+                    dispatch(fetchConstellations());
                 })
                 .then(() => {
                     setLoading(false);

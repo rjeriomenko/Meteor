@@ -1,8 +1,8 @@
 import { csrfFetch } from "./csrf";
 
 //Action Types
-export const RECEIVE_STARS = 'tales/RECEIVE_STARS';
-export const RECEIVE_STAR = 'tales/RECEIVE_STAR';
+export const RECEIVE_STARS = 'stars/RECEIVE_STARS';
+export const RECEIVE_STAR = 'stars/RECEIVE_STAR';
 
 //Action Creators
 export const receiveStar = star => ({

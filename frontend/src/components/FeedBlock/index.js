@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-const FeedBlock = ({ tale, author, typeOfFeed }) => {
+const FeedBlock = ({ tale, author, typeOfFeed, constellation }) => {
     const dispatch = useDispatch();
 
     const [currentUser, setCurrentUser] = useState(JSON.parse(sessionStorage.currentUser));
@@ -103,7 +103,7 @@ const FeedBlock = ({ tale, author, typeOfFeed }) => {
                             {getIntro()}
                     </Link>
                     <div className='feed-block-item feed-block-constellation'>
-                        TAGDRAMA
+                        {constellation?.name}
                     </div>
                 </div>
                     {getThumbnail()}

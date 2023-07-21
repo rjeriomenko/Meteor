@@ -1,9 +1,9 @@
 import { csrfFetch } from "./csrf";
 
 //Action Types
-export const RECEIVE_COMETS = 'tales/RECEIVE_COMETS';
-export const RECEIVE_COMET = 'tales/RECEIVE_COMET';
-export const REMOVE_COMET = 'tales/REMOVE_COMET';
+export const RECEIVE_COMETS = 'comets/RECEIVE_COMETS';
+export const RECEIVE_COMET = 'comets/RECEIVE_COMET';
+export const REMOVE_COMET = 'comets/REMOVE_COMET';
 
 //Action Creators
 export const receiveComet = comet => ({

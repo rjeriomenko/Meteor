@@ -22,6 +22,10 @@ Rails.application.routes.draw do
 
     resources :comets, only: [:update, :destroy]
 
+    resources :constellations, only: [:update, :destroy, :index]
+    post 'constellations/create_user', to: 'constellations#create_user'
+    post 'constellations/create_tale/:tale_id', to: 'constellations#create_tale'
+
   end
   
   get '*path', to: "static_pages#frontend_index"
