@@ -5,13 +5,15 @@ import talesReducer from './talesReducer';
 import cometsReducer from './cometsReducer';
 import starsReducer from './starsReducer';
 import followsReducer from './followsReducer';
+import constellationsReducer from './constellationsReducer';
 
 export const rootReducer = combineReducers({
     users: usersReducer,
     tales: talesReducer,
     comets: cometsReducer,
     stars: starsReducer,
-    follows: followsReducer
+    follows: followsReducer,
+    constellations: constellationsReducer
 })
 
 let enhancer;

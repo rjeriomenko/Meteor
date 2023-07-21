@@ -1,9 +1,9 @@
 import { csrfFetch } from "./csrf";
 
 //Action Types
-export const RECEIVE_FOLLOWS = 'tales/RECEIVE_FOLLOWS';
-export const RECEIVE_FOLLOW = 'tales/RECEIVE_FOLLOW';
-export const REMOVE_FOLLOW = 'tales/REMOVE_FOLLOW';
+export const RECEIVE_FOLLOWS = 'follows/RECEIVE_FOLLOWS';
+export const RECEIVE_FOLLOW = 'follows/RECEIVE_FOLLOW';
+export const REMOVE_FOLLOW = 'follows/REMOVE_FOLLOW';
 
 //Action Creators
 export const receiveFollow = follow => ({
