@@ -62,6 +62,12 @@ class User < ApplicationRecord
         through: :followed_users,
         source: :tales,
         dependent: :destroy
+    
+    has_many :constellations,
+        foreign_key: :user_id,
+        class_name: :Constellation,
+        dependent: :destroy
+
 
     def ensure_session_token
         self.session_token ||= generate_unique_session_token

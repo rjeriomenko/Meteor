@@ -25,6 +25,11 @@ validates :title, :content, :author_id, presence: true
     source: :user,
     dependent: :destroy
 
+  has_many :constellations,
+    foreign_key: :tale_id,
+    class_name: :Constellation,
+    dependent: :destroy
+
   before_validation :ensure_title
 
   def ensure_title
