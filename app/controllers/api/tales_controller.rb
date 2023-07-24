@@ -20,7 +20,7 @@ class Api::TalesController < ApplicationController
     render :index
   end
 
-  def index_by_user
+  def index_by_user_stars
     user_id = params[:id]
 
     if user_id != current_user.id
@@ -38,6 +38,21 @@ class Api::TalesController < ApplicationController
     else
       head :no_content
     end
+  end
+
+  def index_by_constellation
+    constellation_name = params[:name]
+    constellations = Constellation.where("name='#{constellation_name}'")
+    @tales = []
+    
+    constellations.each do |constellation|
+      if constellation.tale_id
+        tale = Tale.find_by_id(constellation.tale_id)
+        @tales.push(tale)
+      end
+    end
+
+    render :index
   end
  
   def create

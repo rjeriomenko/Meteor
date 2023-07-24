@@ -2,13 +2,13 @@ import './FeedBlock.css';
 import Loading from '../Loading/index';
 import logo from '../../logo.png';
 import invertedLogo from '../../inverted-logo.png';
-import { fetchPublishedTales, fetchFollowTales } from '../../store/talesReducer';
+import { fetchPublishedTales, fetchFollowTales, fetchConstellationTales, getConstellationTales } from '../../store/talesReducer';
 import { createFollow, deleteFollow, getFollows } from '../../store/followsReducer';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-const FeedBlock = ({ tale, author, typeOfFeed, constellation }) => {
+const FeedBlock = ({ tale, author, typeOfFeed, constellation, searched, setSearched, setFilteredTales }) => {
     const dispatch = useDispatch();
 
     const [currentUser, setCurrentUser] = useState(JSON.parse(sessionStorage.currentUser));
@@ -22,6 +22,15 @@ const FeedBlock = ({ tale, author, typeOfFeed, constellation }) => {
             .filter(([tupleFollowId, follow]) => follow.followerId === currentUser.id && follow.followeeId === author.id)[0];
         if (followTuple) followId = followTuple[0];
     }
+    
+    const constellationTales = useSelector(getConstellationTales);
+    const constellationTalesArr = Object.values(constellationTales)
+    
+    useEffect(() => {
+        if (searched && constellationTalesArr.length) {
+            setFilteredTales(constellationTalesArr);
+        }
+    }, [searched]);
 
     const getAuthorPicture = () => {
         return (
@@ -81,6 +90,18 @@ const FeedBlock = ({ tale, author, typeOfFeed, constellation }) => {
         }
     }
 
+    const handleConstellationClick = e => {
+        const constellationName = e.target.textContent;
+
+        dispatch(fetchConstellationTales(constellationName))
+            .then (() => {
+                setSearched(false);
+            })
+            .then (() => {
+                setSearched(true);
+            });
+    }
+
     if (loading) {
         return (
         <Loading />
@@ -102,7 +123,7 @@ const FeedBlock = ({ tale, author, typeOfFeed, constellation }) => {
                             </div>
                             {getIntro()}
                     </Link>
-                    <div className='feed-block-item feed-block-constellation'>
+                    <div className='feed-block-item feed-block-constellation' onClick={handleConstellationClick}>
                         {constellation?.name}
                     </div>
                 </div>

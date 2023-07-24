@@ -13,6 +13,7 @@ const SiteNavBar = ({ page, savedVisibility, handlePublish, searched, setSearche
         const fuse = new Fuse(allTalesArr, { keys: ['title'] });
         const results = fuse.search(value).map((result) => result.item);
 
+        console.log(results)
         setFilteredTales(results);
         setSearched(true);
     }
