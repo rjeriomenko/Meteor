@@ -7,17 +7,18 @@ import comet from '../../comet.png';
 import clearStar from '../../clear-star.png';
 import goldStar from '../../gold-star.png';
 import { getUser } from '../../store/usersReducer';
-import { getTale, fetchTale } from '../../store/talesReducer';
+import { getTale, fetchTale, deleteTale } from '../../store/talesReducer';
 import { getStars, fetchStars, createStar } from '../../store/starsReducer';
 import { getComets, fetchComets } from '../../store/cometsReducer';
 import { fetchUser } from '../../store/usersReducer';
 import { getFollows, fetchFollows, createFollow, deleteFollow } from '../../store/followsReducer';
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 const TaleShow = props => {
     const dispatch = useDispatch();
+    const history = useHistory();
     const { taleId } = useParams();
 
     const tale = useSelector(getTale(taleId));
@@ -99,6 +100,11 @@ const TaleShow = props => {
         }
     }
 
+    const handleDeleteClick = () => {
+        history.push(`/feed/`);
+        dispatch(deleteTale(taleId));
+    }
+
     const renderContent = contentString => {
         const content = document.body.querySelector('.show-content');
         content.innerHTML = contentString;
@@ -159,7 +165,19 @@ const TaleShow = props => {
                             <div className='feed-block-item author-fullname'>{author.fullName}</div>
                             <div className='feed-block-item publish-date'>{getTimeDifference()}</div>
                             {currentUser?.id && author?.id !== currentUser?.id &&
-                                <div className='feed-block-item feed-block-follow' onClick={handleChartClick}>{followedAuthor ? "Unchart User" : "Chart User"}</div>
+                                <div className='feed-block-item feed-block-follow' onClick={handleChartClick}>
+                                    {followedAuthor ? "Unchart User" : "Chart User"}
+                                </div>
+                            }
+                            {currentUser?.id && author?.id === currentUser?.id &&
+                            <>
+                                <Link to={`/publish/${taleId}`} className='feed-block-item feed-block-follow'>
+                                    Edit
+                                </Link>
+                                <div className='feed-block-item feed-block-follow' onClick={handleDeleteClick}>
+                                    Delete
+                                </div>
+                            </>
                             }
                         </div>
 
