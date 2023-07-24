@@ -94,8 +94,8 @@ ApplicationRecord.transaction do
     # end
 
     puts "Creating Follows..."
-    tale_1 = Tale.find_by_id(2)
-    tale_2 = Tale.find_by_id(3)
+    tale_1 = Tale.find_by_id(3)
+    tale_2 = Tale.find_by_id(4)
 
     Follow.create!(
             follower_id: 1,

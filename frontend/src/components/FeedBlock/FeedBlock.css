@@ -100,6 +100,16 @@
     cursor: pointer;
 }
 
+.feed-block-button {
+    display: block;
+    font-size: 14px;
+    font-family: "Segoe UI", sans-serif;
+    font-weight: 400;
+    overflow-wrap: break-word;
+    min-width: 40px;
+    text-align: center;
+}
+
 .feed-block-follow {
     color: white;
     margin-left: 10px;

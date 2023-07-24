@@ -165,16 +165,16 @@ const TaleShow = props => {
                             <div className='feed-block-item author-fullname'>{author.fullName}</div>
                             <div className='feed-block-item publish-date'>{getTimeDifference()}</div>
                             {currentUser?.id && author?.id !== currentUser?.id &&
-                                <div className='feed-block-item feed-block-follow' onClick={handleChartClick}>
+                                <div className='feed-block-button feed-block-follow' onClick={handleChartClick}>
                                     {followedAuthor ? "Unchart User" : "Chart User"}
                                 </div>
                             }
                             {currentUser?.id && author?.id === currentUser?.id &&
                             <>
-                                <Link to={`/publish/${taleId}`} className='feed-block-item feed-block-follow'>
+                                <Link to={`/publish/${taleId}`} className='feed-block-button feed-block-follow'>
                                     Edit
                                 </Link>
-                                <div className='feed-block-item feed-block-follow' onClick={handleDeleteClick}>
+                                <div className='feed-block-button feed-block-follow' onClick={handleDeleteClick}>
                                     Delete
                                 </div>
                             </>

@@ -114,7 +114,7 @@ const FeedBlock = ({ tale, author, typeOfFeed, constellation, searched, setSearc
                         <div className='feed-block-item author-fullname'>{author?.fullName}</div>
                         <Link to={`/tales/${tale.id}`} className='feed-block-item publish-date'>{getTimeDifference()}</Link>
                         {currentUser?.id && author?.id !== currentUser?.id &&
-                            <div className='feed-block-item feed-block-follow' onClick={handleChartClick}>{typeOfFeed ? "Unchart User" : "Chart User" }</div>
+                            <div className='feed-block-button feed-block-follow' onClick={handleChartClick}>{typeOfFeed ? "Unchart User" : "Chart User" }</div>
                         }
                     </div>
                     <Link to={`/tales/${tale.id}`}>
@@ -123,7 +123,7 @@ const FeedBlock = ({ tale, author, typeOfFeed, constellation, searched, setSearc
                             </div>
                             {getIntro()}
                     </Link>
-                    <div className='feed-block-item feed-block-constellation' onClick={handleConstellationClick}>
+                    <div className='feed-block-button feed-block-constellation' onClick={handleConstellationClick}>
                         {constellation?.name}
                     </div>
                 </div>
