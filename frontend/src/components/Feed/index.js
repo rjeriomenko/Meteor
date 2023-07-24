@@ -63,7 +63,10 @@ const Feed = props => {
                             key={tale.id} 
                             tale={tale} 
                             author={users[tale.authorId]} 
-                            constellation={constellationsArr.find(constellation => constellation.taleId === tale.id)} />
+                            constellation={constellationsArr.find(constellation => constellation.taleId === tale.id)}
+                            searched={searched}
+                            setSearched={setSearched}
+                            setFilteredTales={setFilteredTales} />
                         )
                     }
                 })}
@@ -82,9 +85,11 @@ const Feed = props => {
                             key={tale.id} 
                             tale={tale} 
                             author={users[tale.authorId]} 
-                            constellation={ constellationsArr.find(constellation => constellation.taleId === tale.id) }
-                            typeOfFeed={typeOfFeed} />
-
+                            constellation={constellationsArr.find(constellation => constellation.taleId === tale.id)}
+                            searched={searched}
+                            typeOfFeed={typeOfFeed}
+                            setSearched={setSearched}
+                            setFilteredTales={setFilteredTales} />
                         )
                     }
                 })}
@@ -95,7 +100,7 @@ const Feed = props => {
     const handleRecommendedTopics = () => {
         if (searched) {
             const feedPage = document.body.querySelector('.feed-page');
-            feedPage.setAttribute('id', 'sidebar');
+            feedPage?.setAttribute('id', 'sidebar');
 
             return (
                 <div className='feed-aside'>

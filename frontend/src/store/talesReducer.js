@@ -4,6 +4,7 @@ import { csrfFetch } from "./csrf";
 export const RECEIVE_TALE = 'tales/RECEIVE_TALE';
 export const RECEIVE_ALL_TALES = 'tales/RECEIVE_ALL_TALES';
 export const RECEIVE_FOLLOW_TALES = 'tales/RECEIVE_FOLLOW_TALES';
+export const RECEIVE_CONSTELLATION_TALES = 'tales/RECEIVE_CONSTELLATION_TALES';
 export const REMOVE_TALE = 'tales/REMOVE_TALE';
 
 //Action Creators
@@ -19,6 +20,11 @@ export const receiveAllTales = tales => ({
 
 export const receiveFollowTales = tales => ({
     type: RECEIVE_FOLLOW_TALES,
+    tales
+})
+
+export const receiveConstellationTales = tales => ({
+    type: RECEIVE_CONSTELLATION_TALES,
     tales
 })
 
@@ -54,6 +60,16 @@ export const fetchFollowTales = () => async (dispatch) => {
     tales = tales.filter(tale => tale.publishTime);
 
     if (tales) { dispatch(receiveFollowTales(tales)) };
+}
+
+export const fetchConstellationTales = (constellationName) => async (dispatch) => {
+    const req = await csrfFetch(`/api/constellations/constellation_tales/${constellationName}`);
+    const data = await req.json();
+    let tales = data;
+
+    tales = tales.filter(tale => tale.publishTime);
+
+    if (tales) { dispatch(receiveConstellationTales(tales)) };
 }
 
 export const createTale = tale => async (dispatch) => {
@@ -116,8 +132,14 @@ export const getFollowTales = state => {
     } else return null;
 }
 
+export const getConstellationTales = state => {
+    if (state?.tales) {
+        return state.tales.constellation;
+    } else return null;
+}
+
 //Reducer
-const talesReducer = (state = { all: {}, follow: {} }, action) => {
+const talesReducer = (state = { all: {}, follow: {}, constellation: {} }, action) => {
     let newState = { ...state };
     let orderedTales;
 
@@ -143,6 +165,15 @@ const talesReducer = (state = { all: {}, follow: {} }, action) => {
 
             return {
                 ...newState, follow: orderedTales
+            };
+        case RECEIVE_CONSTELLATION_TALES:
+            orderedTales = action.tales.reduce((acc, tale) => {
+                acc[tale.id] = tale;
+                return acc;
+            }, {});
+
+            return {
+                ...newState, constellation: orderedTales
             };
         case REMOVE_TALE:
             delete newState.all[action.taleId];

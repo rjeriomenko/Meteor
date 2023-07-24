@@ -8,7 +8,7 @@ Rails.application.routes.draw do
     resource :session, only: [:show, :create, :destroy]
 
     resources :users, only: [:create, :show, :update, :destroy, :index] do
-      get 'starred_tales', to: 'tales#index_by_user', on: :member
+      get 'starred_tales', to: 'tales#index_by_user_stars', on: :member
       resources :follows, only: [:create]
     end
 
@@ -23,6 +23,7 @@ Rails.application.routes.draw do
     resources :comets, only: [:update, :destroy]
 
     resources :constellations, only: [:update, :destroy, :index]
+    get 'constellations/constellation_tales/:name', to: 'tales#index_by_constellation'
     post 'constellations/create_user', to: 'constellations#create_user'
     post 'constellations/create_tale/:tale_id', to: 'constellations#create_tale'
 

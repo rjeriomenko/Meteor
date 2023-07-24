@@ -97,6 +97,17 @@
     border-radius: 99em;
     margin: 20px 0;
     width: min-content;
+    cursor: pointer;
+}
+
+.feed-block-button {
+    display: block;
+    font-size: 14px;
+    font-family: "Segoe UI", sans-serif;
+    font-weight: 400;
+    overflow-wrap: break-word;
+    min-width: 40px;
+    text-align: center;
 }
 
 .feed-block-follow {

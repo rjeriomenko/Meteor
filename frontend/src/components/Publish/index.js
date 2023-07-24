@@ -468,12 +468,12 @@ const Publish = props => {
             title: contentTitle,
             content: contentStringToSave
         }))
-
-        e.target.textContent = 'Published!'
-
-        setTimeout(() => {
-            e.target.textContent = 'Publish'
-        }, 2000)
+        .then(() => {
+            e.target.textContent = 'Published!';
+        })
+        .then(() => {
+            history.push(`/tales/${taleId}`);
+        })
     }
 
 
@@ -499,7 +499,7 @@ const Publish = props => {
             }))
             .then(() => {
                 const newTale = JSON.parse(sessionStorage.newestTale);
-                history.push(`/publish/${newTale.id}`);
+                history.replace(`/publish/${newTale.id}`);
             })
             .then(() => {
                 setLoading(false);

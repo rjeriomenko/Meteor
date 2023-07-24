@@ -81,7 +81,7 @@ const CometForm = ({ taleId, setShowForm, comets, cometsLength, currentUser }) =
                 <div className='comet-form-spacing'>
                     <div className='comet-form-content'>
                         <form className='comet-form' onSubmit={handleCometClick}>
-                            <textarea onChange={onContentChange} value={content} className='comet-form-text-input' placeHolder='What are your thoughts?'>
+                            <textarea onChange={onContentChange} value={content} className='comet-form-text-input' placeholder='What are your thoughts?'>
                             </textarea>
 
                             <input type='submit' value='Respond' className='comet-form-submit' />
@@ -93,7 +93,7 @@ const CometForm = ({ taleId, setShowForm, comets, cometsLength, currentUser }) =
                         </div>
                     </div>
                 </div>
-                <div className='comet-form-comet-count'>Responses ({cometsLength})</div>
+                <div className='comet-form-comet-count'>Comets ({cometsLength})</div>
                 <img src={close} className='comet-form-close'></img>
             </div>
         </div>
