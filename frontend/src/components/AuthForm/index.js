@@ -36,13 +36,23 @@ const AuthForm = ({ formType, setShowForm, setFormType }) => {
             fullName: fullName
         }
 
-        dispatch(dispatchFunction(dispatchUser));
-        
-        setShowForm(false);
+        //empty input field error handling
+        if ((dispatchFunction === loginUser && email.length && password.length) ||
+            (dispatchFunction === createUser && email.length && password.length && fullName.length)) {
+            let currentUser;
 
-        history.push('/publish');
-        
-        document.body.style.overflow = '';
+            dispatch(dispatchFunction(dispatchUser))
+                .then (() => {
+                    currentUser = JSON.parse(sessionStorage.currentUser)
+                    if(currentUser) {
+                        setShowForm(false);
+    
+                        history.push('/feed/');
+    
+                        document.body.style.overflow = '';
+                    }
+                })
+        }
     }
 
     const handleDemoLogin = e => {
