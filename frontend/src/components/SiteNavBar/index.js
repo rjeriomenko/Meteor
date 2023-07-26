@@ -2,9 +2,14 @@ import './SiteNavBar.css';
 import Fuse from 'fuse.js';
 import logo from '../../logo.png';
 import write from '../../write.png';
-import { Link } from 'react-router-dom';
+import { logoutUser } from '../../store/usersReducer';
+import { Link, useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 const SiteNavBar = ({ page, savedVisibility, handlePublish, searched, setSearched, setFilteredTales, allTalesArr }) => {
+    const dispatch = useDispatch();
+    const history = useHistory();
+
     const currentUser = JSON.parse(sessionStorage.currentUser);
 
     const handleSearch = e => {
@@ -16,6 +21,11 @@ const SiteNavBar = ({ page, savedVisibility, handlePublish, searched, setSearche
         console.log(results)
         setFilteredTales(results);
         setSearched(true);
+    }
+
+    const handleLogout = e => {
+        history.push('/');
+        dispatch(logoutUser(currentUser.id));
     }
 
     const formatProfileRightBar = () => {
@@ -45,6 +55,7 @@ const SiteNavBar = ({ page, savedVisibility, handlePublish, searched, setSearche
             case 'publish':
                 partialRightBar = (
                     <>
+                        <div className='publish-button logout-button' onClick={handleLogout}>Logout</div>
                         <div className='publish-button' onClick={handlePublish}>Publish</div>
                     </>
                 )
@@ -64,10 +75,13 @@ const SiteNavBar = ({ page, savedVisibility, handlePublish, searched, setSearche
                 break;
             case 'show':
                 partialRightBar = (
-                    <Link to='/publish/' className='publish-link'>
-                        <img src={write} alt='Write' className='site-navbar-write' />
-                        Write
-                    </Link>
+                    <>
+                        <div className='publish-button logout-button' onClick={handleLogout}>Logout</div>
+                        <Link to='/publish/' className='publish-link'>
+                            <img src={write} alt='Write' className='site-navbar-write' />
+                            Write
+                        </Link>
+                    </>
                 )
                 partialLeftBar = (
                     <>
@@ -82,10 +96,13 @@ const SiteNavBar = ({ page, savedVisibility, handlePublish, searched, setSearche
                 break;
             case 'feed':
                 partialRightBar = (
-                    <Link to='/publish/' className='publish-link'>
-                        <img src={write} alt='Write' className='site-navbar-write' />
-                        Write
-                    </Link>
+                    <>
+                        <div className='publish-button logout-button' onClick={handleLogout}>Logout</div>
+                        <Link to='/publish/' className='publish-link'>
+                            <img src={write} alt='Write' className='site-navbar-write' />
+                            Write
+                        </Link>
+                    </>
                 )
                 partialLeftBar = (
                     <>

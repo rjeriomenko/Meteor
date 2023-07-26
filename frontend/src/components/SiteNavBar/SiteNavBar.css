@@ -84,6 +84,10 @@
     letter-spacing: 0.6px;
 }
 
+.logout-button {
+    margin-right: 20px;
+}
+
 .search-bar {
     font-family: "Helvetica Neue", Arial, sans-serif;
     font-size: 14px;

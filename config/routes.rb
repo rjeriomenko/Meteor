@@ -20,6 +20,7 @@ Rails.application.routes.draw do
       resources :comets, only: [:create, :index]
     end
 
+    resources :stars, only: [:destroy]
     resources :comets, only: [:update, :destroy]
 
     resources :constellations, only: [:update, :destroy, :index]

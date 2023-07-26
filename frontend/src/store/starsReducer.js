@@ -3,6 +3,7 @@ import { csrfFetch } from "./csrf";
 //Action Types
 export const RECEIVE_STARS = 'stars/RECEIVE_STARS';
 export const RECEIVE_STAR = 'stars/RECEIVE_STAR';
+export const REMOVE_STAR = 'stars/REMOVE_STAR';
 
 //Action Creators
 export const receiveStar = star => ({
@@ -13,6 +14,11 @@ export const receiveStar = star => ({
 export const receiveStars = stars => ({
     type: RECEIVE_STARS,
     stars
+})
+
+export const removeStar = starId => ({
+    type: REMOVE_STAR,
+    starId
 })
 
 //Thunk Action Creators
@@ -32,6 +38,14 @@ export const createStar = taleId => async (dispatch) => {
     const responseStar = data.star;
 
     dispatch(receiveStar(responseStar));
+}
+
+export const deleteStar = starId => async (dispatch) => {
+    const req = await csrfFetch(`/api/stars/${starId}`, {
+        method: 'DELETE',
+    });
+
+    dispatch(removeStar(starId));
 }
 
 //Selectors
@@ -58,6 +72,9 @@ const starsReducer = (state = {}, action) => {
             return {
                 ...orderedStars
             };
+        case REMOVE_STAR:
+            delete newState[action.starId];
+            return newState;
         default:
             return state;
     };

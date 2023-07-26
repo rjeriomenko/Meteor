@@ -8,7 +8,7 @@ import clearStar from '../../clear-star.png';
 import goldStar from '../../gold-star.png';
 import { getUser } from '../../store/usersReducer';
 import { getTale, fetchTale, deleteTale } from '../../store/talesReducer';
-import { getStars, fetchStars, createStar } from '../../store/starsReducer';
+import { getStars, fetchStars, createStar, deleteStar } from '../../store/starsReducer';
 import { getComets, fetchComets } from '../../store/cometsReducer';
 import { fetchUser } from '../../store/usersReducer';
 import { getFollows, fetchFollows, createFollow, deleteFollow } from '../../store/followsReducer';
@@ -20,16 +20,20 @@ const TaleShow = props => {
     const dispatch = useDispatch();
     const history = useHistory();
     const { taleId } = useParams();
+    const [currentUser, setCurrentUser] = useState(JSON.parse(sessionStorage.currentUser));
 
     const tale = useSelector(getTale(taleId));
     const author = useSelector(getUser(tale?.authorId));
-    const stars = Object.keys(useSelector(getStars)).length;
+    const stars = Object.values(useSelector(getStars));
+    const starredByUser = stars.some((star) => {return star?.userId === currentUser.id}) ? true : false;
+    const userStarId = starredByUser ? stars.find((star) => { return star?.userId === currentUser.id }).id : null;
+    const starSource = starredByUser ? goldStar : clearStar;
+    const numStars = Object.keys(useSelector(getStars)).length;
     const comets = useSelector(getComets);
     const cometsLength = Object.keys(comets)?.length;
     const contentString = tale?.content;
     
     const [showForm, setShowForm] = useState(false);
-    const [currentUser, setCurrentUser] = useState(JSON.parse(sessionStorage.currentUser));
     const [loading, setLoading] = useState(true);
 
     const follows = useSelector(getFollows)
@@ -76,13 +80,10 @@ const TaleShow = props => {
     };
 
     const handleStarClick = () => {
-        if (currentUser) {
-            const star = document.body.querySelector('.clear-star');
-            star.src=goldStar;
+        if (currentUser && !starredByUser) {
             dispatch(createStar(taleId))
-                .then(() => {
-                    dispatch(fetchStars(taleId));
-                });;
+        } else {
+            dispatch(deleteStar(userStarId))
         }
     }
 
@@ -183,8 +184,8 @@ const TaleShow = props => {
 
                         <div className='tale-show-click-bar'>
                             <div className='star-block' onClick={handleStarClick}>
-                                <img src={clearStar} alt='Star' className='clear-star' />
-                                <div>{stars}</div>
+                                <img src={starSource} alt='Star' className='clear-star' />
+                                <div>{numStars}</div>
                             </div>
                             <div className='comet-block' onClick={() => {setShowForm(true)}}>
                                 <img src={comet} alt='Comet' className='clear-comet' />
