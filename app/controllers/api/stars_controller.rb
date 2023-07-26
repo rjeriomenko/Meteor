@@ -24,4 +24,12 @@ class Api::StarsController < ApplicationController
 
   end
 
+  def destroy
+    star_id = params[:id]
+    @star = Star.find_by(id: star_id)
+
+    @star.destroy!
+    head :no_content
+  end
+
 end
