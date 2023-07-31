@@ -13,8 +13,39 @@ const AuthForm = ({ formType, setShowForm, setFormType }) => {
     const [password, setPassword] = useState('');
     const [fullName, setFullName] = useState('');
 
+    const clearErrors = () => {
+        const errors = document.querySelectorAll('.error-div');
+        if (errors) errors.forEach(error => { error.remove() });
+    }
+
+    const createErrorDiv = (element, text) => {
+        const errorDiv = document.createElement("div");
+        errorDiv.className = 'error-div';
+        errorDiv.textContent = text;
+
+        element.insertAdjacentElement('afterend', errorDiv);
+    }
+
+    const handleErrors = dispatchFunction => {
+        clearErrors();
+
+        const form = document.body.querySelector('.auth-form');
+        if (dispatchFunction === createUser) {
+            const email = form.querySelector('#email');
+            const password = form.querySelector('#password');
+            const fullName = form.querySelector('#full-name');
+
+            [email, password, fullName].forEach(element => {
+                if (!element.value.length) createErrorDiv(element, 'Field cannot be blank.');
+            })
+        }
+    }
+
     const handleSubmit = e => {
         e.preventDefault();
+
+        let currentUser = JSON.parse(sessionStorage.currentUser);
+        if (currentUser) history.push('/feed/');
 
         let dispatchFunction;
 
@@ -30,16 +61,18 @@ const AuthForm = ({ formType, setShowForm, setFormType }) => {
                 break;
         };
 
+        handleErrors(dispatchFunction);
+
         const dispatchUser = {
             email: email,
             password: password,
             fullName: fullName
         }
 
-        //empty input field error handling
-        if ((dispatchFunction === loginUser && email.length && password.length) ||
-            (dispatchFunction === createUser && email.length && password.length && fullName.length)) {
-            let currentUser;
+        // //empty input field error handling
+        // if ((dispatchFunction === loginUser && email.length && password.length) ||
+        //     (dispatchFunction === createUser && email.length && password.length && fullName.length)) {
+        if (!document.querySelectorAll('.error-div').length) {
 
             dispatch(dispatchFunction(dispatchUser))
                 .then (() => {
@@ -124,15 +157,15 @@ const AuthForm = ({ formType, setShowForm, setFormType }) => {
                 return (
                     <>
                         <label className='auth-label'>Your email
-                            <input type='text' onChange={onEmailChange} value={email} className='auth-text-input' />
+                            <input type='text' onChange={onEmailChange} value={email} className='auth-text-input' id='email' />
                         </label>
 
                         <label className='auth-label'>Your password
-                            <input type='text' onChange={onPasswordChange} value={password} className='auth-text-input' />
+                            <input type='text' onChange={onPasswordChange} value={password} className='auth-text-input' id='password' />
                         </label>
 
                         <label className='auth-label'>Your full name
-                            <input type='text' onChange={onFullNameChange} value={fullName} className='auth-text-input' />
+                            <input type='text' onChange={onFullNameChange} value={fullName} className='auth-text-input' id='full-name' />
                         </label>
                     </>
                 )
@@ -140,11 +173,11 @@ const AuthForm = ({ formType, setShowForm, setFormType }) => {
                 return (
                     <>
                         <label className='auth-label'>Your email
-                            <input type='text' onChange={onEmailChange} value={email} className='auth-text-input' />
+                            <input type='text' onChange={onEmailChange} value={email} className='auth-text-input' id='email' />
                         </label>
 
                         <label className='auth-label'>Your password
-                            <input type='text' onChange={onPasswordChange} value={password} className='auth-text-input' />
+                            <input type='text' onChange={onPasswordChange} value={password} className='auth-text-input' id='password' />
                         </label>
                     </>
                 )
