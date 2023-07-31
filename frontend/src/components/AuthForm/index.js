@@ -27,7 +27,7 @@ const AuthForm = ({ formType, setShowForm, setFormType }) => {
         element.insertAdjacentElement('afterend', errorDiv);
     }
 
-    const handleErrors = dispatchFunction => {
+    const handleErrors = invalidCredentials => {
         clearErrors();
 
         let emailErrors = false;
@@ -39,7 +39,11 @@ const AuthForm = ({ formType, setShowForm, setFormType }) => {
         const password = form.querySelector('#password');
         const fullName = form.querySelector('#full-name');
 
-        //handles empty field errors
+        if (invalidCredentials) {
+            return createErrorDiv(password, 'Incorrect email or password.');
+        }
+
+        //Handles empty field errors
         [email, password, fullName].forEach((element, idx) => {
             if (element && !element.value.length) {
                 createErrorDiv(element, 'Field cannot be blank.');
@@ -49,6 +53,7 @@ const AuthForm = ({ formType, setShowForm, setFormType }) => {
             }
         })
 
+        //Handles invalid entry format and lengths.
         if (!emailErrors && !emailValidator.validate(email.value)) {
             createErrorDiv(email, 'Not a valid email.');
             emailErrors = true;
@@ -78,6 +83,9 @@ const AuthForm = ({ formType, setShowForm, setFormType }) => {
             createErrorDiv(fullName, 'Full Name is too long.');
             fullNameErrors = true;
         }
+
+        if (!document.querySelectorAll('.error-div').length) return false;
+        return true;
     }
 
     const handleSubmit = e => {
@@ -100,7 +108,7 @@ const AuthForm = ({ formType, setShowForm, setFormType }) => {
                 break;
         };
 
-        handleErrors(dispatchFunction);
+        const anyErrors = handleErrors();
 
         const dispatchUser = {
             email: email,
@@ -108,7 +116,7 @@ const AuthForm = ({ formType, setShowForm, setFormType }) => {
             fullName: fullName
         }
 
-        if (!document.querySelectorAll('.error-div').length) {
+        if (!anyErrors) {
             dispatch(dispatchFunction(dispatchUser))
                 .then (() => {
                     currentUser = JSON.parse(sessionStorage.currentUser)
@@ -118,6 +126,9 @@ const AuthForm = ({ formType, setShowForm, setFormType }) => {
                         history.push('/feed/');
     
                         document.body.style.overflow = '';
+                    }
+                    else {
+                        handleErrors(true);
                     }
                 })
         }

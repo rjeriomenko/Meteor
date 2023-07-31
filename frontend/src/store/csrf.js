@@ -17,7 +17,7 @@ export const csrfFetch = async (url, options = {}) => {
 
     const res = await fetch(url, options);
 
-    if (res.status >= 400) {throw res};
+    if (res.status >= 400 && res.status !== 422) {throw res};
 
     return res;
 }

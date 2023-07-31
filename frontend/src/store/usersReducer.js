@@ -91,11 +91,12 @@ export const loginUser = user => async (dispatch) => {
         body: JSON.stringify(user)
     });
     const data = await req.json();
-    const responseUser = data.user;
+    if (!data.errors) {
+        const responseUser = data.user;
+        sessionStorage.setItem('currentUser', JSON.stringify(responseUser));
+        dispatch(receiveUser(responseUser));
+    }
 
-    sessionStorage.setItem('currentUser', JSON.stringify(responseUser));
-
-    dispatch(receiveUser(responseUser));
 }
 
 export const logoutUser = userId => async (dispatch) => {
