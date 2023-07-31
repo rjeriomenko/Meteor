@@ -40,13 +40,13 @@ const AuthForm = ({ formType, setShowForm, setFormType }) => {
         const fullName = form.querySelector('#full-name');
 
         if (invalidCredentials) {
-            return createErrorDiv(password, 'Incorrect email or password.');
+            return createErrorDiv(password, 'Incorrect email or password');
         }
 
         //Handles empty field errors
         [email, password, fullName].forEach((element, idx) => {
             if (element && !element.value.length) {
-                createErrorDiv(element, 'Field cannot be blank.');
+                createErrorDiv(element, 'Field cannot be blank');
                 if (idx === 0) emailErrors = true;
                 if (idx === 1) passwordErrors = true;
                 if (idx === 2) fullNameErrors = true;
@@ -55,32 +55,32 @@ const AuthForm = ({ formType, setShowForm, setFormType }) => {
 
         //Handles invalid entry format and lengths.
         if (!emailErrors && !emailValidator.validate(email.value)) {
-            createErrorDiv(email, 'Not a valid email.');
+            createErrorDiv(email, 'Not a valid email');
             emailErrors = true;
         }
 
         if (!emailErrors && email.value.length > 255) {
-            createErrorDiv(email, 'Email is too long.');
+            createErrorDiv(email, 'Email is too long');
             emailErrors = true;
         }
 
         if (!passwordErrors && password.value.length < 6) {
-            createErrorDiv(password, 'Password is too short.');
+            createErrorDiv(password, 'Password is too short');
             passwordErrors = true;
         }
 
         if (!passwordErrors && password.value.length > 255) {
-            createErrorDiv(password, 'Password is too long.');
+            createErrorDiv(password, 'Password is too long');
             passwordErrors = true;
         }
 
         if (fullName && !fullNameErrors && fullName.value.length < 2) {
-            createErrorDiv(fullName, 'Invalid Full Name.');
+            createErrorDiv(fullName, 'Invalid Full Name');
             fullNameErrors = true;
         }
 
         if (fullName && !fullNameErrors && fullName.value.length > 255) {
-            createErrorDiv(fullName, 'Full Name is too long.');
+            createErrorDiv(fullName, 'Full Name is too long');
             fullNameErrors = true;
         }
 
