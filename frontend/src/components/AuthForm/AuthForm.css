@@ -112,6 +112,11 @@ h4.form-instructions{
     align-items: center;
 }
 
+.error-div {
+    color: red;
+    margin-bottom: 15px;
+}
+
 @keyframes pop-up {
     0% {
         opacity: 0;

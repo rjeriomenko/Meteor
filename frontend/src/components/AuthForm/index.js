@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { createUser, loginUser, loginUserAndRedirect } from '../../store/usersReducer';
+import emailValidator from 'email-validator';
 
 const AuthForm = ({ formType, setShowForm, setFormType }) => {
     const dispatch = useDispatch();
@@ -13,8 +14,85 @@ const AuthForm = ({ formType, setShowForm, setFormType }) => {
     const [password, setPassword] = useState('');
     const [fullName, setFullName] = useState('');
 
+    const clearErrors = () => {
+        const errors = document.querySelectorAll('.error-div');
+        if (errors) errors.forEach(error => { error.remove() });
+    }
+
+    const createErrorDiv = (element, text) => {
+        const errorDiv = document.createElement("div");
+        errorDiv.className = 'error-div';
+        errorDiv.textContent = text;
+
+        element.insertAdjacentElement('afterend', errorDiv);
+    }
+
+    const handleErrors = invalidCredentials => {
+        clearErrors();
+
+        let emailErrors = false;
+        let passwordErrors = false;
+        let fullNameErrors = false;
+
+        const form = document.body.querySelector('.auth-form');
+        const email = form.querySelector('#email');
+        const password = form.querySelector('#password');
+        const fullName = form.querySelector('#full-name');
+
+        if (invalidCredentials) {
+            return createErrorDiv(password, 'Incorrect email or password');
+        }
+
+        //Handles empty field errors
+        [email, password, fullName].forEach((element, idx) => {
+            if (element && !element.value.length) {
+                createErrorDiv(element, 'Field cannot be blank');
+                if (idx === 0) emailErrors = true;
+                if (idx === 1) passwordErrors = true;
+                if (idx === 2) fullNameErrors = true;
+            }
+        })
+
+        //Handles invalid entry format and lengths.
+        if (!emailErrors && !emailValidator.validate(email.value)) {
+            createErrorDiv(email, 'Not a valid email');
+            emailErrors = true;
+        }
+
+        if (!emailErrors && email.value.length > 255) {
+            createErrorDiv(email, 'Email is too long');
+            emailErrors = true;
+        }
+
+        if (!passwordErrors && password.value.length < 6) {
+            createErrorDiv(password, 'Password is too short');
+            passwordErrors = true;
+        }
+
+        if (!passwordErrors && password.value.length > 255) {
+            createErrorDiv(password, 'Password is too long');
+            passwordErrors = true;
+        }
+
+        if (fullName && !fullNameErrors && fullName.value.length < 2) {
+            createErrorDiv(fullName, 'Invalid Full Name');
+            fullNameErrors = true;
+        }
+
+        if (fullName && !fullNameErrors && fullName.value.length > 255) {
+            createErrorDiv(fullName, 'Full Name is too long');
+            fullNameErrors = true;
+        }
+
+        if (!document.querySelectorAll('.error-div').length) return false;
+        return true;
+    }
+
     const handleSubmit = e => {
         e.preventDefault();
+
+        let currentUser = JSON.parse(sessionStorage.currentUser);
+        if (currentUser) history.push('/feed/');
 
         let dispatchFunction;
 
@@ -30,17 +108,15 @@ const AuthForm = ({ formType, setShowForm, setFormType }) => {
                 break;
         };
 
+        const anyErrors = handleErrors();
+
         const dispatchUser = {
             email: email,
             password: password,
             fullName: fullName
         }
 
-        //empty input field error handling
-        if ((dispatchFunction === loginUser && email.length && password.length) ||
-            (dispatchFunction === createUser && email.length && password.length && fullName.length)) {
-            let currentUser;
-
+        if (!anyErrors) {
             dispatch(dispatchFunction(dispatchUser))
                 .then (() => {
                     currentUser = JSON.parse(sessionStorage.currentUser)
@@ -50,6 +126,9 @@ const AuthForm = ({ formType, setShowForm, setFormType }) => {
                         history.push('/feed/');
     
                         document.body.style.overflow = '';
+                    }
+                    else {
+                        handleErrors(true);
                     }
                 })
         }
@@ -124,15 +203,15 @@ const AuthForm = ({ formType, setShowForm, setFormType }) => {
                 return (
                     <>
                         <label className='auth-label'>Your email
-                            <input type='text' onChange={onEmailChange} value={email} className='auth-text-input' />
+                            <input type='text' onChange={onEmailChange} value={email} className='auth-text-input' id='email' />
                         </label>
 
                         <label className='auth-label'>Your password
-                            <input type='text' onChange={onPasswordChange} value={password} className='auth-text-input' />
+                            <input type='password' onChange={onPasswordChange} value={password} className='auth-text-input' id='password' />
                         </label>
 
                         <label className='auth-label'>Your full name
-                            <input type='text' onChange={onFullNameChange} value={fullName} className='auth-text-input' />
+                            <input type='text' onChange={onFullNameChange} value={fullName} className='auth-text-input' id='full-name' />
                         </label>
                     </>
                 )
@@ -140,11 +219,11 @@ const AuthForm = ({ formType, setShowForm, setFormType }) => {
                 return (
                     <>
                         <label className='auth-label'>Your email
-                            <input type='text' onChange={onEmailChange} value={email} className='auth-text-input' />
+                            <input type='text' onChange={onEmailChange} value={email} className='auth-text-input' id='email' />
                         </label>
 
                         <label className='auth-label'>Your password
-                            <input type='text' onChange={onPasswordChange} value={password} className='auth-text-input' />
+                            <input type='password' onChange={onPasswordChange} value={password} className='auth-text-input' id='password' />
                         </label>
                     </>
                 )
