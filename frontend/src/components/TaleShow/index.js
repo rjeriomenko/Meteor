@@ -205,7 +205,7 @@ const TaleShow = props => {
             <div className='site-page'>
                 {handleCometForm()}
                 {handleAuthForm()}
-                <SiteNavBar page='show'/>
+                <SiteNavBar page='show' setShowForm={setShowAuthForm} setFormType={setAuthFormType} />
 
                 <div className='tale-show'>
                     <div contentEditable={false} className='show-content' />
