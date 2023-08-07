@@ -2,6 +2,7 @@ import './TaleShow.css';
 import SiteNavBar from '../SiteNavBar/index';
 import Loading from '../Loading/index';
 import CometForm from '../CometForm';
+import AuthForm from '../AuthForm/index';
 import invertedLogo from '../../inverted-logo.png';
 import comet from '../../comet.png';
 import clearStar from '../../clear-star.png';
@@ -20,9 +21,12 @@ const TaleShow = props => {
     const dispatch = useDispatch();
     const history = useHistory();
     const { taleId } = useParams();
-    const [currentUser, setCurrentUser] = useState(JSON.parse(sessionStorage.currentUser));
+
+    let currentUser = JSON.parse(sessionStorage.currentUser);
+    window.addEventListener('storage', () => currentUser = JSON.parse(sessionStorage.currentUser));
 
     const tale = useSelector(getTale(taleId));
+    const title = tale?.title;
     const author = useSelector(getUser(tale?.authorId));
     const stars = Object.values(useSelector(getStars));
     const starredByUser = stars.some((star) => {return star?.userId === currentUser.id}) ? true : false;
@@ -33,8 +37,25 @@ const TaleShow = props => {
     const cometsLength = Object.keys(comets)?.length;
     const contentString = tale?.content;
     
-    const [showForm, setShowForm] = useState(false);
+    const [showCometForm, setShowCometForm] = useState(false);
     const [loading, setLoading] = useState(true);
+
+    const [showAuthForm, setShowAuthForm] = useState(false);
+    const [authFormType, setAuthFormType] = useState('sign-up');
+
+    const handleAuthForm = () => {
+        const body = document.body;
+
+        if (showAuthForm) {
+            body.style.overflow = 'hidden';
+
+            return (
+                <AuthForm formType={authFormType} setShowForm={setShowAuthForm} setFormType={setAuthFormType} />
+            );
+        } else {
+            body.style.overflow = '';
+        };
+    };
 
     const follows = useSelector(getFollows)
     let followedAuthor = false;
@@ -49,7 +70,7 @@ const TaleShow = props => {
     }
 
     const getTimeDifference = () => {
-        const publishTime = new Date(tale.publishTime);
+        const publishTime = new Date(tale?.publishTime);
         const currentTime = new Date();
 
         const timeDifference = currentTime.getTime() - publishTime.getTime();
@@ -71,52 +92,79 @@ const TaleShow = props => {
         )
     }
 
-    const handleForm = () => {
-        if (showForm) {
+    const handleCometForm = () => {
+        if (showCometForm) {
             return (
-                <CometForm taleId={taleId} setShowForm={setShowForm} comets={comets} cometsLength={cometsLength} currentUser={currentUser} />
+                <CometForm taleId={taleId} setShowCometForm={setShowCometForm} setShowAuthForm={setShowAuthForm} setAuthFormType={setAuthFormType} comets={comets} cometsLength={cometsLength} currentUser={currentUser} />
             );
         }
     };
 
     const handleStarClick = () => {
-        if (currentUser && !starredByUser) {
-            dispatch(createStar(taleId))
+        if (currentUser) {
+            if (!starredByUser) {
+                dispatch(createStar(taleId))
+            } else {
+                dispatch(deleteStar(userStarId))
+            }
         } else {
-            dispatch(deleteStar(userStarId))
+            setShowAuthForm(true);
+            setAuthFormType("sign-in");
         }
     }
 
     const handleChartClick = () => {
-        if (!followedAuthor) {
-            dispatch(createFollow(author.id))
-                .then(() => {
-                    dispatch(fetchFollows());
-                });
-        } else if (currentUser) {
-            dispatch(deleteFollow(followId))
-                .then(() => {
-                    dispatch(fetchFollows());
-                });
+        if (currentUser) {
+            if (!followedAuthor) {
+                dispatch(createFollow(author.id))
+                    .then(() => {
+                        dispatch(fetchFollows());
+                    });
+            } else {
+                dispatch(deleteFollow(followId))
+                    .then(() => {
+                        dispatch(fetchFollows());
+                    });
+            }
+        } else {
+            setShowAuthForm(true);
+            setAuthFormType("sign-in");
         }
     }
 
     const handleDeleteClick = () => {
-        history.push(`/feed/`);
-        dispatch(deleteTale(taleId));
+        dispatch(deleteTale(taleId))
+            .then(() => {
+                history.push(`/feed/`);
+            })
     }
 
     const renderContent = contentString => {
         const content = document.body.querySelector('.show-content');
         content.innerHTML = contentString;
 
-        const contentTitle = content.querySelector('.publish-title-text');
-        contentTitle.setAttribute('id','show');
+        let focusedDiv = content.querySelector('.focused');
+        while (focusedDiv) {
+            focusedDiv.classList.remove('focused')
+            focusedDiv = content.querySelector('.focused');
+        }
+
+        let contentTitle = content.querySelector('.publish-title-text');
+        if (contentTitle) {
+            contentTitle.setAttribute('id','show');
+            if (contentTitle.innerText === "Title") contentTitle.innerText = title;
+        } else {
+            const defaultTitle = document.createElement('div');
+            defaultTitle.className = ('input-div publish-title-text');
+            defaultTitle.innerText = title;
+            contentTitle = defaultTitle;
+            const firstContentDiv = content.querySelector('.input-div:not(.publish-title-text)');
+            firstContentDiv.insertAdjacentElement('beforebegin', defaultTitle);
+        };
 
         const subTitleBlock = document.body.querySelector('.tale-show-sub-title-block');
         contentTitle.insertAdjacentElement('afterend', subTitleBlock);
     }
-
 
     //Handles Page Loading
     useEffect(() => {
@@ -155,7 +203,8 @@ const TaleShow = props => {
     )} else return (
         <>
             <div className='site-page'>
-                {handleForm()}
+                {handleCometForm()}
+                {handleAuthForm()}
                 <SiteNavBar page='show'/>
 
                 <div className='tale-show'>
@@ -163,9 +212,9 @@ const TaleShow = props => {
                     <div className='tale-show-sub-title-block'>
                         <div className='tale-show-author-block'>
                             {getAuthorPicture()}
-                            <div className='feed-block-item author-fullname'>{author.fullName}</div>
+                            <div className='feed-block-item author-fullname'>{author?.fullName}</div>
                             <div className='feed-block-item publish-date'>{getTimeDifference()}</div>
-                            {currentUser?.id && author?.id !== currentUser?.id &&
+                            {author?.id !== currentUser?.id &&
                                 <div className='feed-block-button feed-block-follow' onClick={handleChartClick}>
                                     {followedAuthor ? "Unchart User" : "Chart User"}
                                 </div>
@@ -187,7 +236,7 @@ const TaleShow = props => {
                                 <img src={starSource} alt='Star' className='clear-star' />
                                 <div>{numStars}</div>
                             </div>
-                            <div className='comet-block' onClick={() => {setShowForm(true)}}>
+                            <div className='comet-block' onClick={() => {setShowCometForm(true)}}>
                                 <img src={comet} alt='Comet' className='clear-comet' />
                                 <div>{cometsLength}</div>
                             </div>

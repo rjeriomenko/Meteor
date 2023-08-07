@@ -100,7 +100,3 @@ b {
     font-size: inherit;
     font-weight: 700;
 }
-
-.focused {
-    box-shadow: none;
-}

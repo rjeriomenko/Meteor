@@ -451,29 +451,42 @@ const Publish = props => {
     const handlePublish = e => {
         const contentStringToSave = document.body.querySelector('.publish-content').innerHTML;
         const contentTitleDiv = document.body.querySelector('.publish-title-text');
+        const firstContentDiv = document.body.querySelector('.input-div:not(.publish-title-text)');
         let contentTitle;
 
-        if (contentTitleDiv) {
-            contentTitle = contentTitleDiv.textContent || contentTitleDiv.innerText;
+        
+        if (firstContentDiv.innerText !== "Weave a tale..." &&
+            firstContentDiv.innerText !== "\n" &&
+            firstContentDiv.innerText !== " "
+        ) {
+            if (contentTitleDiv) {
+                contentTitle = contentTitleDiv.textContent || contentTitleDiv.innerText;
+            }
+            if (!contentTitle ||
+                contentTitle === 'Title' ||
+                contentTitle === '\n' ||
+                contentTitle === '') {
+                contentTitle = 'untitled Tale'
+            };
+    
+            dispatch(updateAndPublishTale({
+                id: taleId,
+                title: contentTitle,
+                content: contentStringToSave
+            }))
+            .then(() => {
+                e.target.textContent = 'Published!';
+            })
+            .then(() => {
+                history.push(`/tales/${taleId}`);
+            })
+        } else {
+            e.target.textContent = 'Cannot Publish';
+            setTimeout(() => {
+                e.target.textContent = 'Publish';
+            }, 1000);
         }
-        if (!contentTitle ||
-            contentTitle === 'Title' ||
-            contentTitle === '\n' ||
-            contentTitle === '') {
-            contentTitle = 'untitled Tale'
-        };
 
-        dispatch(updateAndPublishTale({
-            id: taleId,
-            title: contentTitle,
-            content: contentStringToSave
-        }))
-        .then(() => {
-            e.target.textContent = 'Published!';
-        })
-        .then(() => {
-            history.push(`/tales/${taleId}`);
-        })
     }
 
 

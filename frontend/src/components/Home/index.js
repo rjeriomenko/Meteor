@@ -7,10 +7,9 @@ import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 const Home = props => {
-    // uncomment these lines once logout has been made sync
-    // const history = useHistory();
-    // let currentUser = JSON.parse(sessionStorage.currentUser);
-    // if (currentUser) history.replace('/feed/');
+    const history = useHistory();
+    let currentUser = JSON.parse(sessionStorage.currentUser);
+    if (currentUser) history.replace('/feed/');
 
     const [showForm, setShowForm] = useState(false);
     const [formType, setFormType] = useState('sign-up');
