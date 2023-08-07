@@ -2,15 +2,17 @@ import './SiteNavBar.css';
 import Fuse from 'fuse.js';
 import logo from '../../logo.png';
 import write from '../../write.png';
+import AuthForm from '../AuthForm/index';
 import { logoutUser } from '../../store/usersReducer';
 import { Link, useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-const SiteNavBar = ({ page, savedVisibility, handlePublish, searched, setSearched, setFilteredTales, allTalesArr }) => {
+const SiteNavBar = ({ page, savedVisibility, handlePublish, searched, setSearched, setFilteredTales, allTalesArr, setShowForm, setFormType }) => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const currentUser = JSON.parse(sessionStorage.currentUser);
+    let currentUser = JSON.parse(sessionStorage.currentUser);
+    window.addEventListener('storage', () => currentUser = JSON.parse(sessionStorage.currentUser));
 
     const handleSearch = e => {
         e.preventDefault();
@@ -24,8 +26,23 @@ const SiteNavBar = ({ page, savedVisibility, handlePublish, searched, setSearche
     }
 
     const handleLogout = e => {
-        history.push('/');
-        dispatch(logoutUser(currentUser.id));
+        if (currentUser) {
+            dispatch(logoutUser(currentUser.id))
+                .then(() => {
+                    history.push('/');
+                })
+        } else {
+            setShowForm(true);
+            setFormType("sign-in");
+        }
+    }
+
+    const handlePublishRedirect = e => {
+        if (!currentUser) {
+            e.preventDefault();
+            setShowForm(true);
+            setFormType("sign-in");
+        }
     }
 
     const formatProfileRightBar = () => {
@@ -55,7 +72,7 @@ const SiteNavBar = ({ page, savedVisibility, handlePublish, searched, setSearche
             case 'publish':
                 partialRightBar = (
                     <>
-                        <div className='publish-button logout-button' onClick={handleLogout}>Logout</div>
+                        <div className='publish-button logout-button' onClick={handleLogout}>{currentUser ? "Logout" : "Login"}</div>
                         <div className='publish-button' onClick={handlePublish}>Publish</div>
                     </>
                 )
@@ -76,8 +93,8 @@ const SiteNavBar = ({ page, savedVisibility, handlePublish, searched, setSearche
             case 'show':
                 partialRightBar = (
                     <>
-                        <div className='publish-button logout-button' onClick={handleLogout}>Logout</div>
-                        <Link to='/publish/' className='publish-link'>
+                        <div className='publish-button logout-button' onClick={handleLogout}>{currentUser ? "Logout" : "Login"}</div>
+                        <Link to='/publish/' className='publish-link' onClick={handlePublishRedirect}>
                             <img src={write} alt='Write' className='site-navbar-write' />
                             Write
                         </Link>
@@ -97,8 +114,8 @@ const SiteNavBar = ({ page, savedVisibility, handlePublish, searched, setSearche
             case 'feed':
                 partialRightBar = (
                     <>
-                        <div className='publish-button logout-button' onClick={handleLogout}>Logout</div>
-                        <Link to='/publish/' className='publish-link'>
+                        <div className='publish-button logout-button' onClick={handleLogout}>{currentUser ? "Logout" : "Login"}</div>
+                        <Link to='/publish/' className='publish-link' onClick={handlePublishRedirect}>
                             <img src={write} alt='Write' className='site-navbar-write' />
                             Write
                         </Link>
@@ -118,16 +135,20 @@ const SiteNavBar = ({ page, savedVisibility, handlePublish, searched, setSearche
             default:
                 partialRightBar = (
                     <>
+                        <div className='publish-button logout-button' onClick={handleLogout}>{currentUser ? "Logout" : "Login"}</div>
                         <div className='publish-button' onClick={handlePublish}>Publish</div>
                     </>
                 )
                 partialLeftBar = (
                     <>
-                        <Link to='/'>
+                        <Link to='/feed/'>
                             <img src={logo} alt='Website Logo' className='site-navbar-logo-image' />
                         </Link>
                         <div className='title-text'>
                             Draft by {currentUser.fullName}
+                        </div>
+                        <div className='saved-text' style={{ visibility: savedVisibility }}>
+                            Saved
                         </div>
                     </>
                 )

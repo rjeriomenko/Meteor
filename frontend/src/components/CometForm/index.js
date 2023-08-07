@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { createComet } from '../../store/cometsReducer';
 import { useHistory } from 'react-router-dom';
 
-const CometForm = ({ taleId, setShowForm, comets, cometsLength, currentUser }) => {
+const CometForm = ({ taleId, setShowCometForm, setShowAuthForm, setAuthFormType, comets, cometsLength, currentUser }) => {
     const dispatch = useDispatch();
     console.log(comets)
     //SEE IF COMETS UPDATES (SEE IF OTHER PROBLEM CROPS UP)
@@ -29,20 +29,26 @@ const CometForm = ({ taleId, setShowForm, comets, cometsLength, currentUser }) =
     
     const [content, setContent] = useState('');
 
-    const handleCometClick = e => {
+    const handleCometSubmit = e => {
         e.preventDefault();
-
+        
         if (currentUser) {
-            const comet = {
-                taleId: taleId,
-                content: content
+            const button = document.body.querySelector('.comet-form-submit')
+            if (content !== '') {
+                const comet = {
+                    taleId: taleId,
+                    content: content
+                }
+                setContent('');
+                button.id = 'submitting';
+                dispatch(createComet(comet))
+                .then(() => {
+                    button.id = '';
+                });
             }
-            dispatch(createComet(comet));
-
-            //MAKE SUBMIT BUTTON FADE INTO DARKER GREEN
-            //SETSHOWTEXTINPUT FALSE
         } else {
-            history.push('/')
+            setShowAuthForm(true);
+            setAuthFormType("sign-in");
         }
     }
 
@@ -56,7 +62,7 @@ const CometForm = ({ taleId, setShowForm, comets, cometsLength, currentUser }) =
         if (className === 'comet-modal-background' || className === 'comet-form-close') {
             const form = document.body.querySelector('.comet-modal-background');
             setTimeout(() => {
-                setShowForm(false);
+                setShowCometForm(false);
             }, 160);
         }
     }
@@ -80,7 +86,7 @@ const CometForm = ({ taleId, setShowForm, comets, cometsLength, currentUser }) =
             <div className='comet-form-container'>
                 <div className='comet-form-spacing'>
                     <div className='comet-form-content'>
-                        <form className='comet-form' onSubmit={handleCometClick}>
+                        <form className='comet-form' onSubmit={handleCometSubmit}>
                             <textarea onChange={onContentChange} value={content} className='comet-form-text-input' placeholder='What are your thoughts?'>
                             </textarea>
 

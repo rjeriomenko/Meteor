@@ -3,6 +3,7 @@ import SiteNavBar from '../SiteNavBar/index';
 import Loading from '../Loading/index';
 import RecommendedTopics from '../RecommendedTopics/index'
 import FeedBlock from '../FeedBlock/index'
+import AuthForm from '../AuthForm/index';
 import { getAllTales, getFollowTales, fetchPublishedTales, fetchFollowTales } from '../../store/talesReducer';
 import { getUsers, fetchUsers } from '../../store/usersReducer';
 import { fetchFollows } from '../../store/followsReducer';
@@ -15,7 +16,33 @@ const Feed = props => {
     const dispatch = useDispatch();
     const { typeOfFeed } = useParams();
 
-    const [currentUser, setCurrentUser] = useState(JSON.parse(sessionStorage.currentUser));
+    let currentUser = JSON.parse(sessionStorage.currentUser);
+    window.addEventListener('storage', () => currentUser = JSON.parse(sessionStorage.currentUser));
+
+    const [showForm, setShowForm] = useState(false);
+    const [formType, setFormType] = useState('sign-up');
+
+    const handleForm = () => {
+        const body = document.body;
+
+        if (showForm) {
+            body.style.overflow = 'hidden';
+
+            return (
+                <AuthForm formType={formType} setShowForm={setShowForm} setFormType={setFormType} />
+            );
+        } else {
+            body.style.overflow = '';
+        };
+    };
+
+    const handleChartedRedirect = e => {
+        if (!currentUser) {
+            e.preventDefault();
+            setShowForm(true);
+            setFormType("sign-in");
+        }
+    }
 
     const turnObjectIntoArr = object => {
         const objectArr = [];
@@ -117,7 +144,7 @@ const Feed = props => {
         if (!typeOfFeed) {
             dispatch(fetchPublishedTales())
                 .then(() => {
-                    dispatch(fetchFollowTales());
+                    if (currentUser) dispatch(fetchFollowTales());
                 })
                 .then(() => {
                     dispatch(fetchUsers());
@@ -150,13 +177,14 @@ const Feed = props => {
         <Loading />
     )} else return (
         <>
-            <SiteNavBar page='feed' searched={searched} setSearched={setSearched} allTalesArr={allTalesArr} setFilteredTales={setFilteredTales}/>
+            {handleForm()}
+            <SiteNavBar page='feed' searched={searched} setSearched={setSearched} allTalesArr={allTalesArr} setFilteredTales={setFilteredTales} setShowForm={setShowForm} setFormType={setFormType} />
 
             <div className='feed-page' id='no-sidebar'>
                 <div className='feed'>
                     <div className='feed-switcher'>
                         <Link to='/feed/' id='feed-switcher-discover' className={typeOfFeed ? undefined : 'feed-switcher-selected'}>For you</Link>
-                        <Link to='/feed/follows' id='feed-switcher-follow' className={typeOfFeed === 'follows' ? 'feed-switcher-selected' : undefined }>Charted</Link>
+                        <Link to='/feed/follows' id='feed-switcher-follow' className={typeOfFeed === 'follows' ? 'feed-switcher-selected' : undefined } onClick={handleChartedRedirect}>Charted</Link>
                     </div>
                     {renderFeedBlocks()}
                 </div>
