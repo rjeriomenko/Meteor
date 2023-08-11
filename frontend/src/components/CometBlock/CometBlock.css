@@ -66,3 +66,7 @@
     background-color: rgb(27, 136, 23);
     cursor: pointer;
 }
+
+.comet-deleting {
+    background-color: rgb(14, 69, 12);
+}
