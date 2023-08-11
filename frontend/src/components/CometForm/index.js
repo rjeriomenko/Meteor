@@ -9,9 +9,6 @@ import { useHistory } from 'react-router-dom';
 
 const CometForm = ({ taleId, setShowCometForm, setShowAuthForm, setAuthFormType, comets, cometsLength, currentUser }) => {
     const dispatch = useDispatch();
-    console.log(comets)
-    //SEE IF COMETS UPDATES (SEE IF OTHER PROBLEM CROPS UP)
-    
     const history = useHistory();
     const users = useSelector(getUsers);
 
@@ -71,7 +68,7 @@ const CometForm = ({ taleId, setShowCometForm, setShowAuthForm, setAuthFormType,
         return (
             <>
                 {cometsArr.map(comet => (
-                    <CometBlock key={comet.id} comet={comet} author={users[comet.userId]} users={users} />
+                    <CometBlock key={comet.id} comet={comet} taleId={taleId} author={users[comet.userId]} users={users} currentUser={currentUser}/>
                 ))}
             </>
         )
