@@ -71,7 +71,7 @@ const CometForm = ({ taleId, setShowCometForm, setShowAuthForm, setAuthFormType,
         return (
             <>
                 {cometsArr.map(comet => (
-                    <CometBlock key={comet.id} comet={comet} author={users[comet.userId]} users={users} />
+                    <CometBlock key={comet.id} comet={comet} author={users[comet.userId]} users={users} currentUser={currentUser}/>
                 ))}
             </>
         )

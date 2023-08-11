@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-const CometBlock = ({ comet, author }) => {
+const CometBlock = ({ comet, author, currentUser }) => {
     const getAuthorPicture = () => {
         return (
             <img src={invertedLogo} alt='Default Author Picture' className='feed-block-item author-picture' />
@@ -18,6 +18,21 @@ const CometBlock = ({ comet, author }) => {
         )
     }
 
+    const renderCometCrud = () => {
+        if (currentUser?.id === comet.userId) {
+            return (
+                <>
+                    <div className='comet-feed-block-button' id={`comet-edit-${comet.id}`} >
+                        Edit
+                    </div>
+                    <div className='comet-feed-block-button' id={`comet-delete-${comet.id}`} >
+                        Delete
+                    </div>
+                </>
+            )
+        }
+    }
+
    return (
         <div className='comet-feed-block'>
             <div className='comet-feed-block-content'>
@@ -27,6 +42,7 @@ const CometBlock = ({ comet, author }) => {
                         <div className='feed-block-item author-fullname'>
                             {author.fullName}
                         </div>
+                        {renderCometCrud()}
                     </div>
                     {commetContent()}
                 </div>
