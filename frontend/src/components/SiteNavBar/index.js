@@ -6,10 +6,13 @@ import AuthForm from '../AuthForm/index';
 import { logoutUser } from '../../store/usersReducer';
 import { Link, useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { useState } from 'react';
 
 const SiteNavBar = ({ page, savedVisibility, handlePublish, searched, setSearched, setFilteredTales, allTalesArr, setShowForm, setFormType }) => {
     const dispatch = useDispatch();
     const history = useHistory();
+
+    const [submitting, setSubmitting] = useState(false);
 
     let currentUser = JSON.parse(sessionStorage.currentUser);
     window.addEventListener('storage', () => currentUser = JSON.parse(sessionStorage.currentUser));
@@ -20,18 +23,18 @@ const SiteNavBar = ({ page, savedVisibility, handlePublish, searched, setSearche
         const fuse = new Fuse(allTalesArr, { keys: ['title'] });
         const results = fuse.search(value).map((result) => result.item);
 
-        console.log(results)
         setFilteredTales(results);
         setSearched(true);
     }
 
     const handleLogout = e => {
-        if (currentUser) {
+        if (currentUser && !submitting) {
+            setSubmitting(true);
             dispatch(logoutUser(currentUser.id))
                 .then(() => {
                     history.push('/');
                 })
-        } else {
+        } else if (!submitting) {
             setShowForm(true);
             setFormType("sign-in");
         }
