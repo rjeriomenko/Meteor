@@ -1,6 +1,8 @@
 import './SiteNavBar.css';
 import Fuse from 'fuse.js';
 import logo from '../../logo.png';
+import githubLogo from '../../github-logo.png';
+import linkedinLogo from '../../linkedin-logo.png';
 import write from '../../write.png';
 import AuthForm from '../AuthForm/index';
 import { logoutUser } from '../../store/usersReducer';
@@ -90,6 +92,12 @@ const SiteNavBar = ({ page, savedVisibility, handlePublish, searched, setSearche
                         <div className='saved-text' style={{visibility: savedVisibility}}>
                             Saved
                         </div>
+                        <Link to={{ pathname: 'https://github.com/rjeriomenko' }} target="_blank">
+                            <img src={githubLogo} alt='GitHub Link' className='site-navbar-github-image' />
+                        </Link>
+                        <Link to={{ pathname: 'https://www.linkedin.com/in/rokas-jeriomenko-82b312121/' }} target="_blank">
+                            <img src={linkedinLogo} alt='LinkedIn Link' className='site-navbar-linkedin-image' />
+                        </Link>
                     </>
                 )
                 break;
@@ -108,9 +116,12 @@ const SiteNavBar = ({ page, savedVisibility, handlePublish, searched, setSearche
                         <Link to='/feed/'>
                             <img src={logo} alt='Website Logo' className='site-navbar-logo-image' />
                         </Link>
-                        <form onSubmit={handleSearch}>
-                            <input type='text' className='search-bar' placeholder='Search Meteor'/>
-                        </form>
+                        <Link to={{ pathname: 'https://github.com/rjeriomenko' }} target="_blank">
+                            <img src={githubLogo} alt='GitHub Link' className='site-navbar-github-image' />
+                        </Link>
+                        <Link to={{ pathname: 'https://www.linkedin.com/in/rokas-jeriomenko-82b312121/' }} target="_blank">
+                            <img src={linkedinLogo} alt='LinkedIn Link' className='site-navbar-linkedin-image' />
+                        </Link>
                     </>
                 )
                 break;
@@ -132,6 +143,12 @@ const SiteNavBar = ({ page, savedVisibility, handlePublish, searched, setSearche
                         <form onSubmit={handleSearch}>
                             <input type='text' className='search-bar' placeholder='Search Meteor'/>
                         </form>
+                        <Link to={{ pathname: 'https://github.com/rjeriomenko' }} target="_blank">
+                            <img src={githubLogo} alt='GitHub Link' className='site-navbar-github-image' />
+                        </Link>
+                        <Link to={{ pathname: 'https://www.linkedin.com/in/rokas-jeriomenko-82b312121/' }} target="_blank">
+                            <img src={linkedinLogo} alt='LinkedIn Link' className='site-navbar-linkedin-image' />
+                        </Link>
                     </>
                 )
                 break;
@@ -153,6 +170,12 @@ const SiteNavBar = ({ page, savedVisibility, handlePublish, searched, setSearche
                         <div className='saved-text' style={{ visibility: savedVisibility }}>
                             Saved
                         </div>
+                        <Link to={{ pathname: 'https://github.com/rjeriomenko' }} target="_blank">
+                            <img src={githubLogo} alt='GitHub Link' className='site-navbar-github-image' />
+                        </Link>
+                        <Link to={{ pathname: 'https://www.linkedin.com/in/rokas-jeriomenko-82b312121/' }} target="_blank">
+                            <img src={linkedinLogo} alt='LinkedIn Link' className='site-navbar-linkedin-image' />
+                        </Link>
                     </>
                 )
                 break;

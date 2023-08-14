@@ -1,5 +1,7 @@
 import './HomeNavBar.css';
 import logo from '../../logo.png';
+import githubLogo from '../../github-logo.png';
+import linkedinLogo from '../../linkedin-logo.png';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 
@@ -40,8 +42,14 @@ const HomeNavBar = ({ setShowForm, setFormType }) => {
                     </Link>
                 </div>
                 <div className='home-nav-links'>
+                    <Link to={{ pathname: 'https://github.com/rjeriomenko' }} target="_blank">
+                        <img src={githubLogo} alt='GitHub Link' className='home-navbar-github-image' />
+                    </Link>
+                    <Link to={{ pathname: 'https://www.linkedin.com/in/rokas-jeriomenko-82b312121/' }} target="_blank">
+                        <img src={linkedinLogo} alt='LinkedIn Link' className='home-navbar-linkedin-image' />
+                    </Link>
                     <Link to='/feed/'>Feed</Link>
-                    <div onClick={handleSignIn}>Write</div>
+                    {/* <div onClick={handleSignIn}>Write</div> */}
                     <div onClick={handleSignIn}>Sign In</div>
                     <div className='get-started' onClick={handleSignUp} id={scrollStatus}>Get Started</div>
                 </div>

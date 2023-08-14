@@ -55,6 +55,30 @@
     margin-bottom: 4px;
 }
 
+.site-navbar-github-image {
+    height: 36px;
+    width: 36px;
+    display: inline-block;
+    margin-left: 30px;
+    filter: brightness(0);
+}
+
+.site-navbar-github-image:hover {
+    opacity: 0.8;
+}
+
+.site-navbar-linkedin-image {
+    height: 36px;
+    width: 36px;
+    display: inline-block;
+    margin-left: 30px;
+    filter: invert(1);
+}
+
+.site-navbar-linkedin-image:hover {
+    opacity: 0.8;
+}
+
 .site-navbar-right {
     display: flex;
     justify-content: space-around;

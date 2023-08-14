@@ -40,6 +40,28 @@
     display: inline-block;
 }
 
+.home-navbar-github-image {
+    height: 36px;
+    width: 36px;
+    display: inline-block;
+    filter: brightness(0);
+}
+
+.home-navbar-github-image:hover {
+    opacity: 0.8;
+}
+
+.home-navbar-linkedin-image {
+    height: 36px;
+    width: 36px;
+    display: inline-block;
+    filter: invert(1);
+}
+
+.home-navbar-linkedin-image:hover {
+    opacity: 0.8;
+}
+
 .logo-content {
     cursor: pointer;
 }
