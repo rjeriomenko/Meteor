@@ -48,7 +48,7 @@
 }
 
 .home-navbar-github-image:hover {
-    opacity: 0.8;
+    opacity: 0.5;
 }
 
 .home-navbar-linkedin-image {
@@ -59,7 +59,7 @@
 }
 
 .home-navbar-linkedin-image:hover {
-    opacity: 0.8;
+    opacity: 0.5;
 }
 
 .logo-content {
