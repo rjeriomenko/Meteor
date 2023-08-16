@@ -2,10 +2,11 @@ class Api::ConstellationsController < ApplicationController
   wrap_parameters include: Constellation.attribute_names + ['userId', 'taleId']
 
   before_action :require_logged_in, only: [:create_user, :create_tale, :update, :destroy]
-  before_action :require_logged_in_as_author, only: [:update, :destroy]
+  # before_action :require_logged_in_as_author, only: [:update, :destroy]
 
   def require_logged_in_as_author
     constellation_id = params[:id]
+    logger.debug "TESTING"
     @constellation = Constellation.find_by(id: constellation_id)
     authorized = false
 
@@ -23,7 +24,7 @@ class Api::ConstellationsController < ApplicationController
     end
   end
 
-  def create_user
+  def create_for_user
     @constellation = Constellation.new(constellation_params)
     @constellation.user_id = current_user.id
 
@@ -34,14 +35,16 @@ class Api::ConstellationsController < ApplicationController
     end
   end
 
-  def create_tale
-    @constellation = Constellation.new(constellation_params)
-
+  def create_for_tale
     tale = Tale.find_by(id: params[:tale_id])
     unless tale
       render json: { errors: ["Tale not found"] }, status: 422
     end
-
+    unless tale.author_id == current_user.id
+      render json: { errors: ["Can only edit constellations for authored tales"] }, status: :unauthorized
+    end
+    
+    @constellation = Constellation.new(constellation_params)
     @constellation.tale_id = params[:tale_id]
 
     if @constellation.save
@@ -55,7 +58,7 @@ class Api::ConstellationsController < ApplicationController
     constellation_id = params[:id]
     @constellation = Constellation.find_by(id: constellation_id)
 
-    if @Constellation&.update(constellation_params)
+    if @constellation&.update(constellation_params)
       render :show
     elsif @constellation
       render json: @constellation.errors.full_messages, status: 422
@@ -80,7 +83,7 @@ class Api::ConstellationsController < ApplicationController
   private
     def constellation_params
         params.require(:constellation).permit(
-        :name
+          :name
         )
     end
 

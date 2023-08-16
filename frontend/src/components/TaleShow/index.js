@@ -11,6 +11,7 @@ import { getUser } from '../../store/usersReducer';
 import { getTale, fetchTale, deleteTale } from '../../store/talesReducer';
 import { getStars, fetchStars, createStar, deleteStar } from '../../store/starsReducer';
 import { getComets, fetchComets } from '../../store/cometsReducer';
+import { getConstellations, fetchConstellations, createTaleConstellation, updateConstellation, deleteConstellation } from '../../store/constellationsReducer';
 import { fetchUser } from '../../store/usersReducer';
 import { getFollows, fetchFollows, createFollow, deleteFollow } from '../../store/followsReducer';
 import { useState, useEffect } from 'react';
@@ -25,8 +26,21 @@ const TaleShow = props => {
     let currentUser = JSON.parse(sessionStorage.currentUser);
     window.addEventListener('storage', () => currentUser = JSON.parse(sessionStorage.currentUser));
 
+    const turnObjectIntoArr = object => {
+        const objectArr = [];
+
+        for (const obj in object) {
+            objectArr.push(object[obj]);
+        }
+
+        return objectArr;
+    }
+
     const tale = useSelector(getTale(taleId));
     const title = tale?.title;
+    const constellationsObj = useSelector(getConstellations);
+    const constellationsArr = turnObjectIntoArr(constellationsObj);
+    const constellation = constellationsArr.find(constellation => constellation.taleId === tale?.id);
     const author = useSelector(getUser(tale?.authorId));
     const stars = Object.values(useSelector(getStars));
     const starredByUser = stars.some((star) => {return star?.userId === currentUser.id}) ? true : false;
@@ -38,10 +52,11 @@ const TaleShow = props => {
     const contentString = tale?.content;
     
     const [showCometForm, setShowCometForm] = useState(false);
-    const [loading, setLoading] = useState(true);
-
+    const [showConstellationForm, setShowConstellationForm] = useState(false);
+    const [constellationContent, setConstellationContent] = useState('');
     const [showAuthForm, setShowAuthForm] = useState(false);
     const [authFormType, setAuthFormType] = useState('sign-up');
+    const [loading, setLoading] = useState(true);
 
     const handleAuthForm = () => {
         const body = document.body;
@@ -139,6 +154,76 @@ const TaleShow = props => {
             })
     }
 
+    const handleConstellationFormClick = () => {
+        if (constellation) setConstellationContent(constellation?.name);
+        setShowConstellationForm(!showConstellationForm);
+    }
+
+    const onConstellationContentChange = e => {
+        setConstellationContent(e.target.value)
+    }
+
+    const renderConstellationAndForm = () => {
+        if (showConstellationForm) {
+            return (<>
+                <input type="text" 
+                    maxLength='16' 
+                    size='16'
+                    className='tale-show-constellation'
+                    id='tale-show-constellation-form' 
+                    value={constellationContent} 
+                    onChange={onConstellationContentChange}>
+                </input>
+                <div className='feed-block-button feed-block-follow' onClick={handleSubmitConstellationForm}>
+                    Set Constellation
+                </div>
+                <div className='feed-block-button feed-block-follow' onClick={handleConstellationFormClick}>
+                    Cancel
+                </div>
+            </>)
+        } else if (constellation) {
+            return (<div id='tale-show-constellation' className='tale-show-constellation' onClick={handleConstellationFormClick}>
+                {constellation.name}
+            </div>)
+        } else if (currentUser?.id === tale?.authorId) {
+            return (<div className='tale-show-constellation' onClick={handleConstellationFormClick}>
+                {"No Constellation"}
+            </div>)
+        }
+    }
+
+    const handleSubmitConstellationForm = () => {
+        if (constellationContent.trim().length) {
+            if (constellation) {
+                const updatedConstellation = {
+                    id: constellation.id,
+                    name: constellationContent.trim()
+                }
+                dispatch(updateConstellation(updatedConstellation))
+                    .then(() => {
+                        setShowConstellationForm(false);
+                    });
+            } else {
+                const newConstellation = {
+                    taleId: tale.id,
+                    name: constellationContent.trim()
+                }
+                dispatch(createTaleConstellation(tale.id, newConstellation))
+                    .then(() => {
+                        setShowConstellationForm(false);
+                    });
+            }
+        } else {
+            if (constellation) {
+                dispatch(deleteConstellation(constellation.id))
+                    .then(() => {
+                        setShowConstellationForm(false);
+                    });
+                    //need double click handling
+            }
+        }
+    }
+
     const renderContent = contentString => {
         const content = document.body.querySelector('.show-content');
         content.innerHTML = contentString;
@@ -181,6 +266,9 @@ const TaleShow = props => {
                     dispatch(fetchComets(taleId));
                 })
                 .then(() => {
+                    dispatch(fetchConstellations());
+                })
+                .then(() => {
                     if (currentUser) dispatch(fetchFollows());
                 })
                 .then(() => {
@@ -219,7 +307,7 @@ const TaleShow = props => {
                                     {followedAuthor ? "Unchart User" : "Chart User"}
                                 </div>
                             }
-                            {currentUser?.id && author?.id === currentUser?.id &&
+                            {author?.id === currentUser?.id &&
                             <>
                                 <Link to={`/publish/${taleId}`} className='feed-block-button feed-block-follow'>
                                     Edit
@@ -240,6 +328,7 @@ const TaleShow = props => {
                                 <img src={comet} alt='Comet' className='clear-comet' />
                                 <div>{cometsLength}</div>
                             </div>
+                            {renderConstellationAndForm()}
                         </div>
                     </div>
                 </div>
