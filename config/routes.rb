@@ -25,8 +25,8 @@ Rails.application.routes.draw do
 
     resources :constellations, only: [:update, :destroy, :index]
     get 'constellations/constellation_tales/:name', to: 'tales#index_by_constellation'
-    post 'constellations/create_user', to: 'constellations#create_user'
-    post 'constellations/create_tale/:tale_id', to: 'constellations#create_tale'
+    post 'constellations/create_user', to: 'constellations#create_for_user'
+    post 'constellations/create_tale/:tale_id', to: 'constellations#create_for_tale'
 
   end
   

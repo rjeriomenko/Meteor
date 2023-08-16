@@ -40,9 +40,10 @@ export const createUserConstellation = () => async (dispatch) => {
     dispatch(receiveConstellation(responseConstellation));
 }
 
-export const createTaleConstellation = taleId => async (dispatch) => {
+export const createTaleConstellation = (taleId, constellation) => async (dispatch) => {
     const req = await csrfFetch(`/api/constellations/create_tale/${taleId}`, {
-        method: 'POST'
+        method: 'POST',
+        body: JSON.stringify(constellation)
     });
     const data = await req.json();
     const responseConstellation = data.constellation;

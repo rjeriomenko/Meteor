@@ -11,7 +11,7 @@ import { getUser } from '../../store/usersReducer';
 import { getTale, fetchTale, deleteTale } from '../../store/talesReducer';
 import { getStars, fetchStars, createStar, deleteStar } from '../../store/starsReducer';
 import { getComets, fetchComets } from '../../store/cometsReducer';
-import { getConstellations, fetchConstellations } from '../../store/constellationsReducer';
+import { getConstellations, fetchConstellations, createTaleConstellation, updateConstellation, deleteConstellation } from '../../store/constellationsReducer';
 import { fetchUser } from '../../store/usersReducer';
 import { getFollows, fetchFollows, createFollow, deleteFollow } from '../../store/followsReducer';
 import { useState, useEffect } from 'react';
@@ -165,8 +165,23 @@ const TaleShow = props => {
         }
     }
 
-    const handleSetConstellation = () => {
-        console.log('working so far. make search bar appear with drop down')
+    const handleSetConstellationClick = () => {
+        const constellationNames = ['Music', 'Sports', 'Writing', 'Tech', 'Politics'];
+        const randomConstellationName = constellationNames[Math.floor(Math.random() * constellationNames.length)];
+        if (constellation) {
+            const updatedConstellation = {
+                id: constellation.id,
+                name: randomConstellationName
+            }
+            dispatch(updateConstellation(updatedConstellation));
+        } else {
+            const newConstellation = {
+                taleId: tale.id,
+                name: randomConstellationName
+            }
+            dispatch(createTaleConstellation(tale.id, newConstellation));
+        }
+        console.log('create/update working so far. when tag is clicked, make text entry bar appear with submit button. also add remove tag button')
     }
 
     const renderContent = contentString => {
@@ -275,7 +290,7 @@ const TaleShow = props => {
                             </div>
                             {renderConstellation()}
                             {currentUser?.id === tale?.authorId &&
-                                <div className='feed-block-button feed-block-follow' onClick={handleSetConstellation}>
+                                <div className='feed-block-button feed-block-follow' onClick={handleSetConstellationClick}>
                                     Set Constellation
                                 </div>
                             }
