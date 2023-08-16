@@ -52,10 +52,11 @@ const TaleShow = props => {
     const contentString = tale?.content;
     
     const [showCometForm, setShowCometForm] = useState(false);
-    const [loading, setLoading] = useState(true);
-
+    const [showConstellationForm, setShowConstellationForm] = useState(false);
+    const [constellationContent, setConstellationContent] = useState('');
     const [showAuthForm, setShowAuthForm] = useState(false);
     const [authFormType, setAuthFormType] = useState('sign-up');
+    const [loading, setLoading] = useState(true);
 
     const handleAuthForm = () => {
         const body = document.body;
@@ -153,35 +154,74 @@ const TaleShow = props => {
             })
     }
 
-    const renderConstellation = () => {
-        if (constellation) {
-            return (<div className='tale-show-constellation'>
+    const handleConstellationFormClick = () => {
+        if (constellation) setConstellationContent(constellation?.name);
+        setShowConstellationForm(!showConstellationForm);
+    }
+
+    const onConstellationContentChange = e => {
+        setConstellationContent(e.target.value)
+    }
+
+    const renderConstellationAndForm = () => {
+        if (showConstellationForm) {
+            return (<>
+                <input type="text" 
+                    maxLength='16' 
+                    size='16'
+                    className='tale-show-constellation'
+                    id='tale-show-constellation-form' 
+                    value={constellationContent} 
+                    onChange={onConstellationContentChange}>
+                </input>
+                <div className='feed-block-button feed-block-follow' onClick={handleSubmitConstellationForm}>
+                    Set Constellation
+                </div>
+                <div className='feed-block-button feed-block-follow' onClick={handleConstellationFormClick}>
+                    Cancel
+                </div>
+            </>)
+        } else if (constellation) {
+            return (<div id='tale-show-constellation' className='tale-show-constellation' onClick={handleConstellationFormClick}>
                 {constellation.name}
             </div>)
         } else if (currentUser?.id === tale?.authorId) {
-            return (<div className='tale-show-constellation'>
+            return (<div className='tale-show-constellation' onClick={handleConstellationFormClick}>
                 {"No Constellation"}
             </div>)
         }
     }
 
-    const handleSetConstellationClick = () => {
-        const constellationNames = ['Music', 'Sports', 'Writing', 'Tech', 'Politics'];
-        const randomConstellationName = constellationNames[Math.floor(Math.random() * constellationNames.length)];
-        if (constellation) {
-            const updatedConstellation = {
-                id: constellation.id,
-                name: randomConstellationName
+    const handleSubmitConstellationForm = () => {
+        if (constellationContent.trim().length) {
+            if (constellation) {
+                const updatedConstellation = {
+                    id: constellation.id,
+                    name: constellationContent.trim()
+                }
+                dispatch(updateConstellation(updatedConstellation))
+                    .then(() => {
+                        setShowConstellationForm(false);
+                    });
+            } else {
+                const newConstellation = {
+                    taleId: tale.id,
+                    name: constellationContent.trim()
+                }
+                dispatch(createTaleConstellation(tale.id, newConstellation))
+                    .then(() => {
+                        setShowConstellationForm(false);
+                    });
             }
-            dispatch(updateConstellation(updatedConstellation));
         } else {
-            const newConstellation = {
-                taleId: tale.id,
-                name: randomConstellationName
+            if (constellation) {
+                dispatch(deleteConstellation(constellation.id))
+                    .then(() => {
+                        setShowConstellationForm(false);
+                    });
+                    //need double click handling
             }
-            dispatch(createTaleConstellation(tale.id, newConstellation));
         }
-        console.log('create/update working so far. when tag is clicked, make text entry bar appear with submit button. also add remove tag button')
     }
 
     const renderContent = contentString => {
@@ -288,12 +328,7 @@ const TaleShow = props => {
                                 <img src={comet} alt='Comet' className='clear-comet' />
                                 <div>{cometsLength}</div>
                             </div>
-                            {renderConstellation()}
-                            {currentUser?.id === tale?.authorId &&
-                                <div className='feed-block-button feed-block-follow' onClick={handleSetConstellationClick}>
-                                    Set Constellation
-                                </div>
-                            }
+                            {renderConstellationAndForm()}
                         </div>
                     </div>
                 </div>

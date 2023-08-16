@@ -98,7 +98,13 @@
     background-color: rgb(250, 250, 250);
     padding: 6px 10px;
     border-radius: 99em;
-    cursor: default;
+    cursor: pointer;
+    border: none;
+    letter-spacing: 0.9px;
+}
+
+#tale-show-constellation:hover {
+    outline: 2px solid rgb(27, 136, 23);
 }
 
 i { 
