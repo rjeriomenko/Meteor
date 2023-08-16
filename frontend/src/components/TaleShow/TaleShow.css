@@ -90,6 +90,17 @@
     color: rgb(43, 43, 43);
 }
 
+.tale-show-constellation {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: rgb(37, 37, 37);
+    background-color: rgb(250, 250, 250);
+    padding: 6px 10px;
+    border-radius: 99em;
+    cursor: default;
+}
+
 i { 
     font: inherit;
     font-style: italic;

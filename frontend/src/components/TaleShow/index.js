@@ -11,6 +11,7 @@ import { getUser } from '../../store/usersReducer';
 import { getTale, fetchTale, deleteTale } from '../../store/talesReducer';
 import { getStars, fetchStars, createStar, deleteStar } from '../../store/starsReducer';
 import { getComets, fetchComets } from '../../store/cometsReducer';
+import { getConstellations, fetchConstellations } from '../../store/constellationsReducer';
 import { fetchUser } from '../../store/usersReducer';
 import { getFollows, fetchFollows, createFollow, deleteFollow } from '../../store/followsReducer';
 import { useState, useEffect } from 'react';
@@ -25,8 +26,21 @@ const TaleShow = props => {
     let currentUser = JSON.parse(sessionStorage.currentUser);
     window.addEventListener('storage', () => currentUser = JSON.parse(sessionStorage.currentUser));
 
+    const turnObjectIntoArr = object => {
+        const objectArr = [];
+
+        for (const obj in object) {
+            objectArr.push(object[obj]);
+        }
+
+        return objectArr;
+    }
+
     const tale = useSelector(getTale(taleId));
     const title = tale?.title;
+    const constellationsObj = useSelector(getConstellations);
+    const constellationsArr = turnObjectIntoArr(constellationsObj);
+    const constellation = constellationsArr.find(constellation => constellation.taleId === tale?.id);
     const author = useSelector(getUser(tale?.authorId));
     const stars = Object.values(useSelector(getStars));
     const starredByUser = stars.some((star) => {return star?.userId === currentUser.id}) ? true : false;
@@ -139,6 +153,22 @@ const TaleShow = props => {
             })
     }
 
+    const renderConstellation = () => {
+        if (constellation) {
+            return (<div className='tale-show-constellation'>
+                {constellation.name}
+            </div>)
+        } else if (currentUser?.id === tale?.authorId) {
+            return (<div className='tale-show-constellation'>
+                {"No Constellation"}
+            </div>)
+        }
+    }
+
+    const handleSetConstellation = () => {
+        console.log('working so far. make search bar appear with drop down')
+    }
+
     const renderContent = contentString => {
         const content = document.body.querySelector('.show-content');
         content.innerHTML = contentString;
@@ -181,6 +211,9 @@ const TaleShow = props => {
                     dispatch(fetchComets(taleId));
                 })
                 .then(() => {
+                    dispatch(fetchConstellations());
+                })
+                .then(() => {
                     if (currentUser) dispatch(fetchFollows());
                 })
                 .then(() => {
@@ -219,7 +252,7 @@ const TaleShow = props => {
                                     {followedAuthor ? "Unchart User" : "Chart User"}
                                 </div>
                             }
-                            {currentUser?.id && author?.id === currentUser?.id &&
+                            {author?.id === currentUser?.id &&
                             <>
                                 <Link to={`/publish/${taleId}`} className='feed-block-button feed-block-follow'>
                                     Edit
@@ -240,6 +273,12 @@ const TaleShow = props => {
                                 <img src={comet} alt='Comet' className='clear-comet' />
                                 <div>{cometsLength}</div>
                             </div>
+                            {renderConstellation()}
+                            {currentUser?.id === tale?.authorId &&
+                                <div className='feed-block-button feed-block-follow' onClick={handleSetConstellation}>
+                                    Set Constellation
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>
