@@ -155,8 +155,21 @@ const TaleShow = props => {
     }
 
     const handleConstellationFormClick = () => {
-        if (constellation) setConstellationContent(constellation?.name);
+        if (constellation) {
+            setConstellationContent(constellation?.name)
+        } else {
+            setConstellationContent('');
+        };
+
         setShowConstellationForm(!showConstellationForm);
+        setTimeout(() => { focusOnConstellationForm(); }, 0);
+    }
+
+    const focusOnConstellationForm = () => {
+        if (!showConstellationForm) {
+            const constellationForm = document.getElementById('tale-show-constellation-form');
+            constellationForm.focus();
+        }
     }
 
     const onConstellationContentChange = e => {
@@ -181,13 +194,17 @@ const TaleShow = props => {
                     Cancel
                 </div>
             </>)
-        } else if (constellation) {
+        } else if (constellation && currentUser?.id === tale?.authorId) {
             return (<div id='tale-show-constellation' className='tale-show-constellation' onClick={handleConstellationFormClick}>
                 {constellation.name}
             </div>)
+        } else if (constellation) {
+            return (<div className='tale-show-constellation'>
+                {constellation.name}
+            </div>)
         } else if (currentUser?.id === tale?.authorId) {
-            return (<div className='tale-show-constellation' onClick={handleConstellationFormClick}>
-                {"No Constellation"}
+            return (<div id='tale-show-constellation' className='tale-show-constellation' onClick={handleConstellationFormClick}>
+                {"Click me to set constellation"}
             </div>)
         }
     }
