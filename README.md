@@ -1,6 +1,6 @@
 # Meteor
 
-Meteor, a Medium clone, is a digital publishing application that allows users to create, customize, publish, and discover pieces of writing -- called tales.
+Meteor, a Medium clone, is a digital publishing application that allows users to create, customize, publish, and discover pieces of writing called tales.
 
 ## Functionality & MVPs
 In Meteor, users will be able to:
